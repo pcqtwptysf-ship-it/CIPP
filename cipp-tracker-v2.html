@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CIPP Gate Tracker · NXTGN</title>
+<title>CIPP Gate Tracker v3 · NXTGN</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -125,6 +125,8 @@
 
   .lock-banner { background:var(--beige); border:1px solid var(--grey-line); border-left:4px solid var(--pink); padding:16px 20px; border-radius:var(--radius-sm); margin-bottom:28px; color:var(--grey-text); font-size:13.5px; line-height:1.5; }
   .lock-banner strong { color:var(--pink); font-weight:700; }
+  .gate-output { background:var(--beige); border:1px solid var(--grey-line-soft); border-left:4px solid var(--lila); padding:12px 16px; border-radius:var(--radius-sm); margin-top:14px; color:var(--grey-text); font-size:13px; line-height:1.5; }
+  .gate-output strong { color:var(--lila); font-weight:700; }
 
   /* Sections */
   .sec-head { display:flex; align-items:baseline; gap:14px; margin-bottom:18px; margin-top:40px; padding-bottom:10px; border-bottom:1px solid var(--grey-line-soft); }
@@ -282,6 +284,7 @@
       <p class="hero-claim">Entry Check, G0–G5 und Begleitlogik. Editierbare Kriterien, direkt ausfüllbare Methoden, Markdown- und JSON-Export für OneDrive.</p>
     </div>
     <div class="hero-actions">
+      <button class="btn" onclick="openManual()">Handbuch</button>
       <button class="btn" onclick="openHelp()">Info</button>
       <button class="btn" onclick="importJson()">Import</button>
       <button class="btn primary" onclick="saveState(true)">Speichern</button>
@@ -320,7 +323,7 @@
 
   <footer class="bottom">
     <div class="rule"><strong>Harte Regel:</strong> Ein Gate ist nur bestanden, wenn alle Muss-Kriterien erfüllt sind. G0–G3 flexibel — G4 startet erst, wenn alle Muss-Kriterien aus G0–G3 vollständig erfüllt sind.</div>
-    <div>NXTGN · CIPP Tracker v2.0</div>
+    <div>NXTGN · CIPP Tracker v3.0</div>
   </footer>
 </div>
 
@@ -789,6 +792,7 @@ const GATES = [
   {
     id:'entry', code:'ENTRY', name:'Entry Check',
     goal:'Prüfen, ob überhaupt genug Substanz vorhanden ist, um sauber in CIPP einzusteigen.',
+    output:'Entscheidung, ob das Vorhaben formal in CIPP aufgenommen wird.',
     muss:['Zwei klar identifizierte Parteien mit ernsthaftem PoC-Interesse','Grob beschriebene Problemstellung oder Einsatzdomäne','Ansprechpartner auf beiden Seiten benannt','Grundsätzliche Bereitschaft, Zeit und Ressourcen zu investieren','Realer Anwendungsbezug vorhanden','Kein offensichtlicher Showstopper auf Grundsatzebene'],
     nice:['Erste KPI- oder Nutzenhypothese','Erste technische Unterlagen','Sichtbarer Sponsor','Grober Zeit- oder Testkorridor'],
     methoden:[
@@ -801,6 +805,7 @@ const GATES = [
   {
     id:'g0', code:'G0', name:'Mandat & Zielbild',
     goal:'Aus einer allgemeinen Absicht wird ein klar definierter, entscheidungsfähiger PoC.',
+    output:'Gemeinsames PoC-Mandat mit Zielbild, Rollen, Scope und späterer Entscheidungsfrage.',
     muss:['Problemstellung konkret beschrieben','Use Case klar abgegrenzt','Primäres PoC-Zielbild dokumentiert','Mindestens eine primäre KPI definiert','Scope und Out-of-Scope festgelegt','Fachlicher Owner auf Kundenseite benannt','Verantwortlicher Ansprechpartner auf Lösungsseite benannt','Dokumentiert, welche spätere Entscheidung ermöglicht werden soll','Bewertungsdimension klar: technisch, operativ, wirtschaftlich oder Kombination'],
     nice:['Sponsor offiziell benannt','Vorläufige Go/Stop-Schwellen formuliert','Erste Rollback-Idee beschrieben','Erste Business-Hypothese vorhanden'],
     methoden:[
@@ -815,6 +820,7 @@ const GATES = [
   {
     id:'g1', code:'G1', name:'Recht & Rahmen',
     goal:'Sicherstellen, dass der PoC formal, rechtlich und organisatorisch tragfähig aufgesetzt ist.',
+    output:'Formaler und organisatorischer Rahmen des PoC ist belastbar geregelt.',
     muss:['NDA unterschrieben, sofern Vertraulichkeit relevant ist','PoC-Vertrag / Pilotvereinbarung / LoI unterschrieben','Rollen und Verantwortlichkeiten dokumentiert','Daten- und Zugriffslogik geklärt','Falls nötig: DUA/DPA abgeschlossen','Falls nötig: Sicherheits- / Freigabelogik dokumentiert','Budget- bzw. Ressourcenfreigabe bestätigt','Leistungspflichten beider Seiten dokumentiert','Eskalations- und Abbruchlogik geregelt'],
     nice:['Anschlussmodell grob skizziert','Einkauf für Erfolgsfall vorbereitet','Grobe SLA-/Support-Logik vorhanden','IP-/Nutzungsrechte für Folgeschritte vorgeklärt'],
     methoden:[
@@ -830,6 +836,7 @@ const GATES = [
   {
     id:'g2', code:'G2', name:'Nachweislogik & Messdesign',
     goal:'Sicherstellen, dass der PoC methodisch bewertbar und evidenzfähig ist.',
+    output:'Nachweislogik, Messlogik und Evidenzanforderungen sind belastbar definiert.',
     muss:['Baseline oder definierter Ausgangszustand dokumentiert','Messplan vorhanden','Erfolgskriterien konkret definiert','Messverantwortung, Messzeitpunkte und Datengrundlage festgelegt','Datenquellen benannt','Mindestdatenqualität bzw. Datenverfügbarkeit bestätigt','Evidenzanforderungen für G5 festgelegt','Stichproben- oder Bewertungslogik definiert, soweit relevant'],
     nice:['Wirtschaftlichkeitslogik mitgedacht','Sekundäre KPIs definiert','Dashboarding vorbereitet','Vergleichs- oder Kontrolllogik angelegt'],
     methoden:[
@@ -847,6 +854,7 @@ const GATES = [
   {
     id:'g3', code:'G3', name:'Einsatzreife',
     goal:'Sicherstellen, dass die Lösung technisch und operativ testbereit ist.',
+    output:'Die Lösung ist feldtestfähig und kontrolliert einsetzbar.',
     muss:['Lösung für den PoC verfügbar','Test- bzw. Einsatzumgebung vorbereitet','Relevante Zugänge funktionieren','Akzeptanztest oder äquivalente Einsatzprüfung durchgeführt','Kritische Fehler für Teststart behoben oder bewertet','Incident- und Eskalationspfad definiert','Rollback möglich','Einsatzfenster verbindlich bestätigt','Beteiligte für den Start informiert und vorbereitet'],
     nice:['Shadow-Betrieb schon erfolgreich gelaufen','Schulungsunterlagen vorhanden','Monitoring komfortabel eingerichtet','Support-Reaktionszeiten definiert'],
     methoden:[
@@ -864,6 +872,7 @@ const GATES = [
   {
     id:'g4', code:'G4', name:'Feldtest',
     goal:'Den PoC im realen Anwendungskontext durchführen und belastbare Evidenz erzeugen.',
+    output:'Belastbare Beweislage aus dem realen Testbetrieb.',
     muss:['Alle Muss-Kriterien aus G0–G3 erfüllt','Test im vereinbarten Scope durchgeführt','Datenerhebung ausreichend vollständig','KPI-Ergebnisse dokumentiert','Abweichungen, Probleme und Änderungen dokumentiert','Erste wirtschaftliche oder operative Einordnung vorhanden','Evidenz so aufbereitet, dass G5 vorbereitet werden kann'],
     nice:['Qualitatives Nutzerfeedback vorhanden','Zusätzlicher Sekundärnutzen dokumentiert','Skalierungsimplikationen voranalysiert'],
     methoden:[
@@ -880,6 +889,7 @@ const GATES = [
   {
     id:'g5', code:'G5', name:'Entscheidung',
     goal:'Aus der Evidenz des PoC eine belastbare Management-Entscheidung machen.',
+    output:'Management-Entscheidung mit sauberer Begründung und dokumentierter Evidenzbasis.',
     muss:['Evidence Pack vollständig','Ergebnisse gegen Zielkriterien dokumentiert','Restrisiken und offene Punkte benannt','Entscheidungsempfehlung formuliert','Relevante Entscheider erhalten entscheidungsfähige Unterlage','Ergebnis als Go, Stop oder Go unter Bedingungen dokumentiert'],
     nice:['Umsetzungsoptionen vorbereitet','Rollout-Pfade grob skizziert','Learnings in Case Card übertragen'],
     methoden:[
@@ -898,6 +908,7 @@ const GATES = [
   {
     id:'begleit', code:'B', name:'Begleitlogik',
     goal:'Pflichtlogik über alle Gates hinweg. Steuert Evidenz, Risiken, Scope, Kommunikation, Entscheidung.',
+    output:'Laufende Transparenz, Steuerbarkeit und Entscheidungsreife über den gesamten Prozess.',
     muss:['Gate-Checklistensteuerung aktiv','Evidenzablage laufend gepflegt','Risiko- und Problemtransparenz sichergestellt','Änderungsdokumentation geführt','Kommunikations- und Verantwortungslogik geregelt','Laufende Entscheidungsvorbereitung'],
     nice:[],
     methoden:[
@@ -918,6 +929,118 @@ const GATES = [
     ]
   }
 ];
+
+const HANDBOOK = {
+  why: [
+    'CIPP ist ein modulares, gate-basiertes Verfahren fuer PoCs zwischen Startups und Unternehmen.',
+    'Ziel ist kein unscharfer Pilot, sondern ein kontrollierter Nachweisversuch mit klaren Kriterien und echter Management-Entscheidung.',
+    'CIPP standardisiert dort, wo Standardisierung Qualitaet schafft, und bleibt flexibel bei unterschiedlichen Reifegraden.'
+  ],
+  principles: [
+    'Ein Gate ist nur bestanden, wenn alle Muss-Kriterien erfuellt sind.',
+    'Nice-to-have verbessert Reife, ersetzt aber kein Muss.',
+    'G0 bis G3 koennen flexibel angeordnet werden.',
+    'G4 startet erst, wenn alle Muss-Kriterien aus G0 bis G3 vollstaendig geschlossen sind.',
+    'Begleitlogik laeuft verpflichtend ueber den gesamten Prozess.',
+    'Evidence Pack und Decision-Deck werden parallel aufgebaut.',
+    'Jede relevante Scope-, Rahmen- oder Messaenderung wird dokumentiert.'
+  ],
+  architecture: [
+    'Vorstufe: Entry Check',
+    'Flexible Vorbereitungs-Gates: G0, G1, G2, G3',
+    'Feste Abschlusslogik: G4 Feldtest und G5 Entscheidung'
+  ],
+  roleNxtgn: [
+    'Matchmaking zwischen Startup und Unternehmensproblem',
+    'Strukturierung des PoC-Rahmens und Moderation der Gates',
+    'Sicherung von Methodendisziplin, Vollstaendigkeit und Evidenzqualitaet',
+    'Uebersetzung zwischen Startup-Geschwindigkeit und Corporate-Anforderungen',
+    'Vorbereitung der Management-Entscheidung in G5'
+  ],
+  companion: [
+    'Gate-Checklistensteuerung',
+    'Evidenzablage',
+    'RAID-Log',
+    'Change-Register',
+    'Stakeholder-Register',
+    'Kommunikationsmatrix',
+    'Obeya',
+    'Kanban',
+    'Weekly-Steuerung',
+    'Sponsor-Kurzbrief',
+    'Review Points',
+    'Retro',
+    'EVM-light / SPI-CPI-Ampel',
+    'Decision Hygiene'
+  ],
+  artifactsGate: [
+    'Pilot-Charter',
+    'NDA, PoC-Vertrag, Pilotvereinbarung, LoI',
+    'DUA / DPA oder RAMS',
+    'Baseline, Messplan, Logging-Setup, Definition of Ready',
+    'Akzeptanztest, FAT, SAT, Shadow-Nachweis, Readiness Review',
+    'Stichproben- und Datenvollstaendigkeitsnachweis',
+    'KPI-Snapshot und Kosten-Skizze',
+    'Evidence Pack, Decision-Deck, Case Card'
+  ],
+  artifactsCross: [
+    'RAID-Log',
+    'Change-Register',
+    'Stakeholder-Register',
+    'Kommunikationsmatrix',
+    'Kanban-Board',
+    'Obeya-Uebersicht',
+    'EVM-light / Ampellogik',
+    'Decision Journal'
+  ],
+  practice: [
+    'Entry Check: nur Vorhaben mit ausreichender Substanz aufnehmen.',
+    'Fruehe Gates nach realer Ausgangslage priorisieren, nicht dogmatisch.',
+    'Alle Muss-Kriterien der vorbereitenden Gates vollstaendig schliessen.',
+    'Begleitlogik ab Tag 1 aktiv aufsetzen.',
+    'Feldtest nur bei vollstaendiger Freigabe starten.',
+    'Entscheidungsunterlagen parallel aufbauen.',
+    'G5 mit dokumentierter Evidenz und klarer Empfehlung abschliessen.'
+  ],
+  path: {
+    ideal: 'Entry Check -> G0 -> G1 -> G2 -> G3 -> G4 -> G5',
+    real: [
+      'G2 kann weit vorangeschritten sein, obwohl G1 noch offen ist.',
+      'G3-Teile koennen vorbereitet sein, waehrend G0 geschaerft wird.',
+      'Bei hoher Compliance wird G1 oft zuerst intensiv bearbeitet.'
+    ]
+  },
+  limits: [
+    'PoC startet ohne klar definierte Ziel-KPI.',
+    'NDA/PoC-Vertrag fehlen trotz Vertraulichkeit.',
+    'Messlogik wird erst nach dem Feldtest geklaert.',
+    'Scope-Aenderungen werden nicht dokumentiert.',
+    'Feldtest startet ohne Rollback-/Incident-Klarheit.',
+    'Entscheidungsunterlagen werden erst am Ende improvisiert.',
+    'Begleitlogik wird als Buerokratie vernachlaessigt.'
+  ],
+  boundaries: [
+    'CIPP ersetzt keinen Vollrollout-Prozess.',
+    'CIPP ersetzt nicht die spaetere operative Einfuehrung.',
+    'CIPP ist ungeeignet fuer rein unverbindliche Demo-Formate.',
+    'CIPP braucht mindestens die Absicht zu realem Anwendungsnachweis.'
+  ],
+  glossary: [
+    'PoC: Kontrollierter Nachweisversuch in begrenztem Scope zur Vorbereitung einer Management-Entscheidung.',
+    'NDA: Vertraulichkeitsvereinbarung.',
+    'DUA: Vereinbarung zur Datennutzung.',
+    'DPA: Vereinbarung zur Datenverarbeitung im rechtlichen Rahmen.',
+    'RAMS: Risiko- und Massnahmenlogik fuer kritische Umgebungen.',
+    'RAID: Risiken, Annahmen, Probleme und Abhaengigkeiten.',
+    'FAT: Factory Acceptance Test in kontrollierter Umgebung.',
+    'SAT: Site Acceptance Test am realen Einsatzort.',
+    'Shadow Mode: Parallelbetrieb ohne direkten Eingriff in den Live-Prozess.',
+    'Obeya: Zentraler Steuerungsraum mit Gesamtueberblick.',
+    'Kanban: Visuelles Board fuer operative Aufgaben und Arbeitsfluss.',
+    'EVM-light: Vereinfachte Fortschritts- und Aufwandssteuerung mit Fruehwarnlogik.',
+    'Case Card: Standardisierte Kurzkarte fuer einen abgeschlossenen oder laufenden PoC-Fall.'
+  ]
+};
 
 // ============================================================
 // STATE
@@ -1223,6 +1346,7 @@ function renderPanel() {
         <div class="gate-kicker">${kicker}</div>
         <h2 class="gate-name">${escapeHtml(g.name)}</h2>
         <p class="gate-goal">${escapeHtml(g.goal)}</p>
+        <div class="gate-output"><strong>Output:</strong> ${escapeHtml(g.output || '—')}</div>
       </div>
       <div class="gate-status-badge">
         <div class="label">Status</div>
@@ -1660,6 +1784,62 @@ document.getElementById('import-input').addEventListener('change', function(ev) 
   r.readAsText(file);
   ev.target.value = '';
 });
+
+function listHtml(items) {
+  return `<ul>${items.map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul>`;
+}
+
+function openManual() {
+  const gateCards = GATES.map(g => `
+    <h4>${escapeHtml(g.code)} · ${escapeHtml(g.name)}</h4>
+    <p><strong>Ziel:</strong> ${escapeHtml(g.goal)}</p>
+    <p><strong>Output:</strong> ${escapeHtml(g.output || '—')}</p>
+    <p><strong>Muss:</strong> ${g.muss.length} · <strong>Nice-to-have:</strong> ${g.nice.length} · <strong>Methoden:</strong> ${g.methoden.length}</p>
+  `).join('');
+  document.getElementById('modal-title').textContent = 'CIPP Handbuch · Vollansicht';
+  document.getElementById('modal-body-container').innerHTML = `
+    <h4>1) Worum es bei CIPP geht</h4>
+    ${listHtml(HANDBOOK.why)}
+    <h4>2) Aktueller methodischer Stand</h4>
+    <p>Modularer, gate-basierter Werkzeugkasten mit flexiblen Einstiegspunkten, harten Muss-Kriterien und verpflichtender Begleitlogik.</p>
+    <h4>3) Rolle von NXTGN</h4>
+    ${listHtml(HANDBOOK.roleNxtgn)}
+    <h4>4) Grundprinzipien und harte Regeln</h4>
+    ${listHtml(HANDBOOK.principles)}
+    <h4>5) Gesamtarchitektur des Verfahrens</h4>
+    ${listHtml(HANDBOOK.architecture)}
+    <h4>6) Gate-Logik im Detail</h4>
+    ${gateCards}
+    <h4>7) Methoden je Gate</h4>
+    <p>Alle Methoden sind in den jeweiligen Gate-Bereichen direkt ausfuellbar (Formulare und Tabellen inkl. Hinzufuegen/Loeschen).</p>
+    <h4>8) Verbindliche Begleitlogik</h4>
+    ${listHtml(HANDBOOK.companion)}
+    <h4>9) Artefakte und Dokumente</h4>
+    <p><strong>Gate-spezifisch:</strong></p>
+    ${listHtml(HANDBOOK.artifactsGate)}
+    <p><strong>Uebergreifend:</strong></p>
+    ${listHtml(HANDBOOK.artifactsCross)}
+    <h4>10) CIPP in der Praxis</h4>
+    ${listHtml(HANDBOOK.practice)}
+    <h4>11) Idealpfad und flexible Realpfade</h4>
+    <p><strong>Idealpfad:</strong> ${escapeHtml(HANDBOOK.path.ideal)}</p>
+    ${listHtml(HANDBOOK.path.real)}
+    <h4>12) Einsatzgrenzen und typische Fehler</h4>
+    <p><strong>Typische Fehler:</strong></p>
+    ${listHtml(HANDBOOK.limits)}
+    <p><strong>Einsatzgrenzen:</strong></p>
+    ${listHtml(HANDBOOK.boundaries)}
+    <h4>13) Kurzglossar</h4>
+    ${listHtml(HANDBOOK.glossary)}
+    <h4>14) Abschlussformulierung</h4>
+    <p>CIPP ist ein modularer, gate-basierter PoC-Werkzeugkasten mit flexiblen Einstiegspunkten, harten Muss-Kriterien pro Gate und verpflichtender Begleitlogik. G0 bis G3 koennen je nach Reifegrad variabel bearbeitet werden. G4 startet erst nach vollstaendig geschlossenen Muss-Kriterien der vorbereitenden Gates.</p>
+  `;
+  document.getElementById('modal-foot').innerHTML = `
+    <button class="btn-dark ghost" onclick="openHelp()">Speicher & Teilen</button>
+    <button class="btn-dark primary" onclick="closeModal()">Schließen</button>
+  `;
+  document.getElementById('modal-backdrop').classList.add('show');
+}
 
 // ============================================================
 // HELP / INFO MODAL
