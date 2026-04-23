@@ -34,7 +34,7 @@
   .hero::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:36px; background: var(--beige); clip-path: polygon(0 100%, 100% 100%, 100% 40%, 0 100%); }
   .hero-inner { position:relative; z-index:1; max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:flex-start; gap:36px; flex-wrap:wrap; }
   .logo-mark { display:flex; align-items:center; gap:14px; }
-  .logo-N { width:44px; height:44px; background:var(--white); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:24px; color:var(--black); letter-spacing:-0.04em; }
+  .logo-mark img { display:block; width:52px; height:52px; object-fit:contain; }
   .logo-text { font-weight:800; font-size:20px; color:var(--white); line-height:1; }
   .logo-sub { font-weight:300; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); opacity:.92; margin-top:4px; }
   .hero-title { flex:1; min-width:300px; max-width:580px; }
@@ -64,6 +64,8 @@
   .storage-pill.ok .dot { background:#2d8a3e; }
   .storage-pill.warn .dot { background:var(--orange); }
   .storage-pill:hover { border-color:var(--pink); }
+  .storage-explain { margin-bottom:16px; background:var(--white); border:1px solid var(--grey-line-soft); border-left:4px solid var(--pink); border-radius:var(--radius-sm); padding:10px 14px; font-size:12px; color:var(--grey-text); line-height:1.5; }
+  .storage-explain strong { color:var(--black); }
 
   /* POC META */
   .poc-meta { background:var(--white); border-radius:var(--radius-lg); padding:24px 28px; margin-bottom:28px; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; box-shadow:var(--shadow-sm); }
@@ -267,7 +269,7 @@
   <div class="hero-inner">
     <div style="display:flex; flex-direction:column; gap:16px;">
       <div class="logo-mark">
-        <div class="logo-N">N</div>
+        <img src="./assets/logo-nxtgn-weiss.png" alt="NXTGN Logo">
         <div>
           <div class="logo-text">NXTGN</div>
           <div class="logo-sub">CIPP Tracker</div>
@@ -294,6 +296,7 @@
   <div class="storage-pill" id="storage-pill" onclick="openHelp()" title="Klicke für Infos zu Speicher und Teilen">
     <span class="dot"></span><span id="storage-pill-text">Initialisiere Speicher…</span>
   </div>
+  <div class="storage-explain" id="storage-explain"></div>
 
   <section class="poc-meta">
     <div><label>PoC-Name</label><input id="meta-name" placeholder="z.B. Vibration Monitoring Halle 4" oninput="onMeta()"></div>
@@ -932,6 +935,7 @@ function blankState() {
     s.gates[g.id] = {
       muss: g.muss.map(t => ({ id:newId(), text:t, done:false })),
       nice: g.nice.map(t => ({ id:newId(), text:t, done:false })),
+      kpis: [],
       notes: '',
       methods: {}
     };
@@ -954,6 +958,7 @@ function migrate(loaded) {
     } else {
       if (Array.isArray(l.muss)) fresh.gates[g.id].muss = l.muss.map(x => ({ id:x.id||newId(), text:x.text||'', done:!!x.done }));
       if (Array.isArray(l.nice)) fresh.gates[g.id].nice = l.nice.map(x => ({ id:x.id||newId(), text:x.text||'', done:!!x.done }));
+      if (Array.isArray(l.kpis)) fresh.gates[g.id].kpis = l.kpis.map(x => ({ id:x.id||newId(), text:x.text||'', done:!!x.done }));
       if (l.methods && typeof l.methods === 'object') fresh.gates[g.id].methods = l.methods;
     }
     if (typeof l.notes === 'string') fresh.gates[g.id].notes = l.notes;
@@ -1024,6 +1029,18 @@ function updateStoragePill() {
     pill.classList.add('warn');
     text.textContent = 'Kein persistenter Speicher verfügbar — bitte regelmäßig als JSON exportieren';
   }
+  updateStorageExplain();
+}
+
+function updateStorageExplain() {
+  const box = document.getElementById('storage-explain');
+  if (!box) return;
+  const current = storageMode === 'claude'
+    ? 'Claude-Account-Storage'
+    : storageMode === 'local'
+      ? 'Browser localStorage'
+      : 'Nur In-Memory (nicht persistent)';
+  box.innerHTML = `<strong>Aktueller Speicher:</strong> ${current}. <strong>Zentral für Team/Kunde:</strong> JSON über <em>Export</em> in OneDrive speichern, von Kollegin per <em>Import</em> laden und weiterbearbeiten.`;
 }
 
 let saveTimer = null;
@@ -1131,6 +1148,8 @@ function renderPanel() {
   const mussTotal = state.gates[g.id].muss.length;
   const niceDone = state.gates[g.id].nice.filter(x=>x.done).length;
   const niceTotal = state.gates[g.id].nice.length;
+  const kpiDone = state.gates[g.id].kpis.filter(x=>x.done).length;
+  const kpiTotal = state.gates[g.id].kpis.length;
 
   let statusClass='open', statusText='offen';
   if (locked) { statusClass='locked'; statusText='gesperrt'; }
@@ -1184,6 +1203,15 @@ function renderPanel() {
   html += `
     <div class="sec-head">
       ${secTag('methoden')}
+      <h3 class="sec-title">KPI-Tracker</h3>
+      <span class="sec-hint">${kpiDone} / ${kpiTotal}</span>
+      <button class="sec-add-btn" onclick="focusAddInput('${g.id}','kpis')">+ KPI hinzufügen</button>
+    </div>
+    ${renderChecklist(g.id, 'kpis')}
+    ${renderAddRow(g.id, 'kpis')}
+
+    <div class="sec-head">
+      ${secTag('methoden')}
       <h3 class="sec-title">Methoden</h3>
       <span class="sec-hint">${g.methoden.length} Werkzeuge · klick um auszufüllen</span>
     </div>
@@ -1219,8 +1247,13 @@ function renderChecklist(gateId, type) {
 }
 
 function renderAddRow(gateId, type) {
+  const title = type === 'muss'
+    ? 'Muss-Kriterium'
+    : type === 'nice'
+      ? 'Nice-to-have'
+      : 'KPI';
   return `<div class="add-item-row">
-    <input id="add-${gateId}-${type}" placeholder="Neues ${type==='muss'?'Muss-Kriterium':'Nice-to-have'} eingeben und Enter drücken …" onkeydown="if(event.key==='Enter'){addItem('${gateId}','${type}')}">
+    <input id="add-${gateId}-${type}" placeholder="Neue${title==='KPI'?'':'s'} ${title} eingeben und Enter drücken …" onkeydown="if(event.key==='Enter'){addItem('${gateId}','${type}')}">
     <button onclick="addItem('${gateId}','${type}')">Hinzufügen</button>
   </div>`;
 }
@@ -1457,6 +1490,11 @@ function buildMarkdown() {
     if (state.gates[g.id].nice.length) {
       md += `### Nice-to-have\n\n`;
       state.gates[g.id].nice.forEach(it => md += `- [${it.done?'x':' '}] ${it.text}\n`);
+      md += `\n`;
+    }
+    if (state.gates[g.id].kpis.length) {
+      md += `### KPI-Tracker\n\n`;
+      state.gates[g.id].kpis.forEach(it => md += `- [${it.done?'x':' '}] ${it.text}\n`);
       md += `\n`;
     }
     // Methoden mit Inhalten
