@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIPP Gate Tracker · NXTGN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000; --white: #ffffff; --beige: #f6f4f0;
+    --pink: #e4368c; --pink-80: #F9D7E8; --pink-60: #F4AFD1; --pink-dark: #B91A69;
+    --gelb: #ffd500; --orange: #ee712f; --lila: #694a98; --blau: #1e1e80;
+    --grey-line: #d6d1c8; --grey-line-soft: #e8e3db;
+    --grey-text: #5a554e; --grey-faint: #8c867d; --grey-locked: #b4afa6;
+    --gradient-full: linear-gradient(100deg, #ffd500 0%, #ee712f 28%, #e4368c 52%, #694a98 78%, #1e1e80 100%);
+    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 8px 24px -12px rgba(0,0,0,0.12);
+    --shadow-lg: 0 24px 60px -24px rgba(0,0,0,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--beige); color: var(--black);
+    font-family: 'Montserrat', 'Arial', sans-serif;
+    font-weight: 300; font-size: 15px; line-height: 1.55;
+    -webkit-font-smoothing: antialiased; min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero { position: relative; background: var(--gradient-full); color: var(--white); padding: 32px 48px 40px; overflow: hidden; }
+  .hero::before { content:""; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity:.22; mix-blend-mode:overlay; pointer-events:none; }
+  .hero::after { content:""; position:absolute; left:0; right:0; bottom:-1px; height:36px; background: var(--beige); clip-path: polygon(0 100%, 100% 100%, 100% 40%, 0 100%); }
+  .hero-inner { position:relative; z-index:1; max-width:1280px; margin:0 auto; display:flex; justify-content:space-between; align-items:flex-start; gap:36px; flex-wrap:wrap; }
+  .logo-mark { display:flex; align-items:center; gap:14px; }
+  .logo-N { width:44px; height:44px; background:var(--white); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:24px; color:var(--black); letter-spacing:-0.04em; }
+  .logo-text { font-weight:800; font-size:20px; color:var(--white); line-height:1; }
+  .logo-sub { font-weight:300; font-size:10px; letter-spacing:0.18em; text-transform:uppercase; color:var(--white); opacity:.92; margin-top:4px; }
+  .hero-title { flex:1; min-width:300px; max-width:580px; }
+  .hero-kicker { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; margin-bottom:10px; opacity:.9; }
+  .hero-h1 { font-weight:700; font-size:30px; line-height:1.1; letter-spacing:-0.015em; color:var(--white); }
+  .hero-claim { font-weight:300; font-size:13px; margin-top:10px; opacity:.92; max-width:480px; }
+  .hero-actions { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; align-items:flex-start; }
+
+  /* Buttons */
+  .btn { font-family:inherit; font-weight:500; font-size:11.5px; letter-spacing:0.04em; padding:9px 14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,.35); background:transparent; color:var(--white); cursor:pointer; transition:all .15s; white-space:nowrap; }
+  .btn:hover { background:var(--white); color:var(--black); border-color:var(--white); }
+  .btn.primary { background:var(--white); color:var(--black); border-color:var(--white); font-weight:600; }
+  .btn.primary:hover { background:var(--pink); color:var(--white); border-color:var(--pink); }
+  .btn-dark { font-family:inherit; font-weight:500; font-size:12px; letter-spacing:0.04em; padding:9px 16px; border-radius:var(--radius-sm); border:1px solid var(--grey-line); background:var(--white); color:var(--black); cursor:pointer; transition:all .15s; }
+  .btn-dark:hover { border-color:var(--pink); color:var(--pink); }
+  .btn-dark.primary { background:var(--pink); border-color:var(--pink); color:var(--white); font-weight:600; }
+  .btn-dark.primary:hover { background:var(--pink-dark); border-color:var(--pink-dark); }
+  .btn-dark.ghost { background:transparent; border-color:var(--grey-line); }
+  .btn-small { font-size:11px; padding:6px 11px; }
+
+  /* Wrap */
+  .wrap { max-width:1280px; margin:0 auto; padding:24px 48px 80px; }
+
+  /* Storage status pill */
+  .storage-pill { display:inline-flex; align-items:center; gap:8px; font-size:11px; font-weight:500; padding:6px 12px; border-radius:20px; background:var(--white); color:var(--grey-text); border:1px solid var(--grey-line); cursor:pointer; margin-bottom:16px; }
+  .storage-pill .dot { width:8px; height:8px; border-radius:50%; background:var(--grey-faint); }
+  .storage-pill.ok .dot { background:#2d8a3e; }
+  .storage-pill.warn .dot { background:var(--orange); }
+  .storage-pill:hover { border-color:var(--pink); }
+
+  /* POC META */
+  .poc-meta { background:var(--white); border-radius:var(--radius-lg); padding:24px 28px; margin-bottom:28px; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; box-shadow:var(--shadow-sm); }
+  .poc-meta label { display:block; font-size:10px; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:8px; }
+  .poc-meta input { width:100%; background:transparent; border:none; border-bottom:1px solid var(--grey-line); color:var(--black); font-family:inherit; font-weight:500; font-size:15px; padding:4px 0 8px; transition:border-color .15s; }
+  .poc-meta input:focus { outline:none; border-bottom-color:var(--pink); }
+  .poc-meta input::placeholder { color:var(--grey-faint); font-weight:300; }
+
+  /* DASHBOARD */
+  .dashboard { margin-bottom:28px; }
+  .dash-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; padding:0 4px; }
+  .dash-label { font-size:10px; font-weight:600; letter-spacing:0.22em; text-transform:uppercase; color:var(--grey-faint); }
+  .dash-overall { font-size:13px; font-weight:500; }
+  .dash-overall strong { color:var(--pink); font-weight:700; font-size:15px; }
+
+  .gate-strip { display:grid; grid-template-columns:repeat(8,1fr); gap:8px; }
+  .gate-tile { position:relative; background:var(--white); border-radius:var(--radius-md); padding:14px 12px 12px; cursor:pointer; transition:all .2s; text-align:left; font-family:inherit; color:var(--black); border:1px solid transparent; overflow:hidden; }
+  .gate-tile:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+  .gate-tile.active { border-color:var(--pink); box-shadow:0 0 0 3px var(--pink-80), var(--shadow-md); }
+  .gate-tile.locked { background:var(--grey-line-soft); cursor:not-allowed; color:var(--grey-locked); }
+  .gate-tile.locked:hover { transform:none; box-shadow:none; }
+  .gate-tile.done { background:var(--pink); color:var(--white); }
+  .gate-tile .gid { font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--pink); }
+  .gate-tile.locked .gid { color:var(--grey-locked); }
+  .gate-tile.done .gid { color:var(--white); opacity:.85; }
+  .gate-tile .gname { font-weight:600; font-size:13px; margin-top:4px; line-height:1.2; }
+  .gate-tile .gbar { height:4px; background:var(--grey-line-soft); border-radius:2px; margin-top:10px; overflow:hidden; }
+  .gate-tile.done .gbar { background:rgba(255,255,255,.25); }
+  .gate-tile.locked .gbar { background:rgba(255,255,255,.5); }
+  .gate-tile .gbar-fill { height:100%; background:var(--pink); transition:width .35s; }
+  .gate-tile.done .gbar-fill { background:var(--white); }
+  .gate-tile.locked .gbar-fill { background:var(--grey-locked); }
+  .gate-tile .gstat { font-size:9px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; margin-top:8px; color:var(--grey-text); }
+  .gate-tile.done .gstat { color:var(--white); }
+  .gate-tile.locked .gstat { color:var(--grey-locked); }
+  .gate-tile .lock-badge { position:absolute; top:10px; right:10px; width:16px; height:16px; border-radius:50%; background:var(--grey-locked); color:var(--white); font-size:10px; display:flex; align-items:center; justify-content:center; font-weight:700; }
+
+  .always-on { background:var(--white); border-left:4px solid var(--pink); padding:12px 18px; border-radius:var(--radius-sm); margin-top:12px; font-size:12px; color:var(--grey-text); line-height:1.5; }
+  .always-on strong { color:var(--pink); font-weight:700; }
+
+  /* GATE PANEL */
+  .gate-panel { background:var(--white); border-radius:var(--radius-lg); padding:40px 44px; box-shadow:var(--shadow-sm); }
+  .gate-head { display:flex; justify-content:space-between; align-items:flex-start; gap:32px; padding-bottom:24px; border-bottom:1px solid var(--grey-line-soft); margin-bottom:32px; }
+  .gate-head-left { flex:1; }
+  .gate-kicker { font-size:10px; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--pink); margin-bottom:10px; }
+  .gate-name { font-weight:700; font-size:32px; line-height:1.05; letter-spacing:-0.015em; }
+  .gate-goal { margin-top:12px; color:var(--grey-text); font-size:14px; max-width:620px; line-height:1.5; }
+  .gate-status-badge { text-align:right; min-width:180px; }
+  .gate-status-badge .label { font-size:10px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:10px; }
+  .gate-status-badge .val { display:inline-block; padding:7px 14px; border-radius:var(--radius-sm); font-weight:700; font-size:10px; letter-spacing:.18em; text-transform:uppercase; }
+  .gate-status-badge .val.open { background:var(--beige); color:var(--black); border:1px solid var(--grey-line); }
+  .gate-status-badge .val.done { background:var(--pink); color:var(--white); }
+  .gate-status-badge .val.locked { background:var(--grey-line-soft); color:var(--grey-text); }
+  .gate-status-badge .count { margin-top:16px; font-weight:700; font-size:28px; letter-spacing:-0.02em; line-height:1; }
+  .gate-status-badge .count em { font-style:normal; color:var(--grey-faint); font-size:15px; font-weight:500; }
+  .gate-status-badge .count-label { font-size:10px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--grey-faint); margin-top:6px; }
+
+  .lock-banner { background:var(--beige); border:1px solid var(--grey-line); border-left:4px solid var(--pink); padding:16px 20px; border-radius:var(--radius-sm); margin-bottom:28px; color:var(--grey-text); font-size:13.5px; line-height:1.5; }
+  .lock-banner strong { color:var(--pink); font-weight:700; }
+
+  /* Sections */
+  .sec-head { display:flex; align-items:baseline; gap:14px; margin-bottom:18px; margin-top:40px; padding-bottom:10px; border-bottom:1px solid var(--grey-line-soft); }
+  .sec-head:first-of-type { margin-top:0; }
+  .sec-tag { font-size:9px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; padding:4px 10px; border-radius:4px; background:var(--pink); color:var(--white); line-height:1.2; }
+  .sec-tag.nice { background:var(--black); }
+  .sec-tag.methoden { background:var(--lila); }
+  .sec-tag.notes { background:var(--orange); }
+  .sec-title { font-weight:700; font-size:20px; letter-spacing:-0.01em; }
+  .sec-hint { margin-left:auto; font-size:11px; font-weight:600; letter-spacing:.1em; color:var(--grey-faint); }
+  .sec-add-btn { margin-left:12px; font-size:10px; font-weight:600; letter-spacing:.1em; padding:5px 11px; border-radius:var(--radius-sm); border:1px solid var(--pink); background:var(--white); color:var(--pink); cursor:pointer; text-transform:uppercase; transition:all .15s; }
+  .sec-add-btn:hover { background:var(--pink); color:var(--white); }
+
+  /* Checklist */
+  .check-list { display:flex; flex-direction:column; gap:4px; }
+  .check-item { display:flex; align-items:flex-start; gap:12px; padding:12px 14px; border-radius:var(--radius-sm); background:var(--beige); transition:background .12s; }
+  .check-item:hover { background:var(--pink-80); }
+  .check-item:hover .check-actions { opacity:1; }
+  .check-box-wrap { flex-shrink:0; cursor:pointer; padding-top:1px; }
+  .check-box { width:20px; height:20px; border:2px solid var(--grey-line); border-radius:4px; position:relative; transition:all .15s; background:var(--white); }
+  .check-box-wrap:hover .check-box { border-color:var(--pink); }
+  .check-item.checked .check-box { background:var(--pink); border-color:var(--pink); }
+  .check-item.checked .check-box::after { content:""; position:absolute; left:5px; top:1px; width:5px; height:11px; border-right:2px solid var(--white); border-bottom:2px solid var(--white); transform:rotate(45deg); }
+  .check-label { flex:1; font-size:13.5px; font-weight:400; line-height:1.5; cursor:pointer; outline:none; border-radius:3px; padding:1px 4px; margin:-1px -4px; }
+  .check-label[contenteditable="true"] { background:var(--white); box-shadow:0 0 0 2px var(--pink); }
+  .check-item.checked .check-label { color:var(--grey-faint); text-decoration:line-through; text-decoration-color:var(--grey-line); }
+  .nice .check-item.checked .check-box { background:var(--black); border-color:var(--black); }
+  .nice .check-box-wrap:hover .check-box { border-color:var(--black); }
+  .check-actions { display:flex; gap:4px; opacity:0; transition:opacity .15s; flex-shrink:0; }
+  .check-action-btn { background:transparent; border:none; cursor:pointer; width:22px; height:22px; border-radius:4px; display:flex; align-items:center; justify-content:center; color:var(--grey-faint); font-size:13px; transition:all .12s; }
+  .check-action-btn:hover { background:var(--white); color:var(--pink); }
+  .check-action-btn.del:hover { color:#c52222; }
+
+  .add-item-row { display:flex; gap:8px; margin-top:8px; padding:10px 14px; border-radius:var(--radius-sm); background:var(--beige); border:1px dashed var(--grey-line); }
+  .add-item-row input { flex:1; background:transparent; border:none; font-family:inherit; font-size:13.5px; padding:4px 0; outline:none; }
+  .add-item-row input::placeholder { color:var(--grey-faint); font-style:italic; }
+  .add-item-row button { background:var(--pink); color:var(--white); border:none; padding:6px 14px; border-radius:4px; font-weight:600; font-size:11px; letter-spacing:.05em; text-transform:uppercase; cursor:pointer; }
+  .add-item-row button:hover { background:var(--pink-dark); }
+
+  /* Methods */
+  .method-list { display:grid; grid-template-columns:repeat(2,1fr); gap:8px; }
+  .method { background:var(--beige); border-radius:var(--radius-sm); overflow:hidden; transition:all .15s; grid-column:span 1; }
+  .method.open { grid-column:1 / -1; background:var(--white); border:1px solid var(--lila); }
+  .method-head { display:flex; align-items:center; gap:14px; padding:13px 16px; cursor:pointer; user-select:none; transition:background .12s; }
+  .method-head:hover { background:var(--pink-80); }
+  .method.open .method-head { background:var(--white); }
+  .method.open .method-head:hover { background:#fafafa; }
+  .method-name { font-weight:600; font-size:13.5px; flex:1; line-height:1.3; }
+  .method-meta { font-size:10px; font-weight:600; letter-spacing:.05em; color:var(--grey-faint); }
+  .method-meta.has-data { color:var(--pink); }
+  .method-toggle { font-size:10px; font-weight:700; color:var(--lila); letter-spacing:.12em; text-transform:uppercase; white-space:nowrap; }
+  .method.open .method-toggle::before { content:"▼ "; }
+  .method:not(.open) .method-toggle::before { content:"▸ "; }
+  .method-body { display:none; padding:4px 20px 20px 20px; }
+  .method.open .method-body { display:block; }
+  .method-desc { font-size:12.5px; color:var(--grey-text); line-height:1.5; margin-bottom:14px; font-style:italic; padding-bottom:12px; border-bottom:1px dashed var(--grey-line-soft); }
+
+  /* Worksheet fields */
+  .ws-field { margin-bottom:14px; }
+  .ws-field label { display:block; font-size:10px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:5px; }
+  .ws-field input, .ws-field textarea, .ws-field select { width:100%; background:var(--beige); border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); font-family:inherit; font-weight:400; font-size:13px; padding:9px 12px; color:var(--black); transition:border-color .15s; }
+  .ws-field textarea { resize:vertical; min-height:60px; line-height:1.5; }
+  .ws-field input:focus, .ws-field textarea:focus, .ws-field select:focus { outline:none; border-color:var(--pink); background:var(--white); }
+  .ws-field select { appearance:none; background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M2 4l4 4 4-4' stroke='%23000' stroke-width='1.5' fill='none'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 12px center; padding-right:32px; }
+  .ws-field .hint { font-size:11px; color:var(--grey-faint); margin-top:4px; font-style:italic; }
+  .ws-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; }
+  .ws-grid .ws-field { margin-bottom:0; }
+
+  /* Tables */
+  .ws-table-wrap { margin-top:6px; margin-bottom:10px; border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); overflow:hidden; background:var(--white); }
+  .ws-table-head-row { background:var(--beige); padding:8px 14px; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--grey-text); border-bottom:1px solid var(--grey-line-soft); display:flex; justify-content:space-between; align-items:center; }
+  .ws-table { width:100%; border-collapse:collapse; font-size:12.5px; }
+  .ws-table th { text-align:left; padding:9px 12px; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--grey-faint); background:var(--beige); border-bottom:1px solid var(--grey-line-soft); }
+  .ws-table td { padding:4px 6px; border-bottom:1px solid var(--grey-line-soft); vertical-align:top; }
+  .ws-table tbody tr:last-child td { border-bottom:none; }
+  .ws-table tbody tr:hover { background:#fafafa; }
+  .ws-table input, .ws-table textarea, .ws-table select { width:100%; background:transparent; border:1px solid transparent; border-radius:3px; font-family:inherit; font-weight:400; font-size:12.5px; padding:5px 7px; color:var(--black); transition:all .12s; }
+  .ws-table textarea { resize:vertical; min-height:24px; line-height:1.4; }
+  .ws-table input:hover, .ws-table textarea:hover, .ws-table select:hover { border-color:var(--grey-line); background:var(--white); }
+  .ws-table input:focus, .ws-table textarea:focus, .ws-table select:focus { outline:none; border-color:var(--pink); background:var(--white); }
+  .ws-table .row-del { background:transparent; border:none; color:var(--grey-faint); cursor:pointer; padding:4px 8px; border-radius:4px; font-size:14px; }
+  .ws-table .row-del:hover { background:#ffe8e8; color:#c52222; }
+  .ws-table-foot { padding:10px 14px; border-top:1px solid var(--grey-line-soft); background:var(--beige); display:flex; justify-content:flex-end; }
+  .ws-empty { padding:18px; text-align:center; color:var(--grey-faint); font-style:italic; font-size:12.5px; }
+
+  /* Notes */
+  .notes-area textarea { width:100%; min-height:110px; background:var(--beige); border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); color:var(--black); font-family:inherit; font-weight:400; font-size:13.5px; line-height:1.6; padding:14px 16px; resize:vertical; transition:border-color .15s; }
+  .notes-area textarea:focus { outline:none; border-color:var(--pink); background:var(--white); }
+  .notes-area textarea::placeholder { color:var(--grey-faint); font-weight:300; font-style:italic; }
+
+  /* Toast */
+  .toast { position:fixed; bottom:28px; right:28px; background:var(--black); color:var(--white); padding:12px 20px; border-radius:var(--radius-sm); font-size:12px; font-weight:500; letter-spacing:.04em; opacity:0; transform:translateY(20px); transition:all .25s; pointer-events:none; z-index:100; box-shadow:var(--shadow-lg); }
+  .toast.show { opacity:1; transform:translateY(0); }
+  .toast.pink { background:var(--pink); }
+
+  /* Modal */
+  .modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; z-index:50; padding:20px; backdrop-filter:blur(4px); }
+  .modal-backdrop.show { display:flex; }
+  .modal { background:var(--white); border-radius:var(--radius-lg); max-width:820px; width:100%; max-height:85vh; display:flex; flex-direction:column; box-shadow:var(--shadow-lg); overflow:hidden; }
+  .modal-head { padding:20px 26px; background:var(--gradient-full); position:relative; color:var(--white); display:flex; justify-content:space-between; align-items:center; }
+  .modal-head::before { content:""; position:absolute; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); opacity:.2; mix-blend-mode:overlay; }
+  .modal-head h3 { font-weight:700; font-size:18px; z-index:1; position:relative; }
+  .modal-close { background:rgba(255,255,255,.2); border:none; color:var(--white); font-size:18px; cursor:pointer; line-height:1; padding:5px 10px; border-radius:var(--radius-sm); z-index:1; position:relative; }
+  .modal-close:hover { background:rgba(255,255,255,.35); }
+  .modal-body { padding:24px 28px; overflow-y:auto; flex:1; background:var(--beige); }
+  .modal-body pre { font-family:inherit; font-weight:400; font-size:12px; line-height:1.6; color:var(--black); white-space:pre-wrap; word-wrap:break-word; }
+  .modal-body h4 { font-weight:700; font-size:15px; margin:16px 0 8px; color:var(--black); }
+  .modal-body h4:first-child { margin-top:0; }
+  .modal-body p { font-size:13.5px; line-height:1.55; color:var(--grey-text); margin-bottom:10px; }
+  .modal-body p strong { color:var(--black); }
+  .modal-body ol, .modal-body ul { padding-left:22px; color:var(--grey-text); font-size:13.5px; line-height:1.6; margin-bottom:12px; }
+  .modal-body li { margin-bottom:6px; }
+  .modal-body code { font-family:'Consolas','Monaco',monospace; background:var(--white); padding:2px 6px; border-radius:3px; font-size:12px; border:1px solid var(--grey-line-soft); }
+  .modal-foot { padding:16px 26px; border-top:1px solid var(--grey-line-soft); display:flex; gap:8px; justify-content:flex-end; background:var(--white); flex-wrap:wrap; }
+
+  /* Footer */
+  footer.bottom { margin-top:48px; padding-top:24px; border-top:1px solid var(--grey-line); color:var(--grey-faint); font-size:11px; font-weight:500; letter-spacing:.04em; display:flex; justify-content:space-between; flex-wrap:wrap; gap:20px; }
+  footer.bottom .rule { max-width:620px; color:var(--grey-text); font-size:11.5px; line-height:1.5; font-weight:400; letter-spacing:0; }
+  footer.bottom .rule strong { color:var(--pink); font-weight:700; }
+
+  @media (max-width: 1100px) { .method-list { grid-template-columns:1fr; } .ws-grid { grid-template-columns:1fr; } }
+  @media (max-width: 900px) {
+    .hero { padding:24px 24px 36px; } .hero-h1 { font-size:24px; } .wrap { padding:20px 24px 60px; }
+    .poc-meta { grid-template-columns:1fr 1fr; padding:20px; gap:18px; }
+    .gate-strip { grid-template-columns:repeat(4,1fr); }
+    .gate-panel { padding:26px 22px; }
+    .gate-head { flex-direction:column; gap:18px; }
+    .gate-name { font-size:24px; }
+    .gate-status-badge { text-align:left; min-width:0; }
+  }
+  @media (max-width: 500px) {
+    .poc-meta { grid-template-columns:1fr; }
+    .gate-strip { grid-template-columns:repeat(2,1fr); }
+    .hero-h1 { font-size:22px; }
+    .hero-inner { flex-direction:column; gap:20px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div class="logo-mark">
+        <div class="logo-N">N</div>
+        <div>
+          <div class="logo-text">NXTGN</div>
+          <div class="logo-sub">CIPP Tracker</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-title">
+      <div class="hero-kicker">Customer Innovation PoC Process</div>
+      <h1 class="hero-h1">Gate-gesteuerter PoC-Durchlauf mit integrierten Methoden-Worksheets.</h1>
+      <p class="hero-claim">Entry Check, G0–G5 und Begleitlogik. Editierbare Kriterien, direkt ausfüllbare Methoden, Markdown- und JSON-Export für OneDrive.</p>
+    </div>
+    <div class="hero-actions">
+      <button class="btn" onclick="openHelp()">Info</button>
+      <button class="btn" onclick="importJson()">Import</button>
+      <button class="btn primary" onclick="saveState(true)">Speichern</button>
+      <button class="btn" onclick="openExport()">Export</button>
+      <button class="btn" onclick="confirmReset()">Reset</button>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="storage-pill" id="storage-pill" onclick="openHelp()" title="Klicke für Infos zu Speicher und Teilen">
+    <span class="dot"></span><span id="storage-pill-text">Initialisiere Speicher…</span>
+  </div>
+
+  <section class="poc-meta">
+    <div><label>PoC-Name</label><input id="meta-name" placeholder="z.B. Vibration Monitoring Halle 4" oninput="onMeta()"></div>
+    <div><label>Kunde / Partner</label><input id="meta-customer" placeholder="z.B. Musterwerk GmbH" oninput="onMeta()"></div>
+    <div><label>Owner (Kunde)</label><input id="meta-owner" placeholder="Name" oninput="onMeta()"></div>
+    <div><label>Lead (Lösung)</label><input id="meta-lead" placeholder="Name" oninput="onMeta()"></div>
+  </section>
+
+  <section class="dashboard">
+    <div class="dash-head">
+      <span class="dash-label">Gate-Fortschritt</span>
+      <span class="dash-overall">Gesamt · <strong id="overall-pct">0%</strong></span>
+    </div>
+    <div class="gate-strip" id="gate-strip"></div>
+    <div class="always-on">
+      <strong>Begleitlogik läuft immer mit.</strong> &nbsp; Gate-Checklisten · Evidenzablage · RAID-Log · Change-Register · Stakeholder-Register · Kommunikationsmatrix · Weekly · Reviews &amp; Retros · EVM-light · Decision Hygiene.
+    </div>
+  </section>
+
+  <main class="gate-panel" id="gate-panel"></main>
+
+  <footer class="bottom">
+    <div class="rule"><strong>Harte Regel:</strong> Ein Gate ist nur bestanden, wenn alle Muss-Kriterien erfüllt sind. G0–G3 flexibel — G4 startet erst, wenn alle Muss-Kriterien aus G0–G3 vollständig erfüllt sind.</div>
+    <div>NXTGN · CIPP Tracker v2.0</div>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal-backdrop" id="modal-backdrop">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modal-title">Export</h3>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modal-body-container"></div>
+    <div class="modal-foot" id="modal-foot"></div>
+  </div>
+</div>
+
+<input type="file" id="import-input" accept=".json,application/json" style="display:none">
+
+<script>
+// ============================================================
+// METHODEN-TEMPLATES
+// ============================================================
+// type 'form' = Felder, 'table' = dynamische Tabelle, 'form+table' = beides
+const METHOD_TEMPLATES = {
+  // ENTRY
+  'opportunity-framing': { fields:[
+    {key:'ausgangspunkt', label:'Ausgangspunkt / Auslöser', type:'textarea'},
+    {key:'problemraum', label:'Problemraum', type:'textarea'},
+    {key:'nutzen', label:'Erwarteter Nutzen / Wirkung', type:'textarea'},
+    {key:'zielgruppe', label:'Zielgruppe / Betroffene', type:'textarea'}
+  ]},
+  'discovery-check': { fields:[
+    {key:'reifegrad', label:'Reifegrad der Idee (1–5)', type:'input', hint:'1 = vage, 5 = konkret umsetzbar'},
+    {key:'politik', label:'Politische Belastbarkeit', type:'textarea', hint:'Gibt es Unterstützung auf Entscheider-Ebene?'},
+    {key:'ressourcen', label:'Zeit- und Ressourcenbereitschaft', type:'textarea'},
+    {key:'showstopper', label:'Erkannte Showstopper', type:'textarea'},
+    {key:'empfehlung', label:'Empfehlung: weitergehen?', type:'select', options:['Ja','Mit Auflagen','Nein','Noch unklar']}
+  ]},
+  'problem-statement-canvas': { fields:[
+    {key:'problem', label:'Problem', type:'textarea', hint:'Was ist heute nicht gut?'},
+    {key:'kontext', label:'Kontext / Umfeld', type:'textarea'},
+    {key:'betroffene', label:'Betroffene Rollen', type:'textarea'},
+    {key:'zielzustand', label:'Zielzustand', type:'textarea'},
+    {key:'erfolgsmass', label:'Woran erkennen wir Erfolg?', type:'textarea'}
+  ]},
+  'stakeholder-scan': { table:{ columns:[
+    {key:'name', label:'Name / Rolle'},
+    {key:'seite', label:'Seite', width:120, options:['Kunde','Lösung','Extern']},
+    {key:'einfluss', label:'Einfluss', width:110, options:['Hoch','Mittel','Niedrig']},
+    {key:'haltung', label:'Haltung', width:140, options:['Befürworter','Neutral','Skeptisch','Blockierer','Unbekannt']},
+    {key:'notiz', label:'Notiz'}
+  ]}},
+
+  // G0
+  'pilot-charter': { fields:[
+    {key:'ziel', label:'Ziel des Piloten', type:'textarea'},
+    {key:'scope', label:'Scope', type:'textarea'},
+    {key:'outscope', label:'Out of Scope', type:'textarea'},
+    {key:'rollen', label:'Rollen und Verantwortliche', type:'textarea'},
+    {key:'zeit', label:'Zeitplan / Meilensteine', type:'textarea'},
+    {key:'schwellen', label:'Go/Stop-Schwellen', type:'textarea'},
+    {key:'entscheidung', label:'Entscheidungslogik (G5)', type:'textarea'}
+  ]},
+  'smart-outcome': { fields:[
+    {key:'spezifisch', label:'Specific — was genau?', type:'textarea'},
+    {key:'messbar', label:'Measurable — wie gemessen?', type:'textarea'},
+    {key:'erreichbar', label:'Achievable — realistisch?', type:'textarea'},
+    {key:'relevant', label:'Relevant — warum wichtig?', type:'textarea'},
+    {key:'terminiert', label:'Time-bound — bis wann?', type:'input'}
+  ]},
+  'scope-boxing': { table:{ columns:[
+    {key:'thema', label:'Thema / Feature'},
+    {key:'status', label:'Status', width:140, options:['In Scope','Out of Scope','Grauzone']},
+    {key:'begruendung', label:'Begründung'}
+  ]}},
+  'raci': { table:{ columns:[
+    {key:'aktivitaet', label:'Aktivität / Arbeitspaket'},
+    {key:'r', label:'Responsible (R)', width:130},
+    {key:'a', label:'Accountable (A)', width:130},
+    {key:'c', label:'Consulted (C)', width:130},
+    {key:'i', label:'Informed (I)', width:130}
+  ]}},
+  'decision-backwards-planning': { fields:[
+    {key:'g5-entscheidung', label:'Welche Entscheidung in G5?', type:'textarea'},
+    {key:'evidenz', label:'Welche Evidenz braucht der Entscheider?', type:'textarea'},
+    {key:'schritte', label:'Rückwärts geplante Schritte', type:'textarea'},
+    {key:'risiken', label:'Entscheidungs-Risiken', type:'textarea'}
+  ]},
+  'hypothesen': { table:{ columns:[
+    {key:'hypothese', label:'Wenn ... dann ... weil ...'},
+    {key:'pruefung', label:'Prüfmethode'},
+    {key:'falsifikation', label:'Falsifikationskriterium'},
+    {key:'status', label:'Status', width:130, options:['offen','bestätigt','widerlegt']}
+  ]}},
+
+  // G1
+  'nda': { fields:[
+    {key:'status', label:'Status', type:'select', options:['Nicht benötigt','In Vorbereitung','Zur Unterschrift','Unterschrieben']},
+    {key:'datum', label:'Datum Unterschrift', type:'input'},
+    {key:'geltung', label:'Geltungsbereich', type:'textarea'},
+    {key:'laufzeit', label:'Laufzeit', type:'input'}
+  ]},
+  'poc-vertrag': { fields:[
+    {key:'art', label:'Art', type:'select', options:['LoI','MoU','Pilotvereinbarung','Vollvertrag']},
+    {key:'status', label:'Status', type:'select', options:['Entwurf','In Verhandlung','Zur Unterschrift','Unterschrieben']},
+    {key:'laufzeit', label:'Laufzeit', type:'input'},
+    {key:'leistung', label:'Kern-Leistungen', type:'textarea'},
+    {key:'preismodell', label:'Preismodell / Vergütung', type:'textarea'},
+    {key:'abbruch', label:'Abbruchlogik', type:'textarea'}
+  ]},
+  'dua-dpa': { fields:[
+    {key:'erforderlich', label:'Erforderlich?', type:'select', options:['Ja','Nein','Unklar']},
+    {key:'datenarten', label:'Datenarten', type:'textarea'},
+    {key:'rechtsgrundlage', label:'Rechtsgrundlage', type:'textarea'},
+    {key:'toms', label:'Technische & organisatorische Maßnahmen', type:'textarea'},
+    {key:'status', label:'Status', type:'select', options:['Nicht begonnen','In Vorbereitung','Unterschrieben']}
+  ]},
+  'rams': { table:{ columns:[
+    {key:'risiko', label:'Risiko / Gefährdung'},
+    {key:'wahrsch', label:'W.keit', width:90, options:['Niedrig','Mittel','Hoch']},
+    {key:'wirkung', label:'Wirkung', width:90, options:['Niedrig','Mittel','Hoch']},
+    {key:'massnahme', label:'Schutzmaßnahme'},
+    {key:'restrisiko', label:'Restrisiko', width:110, options:['Akzeptabel','Zu überwachen','Nicht akzeptabel']}
+  ]}},
+  'vendor-onboarding': { fields:[
+    {key:'status', label:'Freigabestatus', type:'select', options:['Offen','In Prüfung','Bedingt freigegeben','Freigegeben']},
+    {key:'unterlagen', label:'Eingereichte Unterlagen', type:'textarea'},
+    {key:'kontakte', label:'Ansprechpartner Einkauf / Sicherheit', type:'textarea'},
+    {key:'auflagen', label:'Auflagen', type:'textarea'}
+  ]},
+  'responsibility-matrix': { table:{ columns:[
+    {key:'aktivitaet', label:'Aktivität'},
+    {key:'liefert', label:'Liefert', width:140},
+    {key:'prueft', label:'Prüft', width:140},
+    {key:'freigabe', label:'Gibt frei', width:140},
+    {key:'eskaliert', label:'Eskaliert an', width:140}
+  ]}},
+  'escalation-design': { table:{ columns:[
+    {key:'stufe', label:'Stufe', width:80, options:['1','2','3','4']},
+    {key:'trigger', label:'Auslöser'},
+    {key:'ansprech', label:'Ansprechpartner', width:160},
+    {key:'reaktion', label:'Reaktionszeit', width:130}
+  ]}},
+
+  // G2
+  'baseline': { table:{ columns:[
+    {key:'kpi', label:'KPI / Kennzahl'},
+    {key:'methode', label:'Messmethode'},
+    {key:'wert', label:'Wert heute', width:140},
+    {key:'einheit', label:'Einheit', width:110},
+    {key:'stichtag', label:'Stichtag', width:120}
+  ]}},
+  'messplan': { table:{ columns:[
+    {key:'kpi', label:'KPI'},
+    {key:'methode', label:'Methode'},
+    {key:'frequenz', label:'Frequenz', width:130, options:['Einmalig','Täglich','Wöchentlich','Monatlich','Laufend']},
+    {key:'quelle', label:'Datenquelle', width:160},
+    {key:'owner', label:'Verantwortlich', width:140}
+  ]}},
+  'definition-of-ready': { table:{ columns:[
+    {key:'kriterium', label:'Kriterium'},
+    {key:'status', label:'Status', width:120, options:['✓ erfüllt','◐ teilweise','✗ offen']},
+    {key:'offen', label:'Offene Punkte'}
+  ]}},
+  'kpi-tree': { fields:[
+    {key:'ziel-kpi', label:'Ziel-KPI (Top)', type:'input'},
+    {key:'hebel', label:'Hebel-KPIs (mittlere Ebene)', type:'textarea', hint:'Was beeinflusst die Ziel-KPI direkt?'},
+    {key:'operativ', label:'Operative KPIs (unterste Ebene)', type:'textarea', hint:'Was wird täglich gemessen?'}
+  ]},
+  'operational-definition': { table:{ columns:[
+    {key:'begriff', label:'Begriff'},
+    {key:'formel', label:'Formel / Berechnung'},
+    {key:'einheit', label:'Einheit', width:110},
+    {key:'ausschluss', label:'Ausschlüsse / Sonderfälle'}
+  ]}},
+  'sampling-design': { fields:[
+    {key:'grundgesamtheit', label:'Grundgesamtheit', type:'textarea'},
+    {key:'stichprobe', label:'Stichprobengröße (n)', type:'input'},
+    {key:'ziehung', label:'Ziehungsmethode', type:'select', options:['Zufällig','Geschichtet','Systematisch','Kluster','Vollerhebung']},
+    {key:'begruendung', label:'Begründung', type:'textarea'}
+  ]},
+  'logging-zeitsync': { fields:[
+    {key:'quellen', label:'Datenquellen', type:'textarea'},
+    {key:'format', label:'Format / Schema', type:'textarea'},
+    {key:'zeitbasis', label:'Zeitbasis / Zeitzone', type:'input'},
+    {key:'sync', label:'Sync-Methode', type:'textarea'}
+  ]},
+  'measurement-system-check': { fields:[
+    {key:'system', label:'Messsystem', type:'textarea'},
+    {key:'wiederholbar', label:'Wiederholbarkeit geprüft?', type:'select', options:['Ja','Nein','Teilweise']},
+    {key:'reproduzierbar', label:'Reproduzierbarkeit geprüft?', type:'select', options:['Ja','Nein','Teilweise']},
+    {key:'befund', label:'Befund / Abweichungen', type:'textarea'}
+  ]},
+  'success-threshold': { table:{ columns:[
+    {key:'kpi', label:'KPI'},
+    {key:'go', label:'Go-Schwelle', width:140},
+    {key:'stop', label:'Stop-Schwelle', width:140},
+    {key:'bedingt', label:'Go unter Bedingungen', width:200}
+  ]}},
+
+  // G3
+  'akzeptanztest': { table:{ columns:[
+    {key:'testfall', label:'Testfall'},
+    {key:'erwartung', label:'Erwartetes Ergebnis'},
+    {key:'ergebnis', label:'Tatsächliches Ergebnis'},
+    {key:'status', label:'Status', width:120, options:['✓ OK','◐ Bedingt','✗ Fehler']}
+  ]}},
+  'fat': { fields:[
+    {key:'datum', label:'Datum', type:'input'},
+    {key:'ort', label:'Ort', type:'input'},
+    {key:'teilnehmer', label:'Teilnehmer', type:'textarea'},
+    {key:'ergebnis', label:'Ergebnis', type:'textarea'},
+    {key:'maengel', label:'Festgestellte Mängel', type:'textarea'},
+    {key:'freigabe', label:'Freigabe für SAT?', type:'select', options:['Ja','Nein','Bedingt']}
+  ]},
+  'sat': { fields:[
+    {key:'datum', label:'Datum', type:'input'},
+    {key:'standort', label:'Einsatzstandort', type:'input'},
+    {key:'ergebnis', label:'Ergebnis', type:'textarea'},
+    {key:'maengel', label:'Mängel', type:'textarea'},
+    {key:'freigabe', label:'Freigabe für Feldtest?', type:'select', options:['Ja','Nein','Bedingt']}
+  ]},
+  'shadow-mode': { fields:[
+    {key:'zeitraum', label:'Zeitraum', type:'input'},
+    {key:'abgleich', label:'Abgleich zu Bestandsystem', type:'textarea'},
+    {key:'abweichungen', label:'Abweichungen', type:'textarea'},
+    {key:'freigabe', label:'Übergang zu Live?', type:'select', options:['Ja','Nein','Bedingt']}
+  ]},
+  'readiness-review': { table:{ columns:[
+    {key:'dimension', label:'Dimension', width:160},
+    {key:'bewertung', label:'Bewertung', width:130, options:['Grün','Gelb','Rot']},
+    {key:'befund', label:'Befund'}
+  ]}},
+  'incident-playbook': { table:{ columns:[
+    {key:'szenario', label:'Szenario / Störfall'},
+    {key:'erkennung', label:'Erkennung'},
+    {key:'reaktion', label:'Reaktion'},
+    {key:'verantwort', label:'Verantwortlich', width:140}
+  ]}},
+  'rollback-design': { fields:[
+    {key:'trigger', label:'Rollback-Trigger', type:'textarea'},
+    {key:'schritte', label:'Rollback-Schritte', type:'textarea'},
+    {key:'verantwort', label:'Verantwortlich', type:'input'},
+    {key:'zeit', label:'Max. Zeit für Rollback', type:'input'}
+  ]},
+  'dry-run': { fields:[
+    {key:'datum', label:'Datum', type:'input'},
+    {key:'teilnehmer', label:'Teilnehmer', type:'textarea'},
+    {key:'ergebnis', label:'Ergebnis', type:'textarea'},
+    {key:'korrekturen', label:'Notwendige Korrekturen', type:'textarea'}
+  ]},
+  'training-enablement': { table:{ columns:[
+    {key:'zielgruppe', label:'Zielgruppe'},
+    {key:'inhalt', label:'Inhalt'},
+    {key:'format', label:'Format', width:140, options:['Präsenz','Online','Hybrid','Self-Service','Unterlagen']},
+    {key:'termin', label:'Termin', width:140}
+  ]}},
+
+  // G4
+  'feldtest': { fields:[
+    {key:'zeitraum', label:'Zeitraum', type:'input'},
+    {key:'umfang', label:'Umfang / Scope', type:'textarea'},
+    {key:'teilnehmer', label:'Beteiligte / Anwender', type:'textarea'},
+    {key:'ergebnis', label:'Gesamtergebnis', type:'textarea'}
+  ]},
+  'kpi-tracking': { table:{ columns:[
+    {key:'kpi', label:'KPI'},
+    {key:'baseline', label:'Baseline', width:110},
+    {key:'ziel', label:'Zielwert', width:110},
+    {key:'ist', label:'Ist-Wert', width:110},
+    {key:'trend', label:'Trend', width:90, options:['↑','→','↓']}
+  ]}},
+  'exception-logging': { table:{ columns:[
+    {key:'zeitpunkt', label:'Zeitpunkt', width:140},
+    {key:'ereignis', label:'Ereignis'},
+    {key:'wirkung', label:'Wirkung'},
+    {key:'massnahme', label:'Maßnahme'}
+  ]}},
+  'issue-triage': { table:{ columns:[
+    {key:'issue', label:'Issue'},
+    {key:'prio', label:'Priorität', width:110, options:['P1','P2','P3','P4']},
+    {key:'status', label:'Status', width:130, options:['offen','in Arbeit','gelöst','verschoben']},
+    {key:'owner', label:'Owner', width:140}
+  ]}},
+  'kosten-skizze': { table:{ columns:[
+    {key:'art', label:'Kostenart'},
+    {key:'einmalig', label:'Einmalig (€)', width:130},
+    {key:'laufend', label:'Laufend pro Jahr (€)', width:160},
+    {key:'hochrechnung', label:'Hochrechnung bei Skalierung'}
+  ]}},
+  'user-feedback': { table:{ columns:[
+    {key:'quelle', label:'Quelle / Rolle', width:180},
+    {key:'zitat', label:'Zitat / Feedback'},
+    {key:'einordnung', label:'Einordnung', width:160, options:['Sehr positiv','Positiv','Neutral','Kritisch','Blockierend']}
+  ]}},
+  'benefit-tracking': { table:{ columns:[
+    {key:'nutzen', label:'Nutzen'},
+    {key:'typ', label:'Typ', width:120, options:['Hart','Weich']},
+    {key:'evidenz', label:'Evidenz'},
+    {key:'wert', label:'Wert (€ / KPI)', width:150}
+  ]}},
+  'decision-drafting': { fields:[
+    {key:'zwischenstand', label:'Zwischenstand', type:'textarea'},
+    {key:'evidenzlage', label:'Evidenzlage heute', type:'textarea'},
+    {key:'kernaussage', label:'Entstehende Kernaussage', type:'textarea'},
+    {key:'luecken', label:'Noch zu schließende Lücken', type:'textarea'}
+  ]},
+
+  // G5
+  'evidence-pack': { table:{ columns:[
+    {key:'dokument', label:'Dokument / Nachweis'},
+    {key:'ort', label:'Ablageort'},
+    {key:'verantwort', label:'Verantwortlich', width:140},
+    {key:'status', label:'Status', width:120, options:['offen','in Arbeit','final']}
+  ]}},
+  '1-pager': { fields:[
+    {key:'problem', label:'Problem', type:'textarea'},
+    {key:'loesung', label:'Lösung', type:'textarea'},
+    {key:'ergebnis', label:'Ergebnis (Kern-KPIs)', type:'textarea'},
+    {key:'empfehlung', label:'Empfehlung', type:'textarea'},
+    {key:'next', label:'Nächster Schritt', type:'textarea'}
+  ]},
+  'tech-anhang': { fields:[
+    {key:'architektur', label:'Architektur / Setup', type:'textarea'},
+    {key:'befunde', label:'Technische Befunde', type:'textarea'},
+    {key:'offen', label:'Offene technische Punkte', type:'textarea'}
+  ]},
+  'business-anhang': { fields:[
+    {key:'business-case', label:'Business Case', type:'textarea'},
+    {key:'roi', label:'ROI / Amortisation', type:'textarea'},
+    {key:'annahmen', label:'Annahmen', type:'textarea'},
+    {key:'sensitivitaet', label:'Sensitivität / Szenarien', type:'textarea'}
+  ]},
+  'regel-anhang': { fields:[
+    {key:'compliance', label:'Compliance-Status', type:'textarea'},
+    {key:'sicherheit', label:'Sicherheits-Bewertung', type:'textarea'},
+    {key:'governance', label:'Governance-Aspekte', type:'textarea'},
+    {key:'offen', label:'Offene Punkte', type:'textarea'}
+  ]},
+  'decision-deck': { fields:[
+    {key:'agenda', label:'Agenda', type:'textarea'},
+    {key:'optionen', label:'Entscheidungsoptionen', type:'textarea'},
+    {key:'empfehlung', label:'Empfehlung', type:'textarea'},
+    {key:'next', label:'Nächster Schritt', type:'textarea'}
+  ]},
+  'go-stop': { fields:[
+    {key:'entscheidung', label:'Entscheidung', type:'select', options:['Go','Stop','Go unter Bedingungen','Noch offen']},
+    {key:'bedingungen', label:'Bedingungen / Auflagen', type:'textarea'},
+    {key:'begruendung', label:'Begründung', type:'textarea'},
+    {key:'datum', label:'Datum', type:'input'}
+  ]},
+  'case-card': { fields:[
+    {key:'kurzbeschreibung', label:'Kurzbeschreibung', type:'textarea'},
+    {key:'ergebnis', label:'Ergebnis (1–2 Sätze)', type:'textarea'},
+    {key:'learnings', label:'Learnings', type:'textarea'},
+    {key:'wiederverwend', label:'Wiederverwendbarkeit / Transfer', type:'textarea'}
+  ]},
+  'pre-mortem': { table:{ columns:[
+    {key:'fehler', label:'Wahrscheinlicher Fehler / Scheitern'},
+    {key:'wahrsch', label:'W.keit', width:100, options:['Niedrig','Mittel','Hoch']},
+    {key:'frueh', label:'Früherkennung'},
+    {key:'gegenmass', label:'Gegenmaßnahme'}
+  ]}},
+  'decision-journal': { table:{ columns:[
+    {key:'datum', label:'Datum', width:120},
+    {key:'entscheidung', label:'Entscheidung'},
+    {key:'alternativen', label:'Alternativen'},
+    {key:'begruendung', label:'Begründung'}
+  ]}},
+
+  // BEGLEITLOGIK
+  'gate-checklistensteuerung': { table:{ columns:[
+    {key:'gate', label:'Gate', width:90},
+    {key:'offen', label:'Offene Muss-Kriterien'},
+    {key:'blocker', label:'Blocker / Risiko'},
+    {key:'owner', label:'Owner', width:140}
+  ]}},
+  'evidenzablage': { table:{ columns:[
+    {key:'dokument', label:'Dokument'},
+    {key:'ort', label:'Ablageort'},
+    {key:'verantwort', label:'Verantwortlich', width:140},
+    {key:'status', label:'Status', width:120, options:['offen','in Arbeit','final']}
+  ]}},
+  'raid-log': { table:{ columns:[
+    {key:'typ', label:'Typ', width:120, options:['Risk','Assumption','Issue','Dependency']},
+    {key:'beschreibung', label:'Beschreibung'},
+    {key:'wirkung', label:'Wirkung', width:100, options:['Niedrig','Mittel','Hoch']},
+    {key:'owner', label:'Owner', width:140},
+    {key:'status', label:'Status', width:120, options:['offen','in Arbeit','erledigt']}
+  ]}},
+  'change-register': { table:{ columns:[
+    {key:'datum', label:'Datum', width:120},
+    {key:'aenderung', label:'Änderung'},
+    {key:'begruendung', label:'Begründung'},
+    {key:'impact', label:'Impact'},
+    {key:'freigabe', label:'Freigabe', width:120, options:['offen','freigegeben','abgelehnt']}
+  ]}},
+  'stakeholder-register': { table:{ columns:[
+    {key:'name', label:'Name / Rolle'},
+    {key:'einfluss', label:'Einfluss', width:110, options:['Hoch','Mittel','Niedrig']},
+    {key:'interesse', label:'Interesse', width:110, options:['Hoch','Mittel','Niedrig']},
+    {key:'haltung', label:'Haltung', width:140, options:['Befürworter','Neutral','Skeptisch','Blockierer']},
+    {key:'strategie', label:'Strategie'}
+  ]}},
+  'kommunikationsmatrix': { table:{ columns:[
+    {key:'stakeholder', label:'Stakeholder'},
+    {key:'was', label:'Was'},
+    {key:'wann', label:'Wann', width:140},
+    {key:'wie', label:'Wie', width:140, options:['Email','Slack/Teams','Jour Fixe','Steering','Bericht','Anruf']},
+    {key:'wer', label:'Verantwortlich', width:140}
+  ]}},
+  'obeya': { fields:[
+    {key:'inhalte', label:'Inhalte / Boards', type:'textarea', hint:'Was hängt im Obeya? KPI-Tafel, Roadmap, Issues, …'},
+    {key:'verantwort', label:'Verantwortlich', type:'input'},
+    {key:'aktualitaet', label:'Aktualisierungszyklus', type:'input'}
+  ]},
+  'kanban': { table:{ columns:[
+    {key:'item', label:'Arbeitspaket'},
+    {key:'spalte', label:'Spalte', width:140, options:['Backlog','Ready','In Arbeit','Review','Done']},
+    {key:'owner', label:'Owner', width:140},
+    {key:'notiz', label:'Notiz'}
+  ]}},
+  'weekly-steuerung': { table:{ columns:[
+    {key:'woche', label:'KW', width:80},
+    {key:'fortschritt', label:'Fortschritt'},
+    {key:'blocker', label:'Blocker'},
+    {key:'entscheidungen', label:'Entscheidungen'}
+  ]}},
+  'sponsor-kurzbrief': { table:{ columns:[
+    {key:'datum', label:'Datum', width:120},
+    {key:'kernbotschaft', label:'Kernbotschaft'},
+    {key:'entscheidung', label:'Entscheidungsbedarf'},
+    {key:'risiken', label:'Risiken'}
+  ]}},
+  'review-points': { table:{ columns:[
+    {key:'datum', label:'Datum', width:120},
+    {key:'inhalt', label:'Inhalt / Demo'},
+    {key:'ergebnis', label:'Ergebnis'},
+    {key:'folge', label:'Folgeaktionen'}
+  ]}},
+  'retros': { table:{ columns:[
+    {key:'datum', label:'Datum', width:120},
+    {key:'gut', label:'Was lief gut'},
+    {key:'verb', label:'Was verbessern'},
+    {key:'action', label:'Action Items'}
+  ]}},
+  'evm-light': { table:{ columns:[
+    {key:'kpi', label:'KPI', width:160},
+    {key:'plan', label:'Plan', width:130},
+    {key:'ist', label:'Ist', width:130},
+    {key:'ampel', label:'Ampel', width:100, options:['Grün','Gelb','Rot']},
+    {key:'kommentar', label:'Kommentar'}
+  ]}},
+  'decision-hygiene': { table:{ columns:[
+    {key:'entscheidung', label:'Entscheidung / Frage'},
+    {key:'evidenz', label:'Verfügbare Evidenz'},
+    {key:'offen', label:'Offene Fragen'},
+    {key:'status', label:'Status', width:140, options:['offen','in Arbeit','entschieden']}
+  ]}}
+};
+
+// ============================================================
+// GATES
+// ============================================================
+const GATES = [
+  {
+    id:'entry', code:'ENTRY', name:'Entry Check',
+    goal:'Prüfen, ob überhaupt genug Substanz vorhanden ist, um sauber in CIPP einzusteigen.',
+    muss:['Zwei klar identifizierte Parteien mit ernsthaftem PoC-Interesse','Grob beschriebene Problemstellung oder Einsatzdomäne','Ansprechpartner auf beiden Seiten benannt','Grundsätzliche Bereitschaft, Zeit und Ressourcen zu investieren','Realer Anwendungsbezug vorhanden','Kein offensichtlicher Showstopper auf Grundsatzebene'],
+    nice:['Erste KPI- oder Nutzenhypothese','Erste technische Unterlagen','Sichtbarer Sponsor','Grober Zeit- oder Testkorridor'],
+    methoden:[
+      {slug:'opportunity-framing', name:'Opportunity Framing', desc:'Damit aus losem Interesse ein konkreter Problemraum wird.'},
+      {slug:'discovery-check', name:'Discovery Check / Lead Qualification', desc:'Unreife oder politisch nicht belastbare Vorhaben früh aussortieren.'},
+      {slug:'problem-statement-canvas', name:'Problem Statement Canvas', desc:'Problem, Kontext und Zielzustand knapp und vergleichbar formulieren.'},
+      {slug:'stakeholder-scan', name:'Stakeholder Scan', desc:'Früh sichtbar machen, ob die relevanten Personen identifizierbar sind.'}
+    ]
+  },
+  {
+    id:'g0', code:'G0', name:'Mandat & Zielbild',
+    goal:'Aus einer allgemeinen Absicht wird ein klar definierter, entscheidungsfähiger PoC.',
+    muss:['Problemstellung konkret beschrieben','Use Case klar abgegrenzt','Primäres PoC-Zielbild dokumentiert','Mindestens eine primäre KPI definiert','Scope und Out-of-Scope festgelegt','Fachlicher Owner auf Kundenseite benannt','Verantwortlicher Ansprechpartner auf Lösungsseite benannt','Dokumentiert, welche spätere Entscheidung ermöglicht werden soll','Bewertungsdimension klar: technisch, operativ, wirtschaftlich oder Kombination'],
+    nice:['Sponsor offiziell benannt','Vorläufige Go/Stop-Schwellen formuliert','Erste Rollback-Idee beschrieben','Erste Business-Hypothese vorhanden'],
+    methoden:[
+      {slug:'pilot-charter', name:'Pilot-Charter', desc:'Ziel, Scope, Rollen, Plan, Schwellen und Entscheidungslogik in einem Dokument.'},
+      {slug:'smart-outcome', name:'SMART / Outcome-Zieldefinition', desc:'Macht die Zielgröße später überprüfbar.'},
+      {slug:'scope-boxing', name:'Scope Boxing', desc:'Schützt vor Scope Creep.'},
+      {slug:'raci', name:'RACI / Rollenklärung', desc:'Klärt Verantwortlichkeiten.'},
+      {slug:'decision-backwards-planning', name:'Decision Backwards Planning', desc:'Definiert rückwärts von G5 her, welche Evidenz gebraucht wird.'},
+      {slug:'hypothesen', name:'Hypothesenformulierung', desc:'Übersetzt Hoffnung in prüfbare Annahmen.'}
+    ]
+  },
+  {
+    id:'g1', code:'G1', name:'Recht & Rahmen',
+    goal:'Sicherstellen, dass der PoC formal, rechtlich und organisatorisch tragfähig aufgesetzt ist.',
+    muss:['NDA unterschrieben, sofern Vertraulichkeit relevant ist','PoC-Vertrag / Pilotvereinbarung / LoI unterschrieben','Rollen und Verantwortlichkeiten dokumentiert','Daten- und Zugriffslogik geklärt','Falls nötig: DUA/DPA abgeschlossen','Falls nötig: Sicherheits- / Freigabelogik dokumentiert','Budget- bzw. Ressourcenfreigabe bestätigt','Leistungspflichten beider Seiten dokumentiert','Eskalations- und Abbruchlogik geregelt'],
+    nice:['Anschlussmodell grob skizziert','Einkauf für Erfolgsfall vorbereitet','Grobe SLA-/Support-Logik vorhanden','IP-/Nutzungsrechte für Folgeschritte vorgeklärt'],
+    methoden:[
+      {slug:'nda', name:'NDA / Vertraulichkeitsrahmen', desc:'Schützt vertrauliche Informationen.'},
+      {slug:'poc-vertrag', name:'PoC-Vertrag / Pilotvereinbarung', desc:'Schafft den belastbaren formalen Rahmen.'},
+      {slug:'dua-dpa', name:'DUA / DPA', desc:'Regelt Datennutzung und Datenverarbeitung sauber.'},
+      {slug:'rams', name:'RAMS / Sicherheitsplanung', desc:'Macht Risiken und Schutzmaßnahmen in kritischen Umgebungen beherrschbar.'},
+      {slug:'vendor-onboarding', name:'Vendor Onboarding / Vendor-Onramp', desc:'Bindet externe Partner in Freigabe- und Beschaffungslogik ein.'},
+      {slug:'responsibility-matrix', name:'Responsibility Matrix', desc:'Klärt wer liefert, prüft, freigibt, eskaliert.'},
+      {slug:'escalation-design', name:'Escalation Design', desc:'Verhindert politische Blockaden bei Verzögerungen.'}
+    ]
+  },
+  {
+    id:'g2', code:'G2', name:'Nachweislogik & Messdesign',
+    goal:'Sicherstellen, dass der PoC methodisch bewertbar und evidenzfähig ist.',
+    muss:['Baseline oder definierter Ausgangszustand dokumentiert','Messplan vorhanden','Erfolgskriterien konkret definiert','Messverantwortung, Messzeitpunkte und Datengrundlage festgelegt','Datenquellen benannt','Mindestdatenqualität bzw. Datenverfügbarkeit bestätigt','Evidenzanforderungen für G5 festgelegt','Stichproben- oder Bewertungslogik definiert, soweit relevant'],
+    nice:['Wirtschaftlichkeitslogik mitgedacht','Sekundäre KPIs definiert','Dashboarding vorbereitet','Vergleichs- oder Kontrolllogik angelegt'],
+    methoden:[
+      {slug:'baseline', name:'Baseline-Erhebung', desc:'Schafft den Ausgangswert für belastbare Wirkungsmessung.'},
+      {slug:'messplan', name:'Messplan', desc:'Definiert vorab, was wie wann gemessen wird.'},
+      {slug:'definition-of-ready', name:'Definition of Ready', desc:'Legt fest, wann der PoC methodisch startfähig ist.'},
+      {slug:'kpi-tree', name:'KPI Tree', desc:'Verbindet Ziel-KPI mit operativen Unterkennzahlen.'},
+      {slug:'operational-definition', name:'Operational Definition', desc:'Macht Begriffe messbar eindeutig.'},
+      {slug:'sampling-design', name:'Sampling Design', desc:'Stellt belastbare Stichprobenlogik her.'},
+      {slug:'logging-zeitsync', name:'Logging / Zeitsynchronisation', desc:'Macht Mehrquellendaten auswertbar.'},
+      {slug:'measurement-system-check', name:'Measurement System Check', desc:'Prüft, ob das Messsystem selbst verlässlich ist.'},
+      {slug:'success-threshold', name:'Success Threshold Design', desc:'Definiert klare Zielschwellen statt späterer Interpretationen.'}
+    ]
+  },
+  {
+    id:'g3', code:'G3', name:'Einsatzreife',
+    goal:'Sicherstellen, dass die Lösung technisch und operativ testbereit ist.',
+    muss:['Lösung für den PoC verfügbar','Test- bzw. Einsatzumgebung vorbereitet','Relevante Zugänge funktionieren','Akzeptanztest oder äquivalente Einsatzprüfung durchgeführt','Kritische Fehler für Teststart behoben oder bewertet','Incident- und Eskalationspfad definiert','Rollback möglich','Einsatzfenster verbindlich bestätigt','Beteiligte für den Start informiert und vorbereitet'],
+    nice:['Shadow-Betrieb schon erfolgreich gelaufen','Schulungsunterlagen vorhanden','Monitoring komfortabel eingerichtet','Support-Reaktionszeiten definiert'],
+    methoden:[
+      {slug:'akzeptanztest', name:'Akzeptanztest', desc:'Prüft vor Feldstart die reale Einsatzfähigkeit.'},
+      {slug:'fat', name:'FAT — Factory Acceptance Test', desc:'Testet Grundfunktionalität in kontrollierter Umgebung.'},
+      {slug:'sat', name:'SAT — Site Acceptance Test', desc:'Prüft Stabilität am echten Einsatzort.'},
+      {slug:'shadow-mode', name:'Shadow Mode', desc:'Realitätsnahe Validierung ohne direkten Eingriff.'},
+      {slug:'readiness-review', name:'Readiness Review', desc:'Formales Review der Startfähigkeit.'},
+      {slug:'incident-playbook', name:'Incident Playbook', desc:'Macht Störungen vorab beherrschbar.'},
+      {slug:'rollback-design', name:'Rollback Design', desc:'Definiert sicheren Rückfall auf den alten Zustand.'},
+      {slug:'dry-run', name:'Dry Run / Simulation', desc:'Erkennt operative Schwächen vor dem Feldtest.'},
+      {slug:'training-enablement', name:'Training / Enablement', desc:'Verhindert Startprobleme durch unvorbereitete Nutzer.'}
+    ]
+  },
+  {
+    id:'g4', code:'G4', name:'Feldtest',
+    goal:'Den PoC im realen Anwendungskontext durchführen und belastbare Evidenz erzeugen.',
+    muss:['Alle Muss-Kriterien aus G0–G3 erfüllt','Test im vereinbarten Scope durchgeführt','Datenerhebung ausreichend vollständig','KPI-Ergebnisse dokumentiert','Abweichungen, Probleme und Änderungen dokumentiert','Erste wirtschaftliche oder operative Einordnung vorhanden','Evidenz so aufbereitet, dass G5 vorbereitet werden kann'],
+    nice:['Qualitatives Nutzerfeedback vorhanden','Zusätzlicher Sekundärnutzen dokumentiert','Skalierungsimplikationen voranalysiert'],
+    methoden:[
+      {slug:'feldtest', name:'Feldtest im Live- oder realitätsnahen Umfeld', desc:'Liefert die belastbarste Wirksamkeitsaussage.'},
+      {slug:'kpi-tracking', name:'KPI Tracking', desc:'Verfolgt Zielgrößen laufend statt punktuell.'},
+      {slug:'exception-logging', name:'Exception Logging', desc:'Macht Sonderfälle und Abweichungen sichtbar.'},
+      {slug:'issue-triage', name:'Issue Triage', desc:'Priorisiert Probleme im Feldtest.'},
+      {slug:'kosten-skizze', name:'Kosten-Skizze', desc:'Übersetzt technische Resultate früh in wirtschaftliche Relevanz.'},
+      {slug:'user-feedback', name:'User Feedback Capture', desc:'Ergänzt harte KPIs um Akzeptanzsignale.'},
+      {slug:'benefit-tracking', name:'Benefit Tracking', desc:'Trennt harte und weiche Nutzenwirkungen.'},
+      {slug:'decision-drafting', name:'Decision Drafting in Parallel', desc:'Baut G5 schon während G4 mit auf.'}
+    ]
+  },
+  {
+    id:'g5', code:'G5', name:'Entscheidung',
+    goal:'Aus der Evidenz des PoC eine belastbare Management-Entscheidung machen.',
+    muss:['Evidence Pack vollständig','Ergebnisse gegen Zielkriterien dokumentiert','Restrisiken und offene Punkte benannt','Entscheidungsempfehlung formuliert','Relevante Entscheider erhalten entscheidungsfähige Unterlage','Ergebnis als Go, Stop oder Go unter Bedingungen dokumentiert'],
+    nice:['Umsetzungsoptionen vorbereitet','Rollout-Pfade grob skizziert','Learnings in Case Card übertragen'],
+    methoden:[
+      {slug:'evidence-pack', name:'Evidence Pack', desc:'Bündelt die vollständige Beweislage.'},
+      {slug:'1-pager', name:'1-Pager Ergebnis', desc:'Verdichtet die Kernaussage für Entscheider.'},
+      {slug:'tech-anhang', name:'Tech-Anhang', desc:'Hält technische Substanz nachvollziehbar.'},
+      {slug:'business-anhang', name:'Business-Anhang', desc:'Macht wirtschaftliche Tragfähigkeit sichtbar.'},
+      {slug:'regel-anhang', name:'Regel-Anhang', desc:'Sichert Governance-, Sicherheits- und Compliance-Sicht.'},
+      {slug:'decision-deck', name:'Decision-Deck', desc:'Übersetzt Evidenz in managementfähige Kurzform.'},
+      {slug:'go-stop', name:'Go / Stop / Go under Conditions', desc:'Erzwingt einen klaren Entscheidungsstatus.'},
+      {slug:'case-card', name:'Case Card', desc:'Sichert Wiederverwendbarkeit und Lernen.'},
+      {slug:'pre-mortem', name:'Pre-Mortem für Umsetzung', desc:'Macht vor einem Go die wahrscheinlichsten Umsetzungsfehler sichtbar.'},
+      {slug:'decision-journal', name:'Decision Journal', desc:'Dokumentiert, warum die Entscheidung so getroffen wurde.'}
+    ]
+  },
+  {
+    id:'begleit', code:'B', name:'Begleitlogik',
+    goal:'Pflichtlogik über alle Gates hinweg. Steuert Evidenz, Risiken, Scope, Kommunikation, Entscheidung.',
+    muss:['Gate-Checklistensteuerung aktiv','Evidenzablage laufend gepflegt','Risiko- und Problemtransparenz sichergestellt','Änderungsdokumentation geführt','Kommunikations- und Verantwortungslogik geregelt','Laufende Entscheidungsvorbereitung'],
+    nice:[],
+    methoden:[
+      {slug:'gate-checklistensteuerung', name:'Gate-Checklistensteuerung', desc:'Macht Freigaben faktenbasiert.'},
+      {slug:'evidenzablage', name:'Evidenzablage', desc:'Hält Nachweise belastbar verfügbar.'},
+      {slug:'raid-log', name:'RAID-Log', desc:'Steuert Risks, Assumptions, Issues, Dependencies.'},
+      {slug:'change-register', name:'Change-Register', desc:'Kontrolliert Scope- und Setup-Änderungen.'},
+      {slug:'stakeholder-register', name:'Stakeholder-Register', desc:'Macht Einfluss- und Entscheidungslandschaft transparent.'},
+      {slug:'kommunikationsmatrix', name:'Kommunikationsmatrix', desc:'Regelt Informations- und Eskalationswege.'},
+      {slug:'obeya', name:'Obeya', desc:'Schafft den zentralen Gesamtüberblick.'},
+      {slug:'kanban', name:'Kanban', desc:'Visualisiert operative Arbeit und Engpässe.'},
+      {slug:'weekly-steuerung', name:'Weekly-Steuerung', desc:'Hält den PoC eng getaktet.'},
+      {slug:'sponsor-kurzbrief', name:'Sponsor-Kurzbrief', desc:'Bindet die Führungsebene gezielt ein.'},
+      {slug:'review-points', name:'Review Points / Sprint Reviews', desc:'Sichern Fortschritt und Qualität ab.'},
+      {slug:'retros', name:'Retros', desc:'Machen Lernpunkte systematisch sichtbar.'},
+      {slug:'evm-light', name:'EVM-light / SPI-CPI-Ampel', desc:'Liefert Frühwarnung für Zeit- und Ressourcenabweichungen.'},
+      {slug:'decision-hygiene', name:'Decision Hygiene', desc:'Sorgt dafür, dass G5 nicht erst am Ende improvisiert wird.'}
+    ]
+  }
+];
+
+// ============================================================
+// STATE
+// ============================================================
+const STATE_VERSION = 2;
+let state = null;
+let activeGateId = 'entry';
+let storageMode = 'memory'; // 'claude' | 'local' | 'memory'
+
+function newId() { return 'i_' + Math.random().toString(36).slice(2,9); }
+
+function blankState() {
+  const s = { version: STATE_VERSION, meta: { name:'', customer:'', owner:'', lead:'', updated: null }, gates: {} };
+  GATES.forEach(g => {
+    s.gates[g.id] = {
+      muss: g.muss.map(t => ({ id:newId(), text:t, done:false })),
+      nice: g.nice.map(t => ({ id:newId(), text:t, done:false })),
+      notes: '',
+      methods: {}
+    };
+  });
+  return s;
+}
+
+function migrate(loaded) {
+  if (!loaded) return blankState();
+  const fresh = blankState();
+  fresh.meta = { ...fresh.meta, ...(loaded.meta || {}) };
+  // v1: muss/nice waren boolean-arrays
+  const oldFormat = loaded.version !== STATE_VERSION;
+  GATES.forEach(g => {
+    const l = loaded.gates && loaded.gates[g.id];
+    if (!l) return;
+    if (oldFormat) {
+      if (Array.isArray(l.muss)) fresh.gates[g.id].muss.forEach((it, i) => { it.done = !!l.muss[i]; });
+      if (Array.isArray(l.nice)) fresh.gates[g.id].nice.forEach((it, i) => { it.done = !!l.nice[i]; });
+    } else {
+      if (Array.isArray(l.muss)) fresh.gates[g.id].muss = l.muss.map(x => ({ id:x.id||newId(), text:x.text||'', done:!!x.done }));
+      if (Array.isArray(l.nice)) fresh.gates[g.id].nice = l.nice.map(x => ({ id:x.id||newId(), text:x.text||'', done:!!x.done }));
+      if (l.methods && typeof l.methods === 'object') fresh.gates[g.id].methods = l.methods;
+    }
+    if (typeof l.notes === 'string') fresh.gates[g.id].notes = l.notes;
+  });
+  return fresh;
+}
+
+// ============================================================
+// STORAGE LAYER — window.storage > localStorage > memory
+// ============================================================
+const STORAGE_KEY = 'cipp:poc:v2';
+
+async function probeStorage() {
+  // Claude window.storage?
+  if (typeof window.storage !== 'undefined' && window.storage && typeof window.storage.set === 'function') {
+    try {
+      // probe by trying a harmless get
+      await window.storage.get('__probe__').catch(()=>null);
+      storageMode = 'claude';
+      return 'claude';
+    } catch (e) { /* fallthrough */ }
+  }
+  // localStorage?
+  try {
+    const testKey = '__cipp_probe__';
+    localStorage.setItem(testKey, '1');
+    localStorage.removeItem(testKey);
+    storageMode = 'local';
+    return 'local';
+  } catch (e) {}
+  storageMode = 'memory';
+  return 'memory';
+}
+
+async function storageSet(key, val) {
+  if (storageMode === 'claude') return window.storage.set(key, val);
+  if (storageMode === 'local') { localStorage.setItem(key, val); return true; }
+  return false;
+}
+async function storageGet(key) {
+  if (storageMode === 'claude') {
+    try {
+      const r = await window.storage.get(key);
+      return r && r.value ? r.value : null;
+    } catch (e) { return null; } // key missing or transient error
+  }
+  if (storageMode === 'local') {
+    try { return localStorage.getItem(key); } catch (e) { return null; }
+  }
+  return null;
+}
+async function storageDelete(key) {
+  if (storageMode === 'claude') { try { await window.storage.delete(key); } catch (e) {} return; }
+  if (storageMode === 'local') { try { localStorage.removeItem(key); } catch (e) {} return; }
+}
+
+function updateStoragePill() {
+  const pill = document.getElementById('storage-pill');
+  const text = document.getElementById('storage-pill-text');
+  pill.className = 'storage-pill';
+  if (storageMode === 'claude') {
+    pill.classList.add('ok');
+    text.textContent = 'Speicher: Claude-Account · klicken für Infos zum Teilen';
+  } else if (storageMode === 'local') {
+    pill.classList.add('ok');
+    text.textContent = 'Speicher: Browser (localStorage) · klicken für Infos zum Teilen';
+  } else {
+    pill.classList.add('warn');
+    text.textContent = 'Kein persistenter Speicher verfügbar — bitte regelmäßig als JSON exportieren';
+  }
+}
+
+let saveTimer = null;
+async function saveState(announce) {
+  state.meta.updated = new Date().toISOString();
+  try {
+    await storageSet(STORAGE_KEY, JSON.stringify(state));
+    if (announce) toast('Stand gespeichert.', 'pink');
+  } catch (e) {
+    if (announce) toast('Speichern fehlgeschlagen. Nutze JSON-Export als Backup.');
+  }
+}
+function saveStateDebounced() { clearTimeout(saveTimer); saveTimer = setTimeout(()=>saveState(false), 500); }
+
+async function loadState(announce) {
+  const raw = await storageGet(STORAGE_KEY);
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw);
+      state = migrate(parsed);
+      fillMetaInputs();
+      render();
+      if (announce) toast('Stand geladen.', 'pink');
+      return;
+    } catch (e) { /* fallthrough */ }
+  }
+  if (!state) state = blankState();
+  fillMetaInputs();
+  render();
+  if (announce) toast('Kein gespeicherter Stand vorhanden.');
+}
+
+async function confirmReset() {
+  if (!confirm('Wirklich zurücksetzen? Alle Häkchen, Kriterien, Notizen und Methoden-Daten werden gelöscht.')) return;
+  state = blankState();
+  fillMetaInputs();
+  await storageDelete(STORAGE_KEY);
+  activeGateId = 'entry';
+  render();
+  toast('Zurückgesetzt.', 'pink');
+}
+
+// ============================================================
+// LOGIC
+// ============================================================
+function isGateLocked(id) {
+  if (id === 'g4') return !['g0','g1','g2','g3'].every(x => isMussComplete(x));
+  if (id === 'g5') return !isMussComplete('g4');
+  return false;
+}
+function isMussComplete(id) {
+  if (!state || !state.gates[id]) return false;
+  const items = state.gates[id].muss;
+  if (!items.length) return true;
+  return items.every(x => x.done);
+}
+function gateProgress(id) {
+  if (!state || !state.gates[id]) return 0;
+  const items = state.gates[id].muss;
+  if (!items.length) return 100;
+  return Math.round(items.filter(x=>x.done).length / items.length * 100);
+}
+function overallProgress() {
+  const rel = GATES.filter(g => g.id !== 'begleit');
+  return Math.round(rel.reduce((a,g)=>a+gateProgress(g.id),0) / rel.length);
+}
+
+// ============================================================
+// RENDER — Dashboard
+// ============================================================
+function renderStrip() {
+  const strip = document.getElementById('gate-strip');
+  strip.innerHTML = '';
+  GATES.forEach(g => {
+    const locked = isGateLocked(g.id);
+    const pct = gateProgress(g.id);
+    const done = isMussComplete(g.id) && pct === 100;
+    const isActive = g.id === activeGateId;
+    const tile = document.createElement('button');
+    tile.className = 'gate-tile' + (isActive?' active':'') + (locked?' locked':'') + (done?' done':'');
+    const dispName = g.id==='entry'?'Entry Check':g.id==='begleit'?'Begleitung':g.name;
+    tile.innerHTML = `${locked?'<span class="lock-badge">!</span>':''}
+      <div class="gid">${g.code}</div>
+      <div class="gname">${dispName}</div>
+      <div class="gbar"><div class="gbar-fill" style="width:${pct}%"></div></div>
+      <div class="gstat">${locked?'gesperrt':done?'bestanden':pct+'% erfüllt'}</div>`;
+    tile.onclick = () => {
+      if (locked) { toast(`Gate ${g.code} gesperrt — zuerst vorherige Muss-Kriterien erfüllen.`); return; }
+      activeGateId = g.id; render();
+    };
+    strip.appendChild(tile);
+  });
+  document.getElementById('overall-pct').textContent = overallProgress() + '%';
+}
+
+// ============================================================
+// RENDER — Panel
+// ============================================================
+function renderPanel() {
+  const g = GATES.find(x => x.id === activeGateId);
+  const panel = document.getElementById('gate-panel');
+  const locked = isGateLocked(g.id);
+  const doneAll = isMussComplete(g.id) && gateProgress(g.id) === 100;
+  const mussDone = state.gates[g.id].muss.filter(x=>x.done).length;
+  const mussTotal = state.gates[g.id].muss.length;
+  const niceDone = state.gates[g.id].nice.filter(x=>x.done).length;
+  const niceTotal = state.gates[g.id].nice.length;
+
+  let statusClass='open', statusText='offen';
+  if (locked) { statusClass='locked'; statusText='gesperrt'; }
+  else if (doneAll) { statusClass='done'; statusText='bestanden'; }
+
+  const lockBanner = locked ? `<div class="lock-banner">Dieses Gate ist <strong>gesperrt</strong>. Zuerst müssen alle Muss-Kriterien aus ${g.id==='g4'?'G0, G1, G2, G3':'G4'} vollständig erfüllt sein.</div>` : '';
+  const kicker = g.id==='begleit'?'Querschnitt · läuft über alle Gates':g.id==='entry'?'Vor-Gate · Substanzprüfung':'Gate '+g.code;
+
+  let secNum = 1;
+  const secTag = (extra='') => `<span class="sec-tag${extra?' '+extra:''}">0${secNum++}</span>`;
+
+  let html = `
+    <div class="gate-head">
+      <div class="gate-head-left">
+        <div class="gate-kicker">${kicker}</div>
+        <h2 class="gate-name">${escapeHtml(g.name)}</h2>
+        <p class="gate-goal">${escapeHtml(g.goal)}</p>
+      </div>
+      <div class="gate-status-badge">
+        <div class="label">Status</div>
+        <span class="val ${statusClass}">${statusText}</span>
+        <div class="count">${mussDone}<em> / ${mussTotal}</em></div>
+        <div class="count-label">Muss erfüllt</div>
+      </div>
+    </div>
+    ${lockBanner}
+
+    <div class="sec-head">
+      ${secTag()}
+      <h3 class="sec-title">Muss-Kriterien</h3>
+      <span class="sec-hint">${mussDone} / ${mussTotal}</span>
+      <button class="sec-add-btn" onclick="focusAddInput('${g.id}','muss')">+ Hinzufügen</button>
+    </div>
+    ${renderChecklist(g.id, 'muss')}
+    ${renderAddRow(g.id, 'muss')}
+  `;
+
+  if (g.nice.length || state.gates[g.id].nice.length || niceTotal > 0 || g.id !== 'begleit') {
+    html += `
+      <div class="sec-head">
+        ${secTag('nice')}
+        <h3 class="sec-title">Nice-to-have</h3>
+        <span class="sec-hint">${niceDone} / ${niceTotal}</span>
+        <button class="sec-add-btn" onclick="focusAddInput('${g.id}','nice')">+ Hinzufügen</button>
+      </div>
+      ${renderChecklist(g.id, 'nice')}
+      ${renderAddRow(g.id, 'nice')}
+    `;
+  }
+
+  html += `
+    <div class="sec-head">
+      ${secTag('methoden')}
+      <h3 class="sec-title">Methoden</h3>
+      <span class="sec-hint">${g.methoden.length} Werkzeuge · klick um auszufüllen</span>
+    </div>
+    <div class="method-list">
+      ${g.methoden.map(m => renderMethodCard(g.id, m)).join('')}
+    </div>
+
+    <div class="sec-head">
+      ${secTag('notes')}
+      <h3 class="sec-title">Notizen &amp; Evidenzhinweise</h3>
+    </div>
+    <div class="notes-area">
+      <textarea oninput="onNotes('${g.id}', this.value)" placeholder="Freitext für Evidenzverweise, offene Punkte, Links zu Dokumenten …">${escapeHtml(state.gates[g.id].notes||'')}</textarea>
+    </div>
+  `;
+  panel.innerHTML = html;
+}
+
+function renderChecklist(gateId, type) {
+  const items = state.gates[gateId][type];
+  const cls = type === 'nice' ? 'nice' : '';
+  if (!items.length) return `<div class="check-list ${cls}"><div class="ws-empty">Keine Einträge. Füge unten Kriterien hinzu.</div></div>`;
+  return `<div class="check-list ${cls}">` + items.map((it, i) => `
+    <div class="check-item ${it.done?'checked':''}" data-id="${it.id}">
+      <div class="check-box-wrap" onclick="toggleItem('${gateId}','${type}','${it.id}')"><div class="check-box"></div></div>
+      <div class="check-label" id="lbl-${gateId}-${type}-${it.id}" onclick="toggleItem('${gateId}','${type}','${it.id}')"
+           ondblclick="startEditLabel(event,'${gateId}','${type}','${it.id}')">${escapeHtml(it.text)}</div>
+      <div class="check-actions">
+        <button class="check-action-btn" onclick="editLabelBtn(event,'${gateId}','${type}','${it.id}')" title="Bearbeiten">✎</button>
+        <button class="check-action-btn del" onclick="deleteItem('${gateId}','${type}','${it.id}')" title="Löschen">×</button>
+      </div>
+    </div>`).join('') + `</div>`;
+}
+
+function renderAddRow(gateId, type) {
+  return `<div class="add-item-row">
+    <input id="add-${gateId}-${type}" placeholder="Neues ${type==='muss'?'Muss-Kriterium':'Nice-to-have'} eingeben und Enter drücken …" onkeydown="if(event.key==='Enter'){addItem('${gateId}','${type}')}">
+    <button onclick="addItem('${gateId}','${type}')">Hinzufügen</button>
+  </div>`;
+}
+
+// ============================================================
+// RENDER — Methods
+// ============================================================
+function renderMethodCard(gateId, m) {
+  const tpl = METHOD_TEMPLATES[m.slug] || {};
+  const data = (state.gates[gateId].methods && state.gates[gateId].methods[m.slug]) || {};
+  const hasData = methodHasData(data, tpl);
+  const isOpen = openedMethods.has(`${gateId}:${m.slug}`);
+  return `
+    <div class="method ${isOpen?'open':''}" data-method="${m.slug}">
+      <div class="method-head" onclick="toggleMethod('${gateId}','${m.slug}')">
+        <span class="method-name">${escapeHtml(m.name)}</span>
+        <span class="method-meta ${hasData?'has-data':''}">${hasData?'● ausgefüllt':''}</span>
+        <span class="method-toggle">${isOpen?'Zuklappen':'Ausfüllen'}</span>
+      </div>
+      <div class="method-body">
+        <div class="method-desc">${escapeHtml(m.desc)}</div>
+        ${renderMethodWorksheet(gateId, m.slug)}
+      </div>
+    </div>`;
+}
+
+function methodHasData(data, tpl) {
+  if (!data) return false;
+  if (tpl.fields) { for (const f of tpl.fields) if (data[f.key] && String(data[f.key]).trim()) return true; }
+  if (tpl.table && Array.isArray(data.__rows) && data.__rows.some(r => Object.values(r).some(v => v && String(v).trim()))) return true;
+  return false;
+}
+
+function renderMethodWorksheet(gateId, slug) {
+  const tpl = METHOD_TEMPLATES[slug];
+  if (!tpl) return `<div class="ws-empty">Kein Worksheet-Template hinterlegt.</div>`;
+  if (!state.gates[gateId].methods) state.gates[gateId].methods = {};
+  if (!state.gates[gateId].methods[slug]) state.gates[gateId].methods[slug] = {};
+  const data = state.gates[gateId].methods[slug];
+
+  let html = '';
+  if (tpl.fields && tpl.fields.length) {
+    const twoCol = tpl.fields.every(f => f.type === 'input' || f.type === 'select');
+    html += twoCol ? `<div class="ws-grid">` : ``;
+    tpl.fields.forEach(f => {
+      const val = data[f.key] || '';
+      if (f.type === 'select') {
+        const opts = (f.options||[]).map(o => `<option value="${escapeAttr(o)}" ${val===o?'selected':''}>${escapeHtml(o)}</option>`).join('');
+        html += `<div class="ws-field"><label>${escapeHtml(f.label)}</label><select onchange="onMethodField('${gateId}','${slug}','${f.key}', this.value)"><option value="">—</option>${opts}</select>${f.hint?`<div class="hint">${escapeHtml(f.hint)}</div>`:''}</div>`;
+      } else if (f.type === 'input') {
+        html += `<div class="ws-field"><label>${escapeHtml(f.label)}</label><input value="${escapeAttr(val)}" oninput="onMethodField('${gateId}','${slug}','${f.key}', this.value)" placeholder="${escapeAttr(f.hint||'')}">${f.hint?`<div class="hint">${escapeHtml(f.hint)}</div>`:''}</div>`;
+      } else {
+        html += `<div class="ws-field"${twoCol?' style="grid-column:1 / -1;"':''}><label>${escapeHtml(f.label)}</label><textarea oninput="onMethodField('${gateId}','${slug}','${f.key}', this.value)" placeholder="${escapeAttr(f.hint||'')}">${escapeHtml(val)}</textarea>${f.hint?`<div class="hint">${escapeHtml(f.hint)}</div>`:''}</div>`;
+      }
+    });
+    html += twoCol ? `</div>` : ``;
+  }
+  if (tpl.table) {
+    const rows = Array.isArray(data.__rows) ? data.__rows : (data.__rows = []);
+    const cols = tpl.table.columns;
+    html += `<div class="ws-table-wrap" style="margin-top:${tpl.fields?'14px':'0'}">
+      <div class="ws-table-head-row"><span>Tabelle</span><span>${rows.length} Zeile${rows.length===1?'':'n'}</span></div>
+      <table class="ws-table"><thead><tr>${cols.map(c=>`<th style="${c.width?`width:${c.width}px`:''}">${escapeHtml(c.label)}</th>`).join('')}<th style="width:40px"></th></tr></thead><tbody>`;
+    if (!rows.length) {
+      html += `<tr><td colspan="${cols.length+1}" class="ws-empty">Noch keine Einträge.</td></tr>`;
+    } else {
+      rows.forEach((row, idx) => {
+        html += `<tr>`;
+        cols.forEach(c => {
+          const val = row[c.key] || '';
+          if (c.options) {
+            const opts = c.options.map(o=>`<option value="${escapeAttr(o)}" ${val===o?'selected':''}>${escapeHtml(o)}</option>`).join('');
+            html += `<td><select onchange="onMethodRow('${gateId}','${slug}',${idx},'${c.key}', this.value)"><option value="">—</option>${opts}</select></td>`;
+          } else {
+            html += `<td><textarea rows="1" oninput="onMethodRow('${gateId}','${slug}',${idx},'${c.key}', this.value)">${escapeHtml(val)}</textarea></td>`;
+          }
+        });
+        html += `<td><button class="row-del" onclick="deleteMethodRow('${gateId}','${slug}',${idx})" title="Zeile löschen">×</button></td>`;
+        html += `</tr>`;
+      });
+    }
+    html += `</tbody></table>
+      <div class="ws-table-foot"><button class="btn-dark btn-small" onclick="addMethodRow('${gateId}','${slug}')">+ Zeile hinzufügen</button></div>
+    </div>`;
+  }
+  return html;
+}
+
+// ============================================================
+// RENDER FACADE
+// ============================================================
+const openedMethods = new Set();
+function render() { renderStrip(); renderPanel(); }
+
+// ============================================================
+// INTERACTIONS — Checklist
+// ============================================================
+function toggleItem(gateId, type, itemId) {
+  const it = state.gates[gateId][type].find(x => x.id === itemId);
+  if (!it) return;
+  it.done = !it.done;
+  saveStateDebounced();
+  render();
+}
+function addItem(gateId, type) {
+  const input = document.getElementById(`add-${gateId}-${type}`);
+  const text = input.value.trim();
+  if (!text) return;
+  state.gates[gateId][type].push({ id:newId(), text, done:false });
+  input.value = '';
+  saveStateDebounced();
+  render();
+  setTimeout(()=>{ const el = document.getElementById(`add-${gateId}-${type}`); if (el) el.focus(); }, 20);
+}
+function focusAddInput(gateId, type) {
+  const el = document.getElementById(`add-${gateId}-${type}`);
+  if (el) { el.focus(); el.scrollIntoView({behavior:'smooth', block:'center'}); }
+}
+function deleteItem(gateId, type, itemId) {
+  state.gates[gateId][type] = state.gates[gateId][type].filter(x => x.id !== itemId);
+  saveStateDebounced();
+  render();
+}
+function editLabelBtn(ev, gateId, type, itemId) {
+  ev.stopPropagation();
+  startEditLabel(ev, gateId, type, itemId);
+}
+function startEditLabel(ev, gateId, type, itemId) {
+  ev.stopPropagation();
+  const el = document.getElementById(`lbl-${gateId}-${type}-${itemId}`);
+  if (!el) return;
+  el.contentEditable = 'true';
+  el.focus();
+  // Select all
+  const range = document.createRange(); range.selectNodeContents(el);
+  const sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+  el.onblur = () => finishEditLabel(gateId, type, itemId, el);
+  el.onkeydown = (e) => { if (e.key === 'Enter') { e.preventDefault(); el.blur(); } if (e.key === 'Escape') { el.textContent = (state.gates[gateId][type].find(x=>x.id===itemId)||{}).text||''; el.blur(); } };
+}
+function finishEditLabel(gateId, type, itemId, el) {
+  const it = state.gates[gateId][type].find(x => x.id === itemId);
+  if (it) { it.text = el.textContent.trim() || it.text; }
+  el.contentEditable = 'false'; el.onblur = null; el.onkeydown = null;
+  saveStateDebounced();
+  render();
+}
+
+// ============================================================
+// INTERACTIONS — Methods
+// ============================================================
+function toggleMethod(gateId, slug) {
+  const key = `${gateId}:${slug}`;
+  if (openedMethods.has(key)) openedMethods.delete(key); else openedMethods.add(key);
+  render();
+}
+function onMethodField(gateId, slug, key, val) {
+  if (!state.gates[gateId].methods) state.gates[gateId].methods = {};
+  if (!state.gates[gateId].methods[slug]) state.gates[gateId].methods[slug] = {};
+  state.gates[gateId].methods[slug][key] = val;
+  saveStateDebounced();
+  // Update the "ausgefüllt" indicator without re-rendering the whole panel
+  updateMethodIndicator(gateId, slug);
+}
+function onMethodRow(gateId, slug, idx, key, val) {
+  const rows = state.gates[gateId].methods[slug].__rows;
+  if (!rows[idx]) rows[idx] = {};
+  rows[idx][key] = val;
+  saveStateDebounced();
+  updateMethodIndicator(gateId, slug);
+}
+function addMethodRow(gateId, slug) {
+  if (!state.gates[gateId].methods[slug].__rows) state.gates[gateId].methods[slug].__rows = [];
+  state.gates[gateId].methods[slug].__rows.push({});
+  saveStateDebounced();
+  openedMethods.add(`${gateId}:${slug}`);
+  render();
+}
+function deleteMethodRow(gateId, slug, idx) {
+  state.gates[gateId].methods[slug].__rows.splice(idx, 1);
+  saveStateDebounced();
+  render();
+}
+function updateMethodIndicator(gateId, slug) {
+  const tpl = METHOD_TEMPLATES[slug];
+  const data = state.gates[gateId].methods[slug];
+  const has = methodHasData(data, tpl);
+  const card = document.querySelector(`.method[data-method="${slug}"]`);
+  if (!card) return;
+  const meta = card.querySelector('.method-meta');
+  if (has) { meta.classList.add('has-data'); meta.textContent = '● ausgefüllt'; }
+  else { meta.classList.remove('has-data'); meta.textContent = ''; }
+}
+
+// ============================================================
+// INTERACTIONS — Meta & Notes
+// ============================================================
+function onNotes(gateId, val) { state.gates[gateId].notes = val; saveStateDebounced(); }
+function onMeta() {
+  state.meta.name = document.getElementById('meta-name').value;
+  state.meta.customer = document.getElementById('meta-customer').value;
+  state.meta.owner = document.getElementById('meta-owner').value;
+  state.meta.lead = document.getElementById('meta-lead').value;
+  saveStateDebounced();
+}
+function fillMetaInputs() {
+  document.getElementById('meta-name').value = state.meta.name || '';
+  document.getElementById('meta-customer').value = state.meta.customer || '';
+  document.getElementById('meta-owner').value = state.meta.owner || '';
+  document.getElementById('meta-lead').value = state.meta.lead || '';
+}
+
+// ============================================================
+// EXPORT — Markdown & JSON
+// ============================================================
+function buildMarkdown() {
+  const m = state.meta;
+  let md = `# CIPP PoC — ${m.name || '(unbenannt)'}\n\n**NXTGN · Customer Innovation PoC Process**\n\n`;
+  md += `- **Kunde / Partner:** ${m.customer || '—'}\n- **Owner (Kunde):** ${m.owner || '—'}\n- **Lead (Lösung):** ${m.lead || '—'}\n- **Stand:** ${new Date().toLocaleString('de-DE')}\n- **Gesamtfortschritt:** ${overallProgress()}%\n\n`;
+  md += `## Gate-Übersicht\n\n| Gate | Name | Status | Muss erfüllt |\n|---|---|---|---|\n`;
+  GATES.forEach(g => {
+    const locked = isGateLocked(g.id);
+    const done = isMussComplete(g.id) && gateProgress(g.id) === 100;
+    const status = locked ? '🔒 gesperrt' : done ? '✅ bestanden' : '◐ offen';
+    const c = state.gates[g.id].muss.filter(x=>x.done).length;
+    md += `| ${g.code} | ${g.name} | ${status} | ${c}/${state.gates[g.id].muss.length} |\n`;
+  });
+  md += `\n`;
+
+  GATES.forEach(g => {
+    md += `---\n\n## ${g.code} — ${g.name}\n\n**Ziel:** ${g.goal}\n\n`;
+    md += `### Muss-Kriterien\n\n`;
+    state.gates[g.id].muss.forEach(it => md += `- [${it.done?'x':' '}] ${it.text}\n`);
+    md += `\n`;
+    if (state.gates[g.id].nice.length) {
+      md += `### Nice-to-have\n\n`;
+      state.gates[g.id].nice.forEach(it => md += `- [${it.done?'x':' '}] ${it.text}\n`);
+      md += `\n`;
+    }
+    // Methoden mit Inhalten
+    const methodsWithData = g.methoden.filter(m => {
+      const d = (state.gates[g.id].methods||{})[m.slug];
+      return methodHasData(d, METHOD_TEMPLATES[m.slug]);
+    });
+    if (methodsWithData.length) {
+      md += `### Methoden (ausgefüllt)\n\n`;
+      methodsWithData.forEach(m => {
+        const tpl = METHOD_TEMPLATES[m.slug];
+        const d = state.gates[g.id].methods[m.slug];
+        md += `#### ${m.name}\n\n`;
+        if (tpl.fields) {
+          tpl.fields.forEach(f => {
+            const v = d[f.key];
+            if (v && String(v).trim()) md += `- **${f.label}:** ${String(v).replace(/\n/g,' · ')}\n`;
+          });
+        }
+        if (tpl.table && d.__rows && d.__rows.length) {
+          const cols = tpl.table.columns;
+          md += `\n| ${cols.map(c=>c.label).join(' | ')} |\n|${cols.map(()=>'---').join('|')}|\n`;
+          d.__rows.forEach(r => {
+            md += `| ${cols.map(c=>String(r[c.key]||'').replace(/\n/g,' ').replace(/\|/g,'/')).join(' | ')} |\n`;
+          });
+        }
+        md += `\n`;
+      });
+    }
+    // Alle verfügbaren Methoden (Liste)
+    md += `### Methoden-Werkzeuge (verfügbar)\n\n`;
+    g.methoden.forEach(m => md += `- **${m.name}** — ${m.desc}\n`);
+    md += `\n`;
+    if (state.gates[g.id].notes && state.gates[g.id].notes.trim()) md += `### Notizen\n\n${state.gates[g.id].notes}\n\n`;
+  });
+  md += `---\n\n*Harte Regel: Ein Gate ist nur bestanden, wenn alle Muss-Kriterien erfüllt sind. G0–G3 flexibel — G4 startet erst bei vollständiger Erfüllung von G0–G3.*\n`;
+  return md;
+}
+
+function buildJSON() { return JSON.stringify(state, null, 2); }
+
+function openExport() {
+  const md = buildMarkdown();
+  const json = buildJSON();
+  document.getElementById('modal-title').textContent = 'Export · Markdown & JSON';
+  document.getElementById('modal-body-container').innerHTML = `
+    <h4>Markdown-Export (für Reports, Copy&Paste)</h4>
+    <p>Zum Lesen, Kommentieren, in Dokumente einfügen.</p>
+    <pre id="export-md">${escapeHtml(md)}</pre>
+    <h4 style="margin-top:22px;">JSON-Export (für die Zusammenarbeit)</h4>
+    <p><strong>Dies ist das Format zum Teilen.</strong> Lege die JSON-Datei in OneDrive ab — deine Kollegin kann sie dann per <em>Import</em> in diese App laden, weiterbearbeiten und wieder exportieren.</p>
+    <pre id="export-json" style="max-height:200px; overflow:auto;">${escapeHtml(json)}</pre>
+  `;
+  document.getElementById('modal-foot').innerHTML = `
+    <button class="btn-dark ghost" onclick="copyExport('md')">MD kopieren</button>
+    <button class="btn-dark" onclick="downloadExport('md')">MD herunterladen</button>
+    <button class="btn-dark ghost" onclick="copyExport('json')">JSON kopieren</button>
+    <button class="btn-dark primary" onclick="downloadExport('json')">JSON herunterladen</button>
+  `;
+  document.getElementById('modal-backdrop').classList.add('show');
+}
+
+async function copyExport(type) {
+  const text = type === 'md' ? document.getElementById('export-md').textContent : document.getElementById('export-json').textContent;
+  try { await navigator.clipboard.writeText(text); toast('In Zwischenablage kopiert.', 'pink'); }
+  catch (e) { toast('Kopieren fehlgeschlagen.'); }
+}
+function downloadExport(type) {
+  const text = type === 'md' ? buildMarkdown() : buildJSON();
+  const safe = (state.meta.name || 'cipp-poc').replace(/[^a-z0-9-_]+/gi,'_').toLowerCase();
+  const ext = type === 'md' ? 'md' : 'json';
+  const mime = type === 'md' ? 'text/markdown' : 'application/json';
+  const blob = new Blob([text], { type: `${mime};charset=utf-8` });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${safe}_cipp_${new Date().toISOString().slice(0,10)}.${ext}`;
+  document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+  toast((type==='md'?'Markdown':'JSON')+' heruntergeladen.', 'pink');
+}
+
+// ============================================================
+// IMPORT (JSON)
+// ============================================================
+function importJson() {
+  document.getElementById('import-input').click();
+}
+document.getElementById('import-input').addEventListener('change', function(ev) {
+  const file = ev.target.files[0];
+  if (!file) return;
+  const r = new FileReader();
+  r.onload = (e) => {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      if (!parsed || typeof parsed !== 'object' || !parsed.gates) throw new Error('Unbekanntes Format');
+      if (!confirm('Importierten Stand übernehmen? Der aktuelle Stand wird ersetzt.')) return;
+      state = migrate(parsed);
+      fillMetaInputs();
+      activeGateId = 'entry';
+      render();
+      saveState(false);
+      toast('Import erfolgreich.', 'pink');
+    } catch (e) {
+      toast('Import fehlgeschlagen: ' + (e.message || 'Ungültiges JSON'));
+    }
+  };
+  r.readAsText(file);
+  ev.target.value = '';
+});
+
+// ============================================================
+// HELP / INFO MODAL
+// ============================================================
+function openHelp() {
+  document.getElementById('modal-title').textContent = 'Speichern & Teilen';
+  const mode = storageMode === 'claude' ? 'Claude-Account-Storage'
+    : storageMode === 'local' ? 'Browser localStorage'
+    : 'Nur In-Memory (kein persistenter Speicher!)';
+  document.getElementById('modal-body-container').innerHTML = `
+    <h4>Wo wird aktuell gespeichert?</h4>
+    <p><strong>Status:</strong> ${mode}</p>
+    <ul>
+      <li><strong>Claude-Account-Storage</strong> — nur sichtbar für den Claude-Nutzer, der die App gerade geöffnet hat. Nicht geteilt.</li>
+      <li><strong>Browser localStorage</strong> — nur auf diesem Gerät, in diesem Browser-Profil. Nicht geteilt.</li>
+      <li><strong>In-Memory</strong> — geht verloren, sobald der Tab geschlossen wird. Bitte regelmäßig JSON exportieren!</li>
+    </ul>
+    <p><strong>In keinem Fall</strong> landet irgendwas automatisch in OneDrive. Das Teilen passiert über den JSON-Export.</p>
+
+    <h4>Wie teile ich das mit meiner Kollegin (OneDrive-Workflow)?</h4>
+    <ol>
+      <li><strong>HTML-Datei in OneDrive ablegen:</strong> Lege diese <code>cipp-tracker.html</code> in einen OneDrive-Ordner (z.B. <em>NXTGN / CIPP / Kunde X</em>).</li>
+      <li><strong>OneDrive-Freigabe:</strong> Rechtsklick auf die Datei → <em>Teilen</em> → Link an die Kollegin. Sie öffnet die Datei im Browser (oder lädt sie kurz herunter und öffnet sie lokal).</li>
+      <li><strong>Stand speichern:</strong> Klicke <em>Export → JSON herunterladen</em>. Die Datei heißt z.B. <code>musterwerk_cipp_2026-04-23.json</code>.</li>
+      <li><strong>JSON in OneDrive ablegen:</strong> Lege die JSON-Datei neben die HTML im gleichen OneDrive-Ordner. Das ist euer zentraler Stand.</li>
+      <li><strong>Kollegin arbeitet weiter:</strong> Sie öffnet die HTML, klickt <em>Import</em>, wählt die JSON aus dem OneDrive-Ordner. Bearbeitet. Exportiert wieder als JSON → überschreibt im OneDrive-Ordner.</li>
+      <li><strong>Kundentermin:</strong> Kollegin öffnet die HTML, importiert die aktuellste JSON, zeigt den Stand. Klickt sich durch Gates und Methoden.</li>
+    </ol>
+    <p><strong>Wichtig:</strong> Dieser Workflow ist <em>nicht Echtzeit-Sync</em>. Der Letzte, der speichert, gewinnt. Für 2 Personen im Team ist das unkritisch — sprecht euch kurz ab.</p>
+
+    <h4>Was geht gleichzeitiges Bearbeiten?</h4>
+    <p>Für echtes Co-Editing bräuchte es entweder einen Server oder eine Microsoft-Graph-Integration mit App-Registrierung in Azure. Beides ist möglich, aber ein eigenes Projekt. Frag mich, wenn du das angehen willst.</p>
+
+    <h4>Wie funktioniert die App sonst?</h4>
+    <ul>
+      <li><strong>Muss-Kriterien & Nice-to-have</strong> kannst du hinzufügen (+ Hinzufügen), umbenennen (Doppelklick oder ✎) und löschen (×).</li>
+      <li><strong>Methoden</strong> öffnen sich mit einem Klick. Darin kannst du Felder ausfüllen oder Tabellen-Zeilen hinzufügen (je nach Methode).</li>
+      <li><strong>Gate-Regel:</strong> G4 startet erst, wenn alle Muss-Kriterien aus G0–G3 erfüllt sind. G5 erst nach G4.</li>
+      <li><strong>Alles wird laufend gespeichert</strong> — aber eben nur lokal. JSON-Export ist dein Backup.</li>
+    </ul>
+  `;
+  document.getElementById('modal-foot').innerHTML = `<button class="btn-dark primary" onclick="closeModal()">Verstanden</button>`;
+  document.getElementById('modal-backdrop').classList.add('show');
+}
+
+function closeModal() { document.getElementById('modal-backdrop').classList.remove('show'); }
+document.getElementById('modal-backdrop').addEventListener('click', e => { if (e.target.id === 'modal-backdrop') closeModal(); });
+
+// ============================================================
+// UTIL
+// ============================================================
+function escapeHtml(s) { return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function escapeAttr(s) { return escapeHtml(s); }
+let toastTimer = null;
+function toast(msg, color) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (color==='pink'?' pink':'');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=> t.className = 'toast' + (color==='pink'?' pink':''), 2500);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+(async function init() {
+  state = blankState();
+  await probeStorage();
+  updateStoragePill();
+  render();
+  await loadState(false);
+})();
+</script>
+</body>
+</html>
