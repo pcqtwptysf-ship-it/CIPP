@@ -1,0 +1,9 @@
+{
+  "name": "cipp-tracker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "CIPP Gate Tracker static app with Vercel KV state API",
+  "dependencies": {
+    "@upstash/redis": "^1.35.3"
+  }
+}

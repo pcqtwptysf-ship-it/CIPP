@@ -925,7 +925,7 @@ const GATES = [
 const STATE_VERSION = 2;
 let state = null;
 let activeGateId = 'entry';
-let storageMode = 'memory'; // 'claude' | 'local' | 'memory'
+let storageMode = 'memory'; // 'vercel' | 'claude' | 'local' | 'memory'
 
 function newId() { return 'i_' + Math.random().toString(36).slice(2,9); }
 
@@ -967,11 +967,56 @@ function migrate(loaded) {
 }
 
 // ============================================================
-// STORAGE LAYER — window.storage > localStorage > memory
+// STORAGE LAYER — Vercel API > window.storage > localStorage > memory
 // ============================================================
 const STORAGE_KEY = 'cipp:poc:v2';
+const REMOTE_DOC = 'default';
+
+async function pingVercelStorage() {
+  try {
+    const r = await fetch(`/api/state?doc=${encodeURIComponent(REMOTE_DOC)}&ping=1`, { method: 'GET' });
+    return r.ok;
+  } catch (e) {
+    return false;
+  }
+}
+
+async function remoteSet(key, val) {
+  const r = await fetch(`/api/state?doc=${encodeURIComponent(REMOTE_DOC)}`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ key, value: val })
+  });
+  if (!r.ok) throw new Error('remote_set_failed');
+  return true;
+}
+
+async function remoteGet(key) {
+  try {
+    const r = await fetch(`/api/state?doc=${encodeURIComponent(REMOTE_DOC)}&key=${encodeURIComponent(key)}`, { method: 'GET' });
+    if (!r.ok) return null;
+    const data = await r.json();
+    return data && typeof data.value === 'string' ? data.value : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+async function remoteDelete(key) {
+  try {
+    await fetch(`/api/state?doc=${encodeURIComponent(REMOTE_DOC)}&key=${encodeURIComponent(key)}`, { method: 'DELETE' });
+  } catch (e) {}
+}
 
 async function probeStorage() {
+  // Vercel /api/state with KV?
+  if (location.protocol.startsWith('http')) {
+    const ok = await pingVercelStorage();
+    if (ok) {
+      storageMode = 'vercel';
+      return 'vercel';
+    }
+  }
   // Claude window.storage?
   if (typeof window.storage !== 'undefined' && window.storage && typeof window.storage.set === 'function') {
     try {
@@ -994,11 +1039,13 @@ async function probeStorage() {
 }
 
 async function storageSet(key, val) {
+  if (storageMode === 'vercel') return remoteSet(key, val);
   if (storageMode === 'claude') return window.storage.set(key, val);
   if (storageMode === 'local') { localStorage.setItem(key, val); return true; }
   return false;
 }
 async function storageGet(key) {
+  if (storageMode === 'vercel') return remoteGet(key);
   if (storageMode === 'claude') {
     try {
       const r = await window.storage.get(key);
@@ -1011,6 +1058,7 @@ async function storageGet(key) {
   return null;
 }
 async function storageDelete(key) {
+  if (storageMode === 'vercel') { await remoteDelete(key); return; }
   if (storageMode === 'claude') { try { await window.storage.delete(key); } catch (e) {} return; }
   if (storageMode === 'local') { try { localStorage.removeItem(key); } catch (e) {} return; }
 }
@@ -1019,7 +1067,10 @@ function updateStoragePill() {
   const pill = document.getElementById('storage-pill');
   const text = document.getElementById('storage-pill-text');
   pill.className = 'storage-pill';
-  if (storageMode === 'claude') {
+  if (storageMode === 'vercel') {
+    pill.classList.add('ok');
+    text.textContent = 'Speicher: Vercel (zentral) · klicken für Infos zum Teilen';
+  } else if (storageMode === 'claude') {
     pill.classList.add('ok');
     text.textContent = 'Speicher: Claude-Account · klicken für Infos zum Teilen';
   } else if (storageMode === 'local') {
@@ -1035,12 +1086,17 @@ function updateStoragePill() {
 function updateStorageExplain() {
   const box = document.getElementById('storage-explain');
   if (!box) return;
-  const current = storageMode === 'claude'
-    ? 'Claude-Account-Storage'
-    : storageMode === 'local'
-      ? 'Browser localStorage'
-      : 'Nur In-Memory (nicht persistent)';
-  box.innerHTML = `<strong>Aktueller Speicher:</strong> ${current}. <strong>Zentral für Team/Kunde:</strong> JSON über <em>Export</em> in OneDrive speichern, von Kollegin per <em>Import</em> laden und weiterbearbeiten.`;
+  const current = storageMode === 'vercel'
+    ? 'Vercel KV (zentral)'
+    : storageMode === 'claude'
+      ? 'Claude-Account-Storage'
+      : storageMode === 'local'
+        ? 'Browser localStorage'
+        : 'Nur In-Memory (nicht persistent)';
+  const sharingHint = storageMode === 'vercel'
+    ? 'Alle Änderungen landen zentral im Vercel-Speicher und sind auf derselben Deploy-URL direkt sichtbar.'
+    : 'Zentral für Team/Kunde: JSON über <em>Export</em> in OneDrive speichern, von Kollegin per <em>Import</em> laden und weiterbearbeiten.';
+  box.innerHTML = `<strong>Aktueller Speicher:</strong> ${current}. ${sharingHint}`;
 }
 
 let saveTimer = null;
@@ -1610,18 +1666,24 @@ document.getElementById('import-input').addEventListener('change', function(ev) 
 // ============================================================
 function openHelp() {
   document.getElementById('modal-title').textContent = 'Speichern & Teilen';
-  const mode = storageMode === 'claude' ? 'Claude-Account-Storage'
-    : storageMode === 'local' ? 'Browser localStorage'
-    : 'Nur In-Memory (kein persistenter Speicher!)';
+  const mode = storageMode === 'vercel' ? 'Vercel KV (zentral)'
+    : storageMode === 'claude' ? 'Claude-Account-Storage'
+      : storageMode === 'local' ? 'Browser localStorage'
+        : 'Nur In-Memory (kein persistenter Speicher!)';
+  const vercelHint = storageMode === 'vercel'
+    ? `<p><strong>Aktiv:</strong> Zentrale Speicherung auf Vercel. Alle Nutzer derselben Deploy-URL arbeiten am gleichen Stand.</p>`
+    : '';
   document.getElementById('modal-body-container').innerHTML = `
     <h4>Wo wird aktuell gespeichert?</h4>
     <p><strong>Status:</strong> ${mode}</p>
+    ${vercelHint}
     <ul>
+      <li><strong>Vercel KV</strong> — zentraler Projektspeicher auf Vercel, von allen Nutzern derselben URL teilbar.</li>
       <li><strong>Claude-Account-Storage</strong> — nur sichtbar für den Claude-Nutzer, der die App gerade geöffnet hat. Nicht geteilt.</li>
       <li><strong>Browser localStorage</strong> — nur auf diesem Gerät, in diesem Browser-Profil. Nicht geteilt.</li>
       <li><strong>In-Memory</strong> — geht verloren, sobald der Tab geschlossen wird. Bitte regelmäßig JSON exportieren!</li>
     </ul>
-    <p><strong>In keinem Fall</strong> landet irgendwas automatisch in OneDrive. Das Teilen passiert über den JSON-Export.</p>
+    <p><strong>OneDrive bleibt optional</strong>: Wenn Vercel KV aktiv ist, ist JSON-Export nur Backup. Ohne Vercel KV teilt ihr weiterhin über JSON in OneDrive.</p>
 
     <h4>Wie teile ich das mit meiner Kollegin (OneDrive-Workflow)?</h4>
     <ol>
@@ -1640,9 +1702,10 @@ function openHelp() {
     <h4>Wie funktioniert die App sonst?</h4>
     <ul>
       <li><strong>Muss-Kriterien & Nice-to-have</strong> kannst du hinzufügen (+ Hinzufügen), umbenennen (Doppelklick oder ✎) und löschen (×).</li>
+      <li><strong>KPI-Tracker</strong> ist pro Gate editierbar: KPIs hinzufügen, abhaken, bearbeiten und löschen.</li>
       <li><strong>Methoden</strong> öffnen sich mit einem Klick. Darin kannst du Felder ausfüllen oder Tabellen-Zeilen hinzufügen (je nach Methode).</li>
       <li><strong>Gate-Regel:</strong> G4 startet erst, wenn alle Muss-Kriterien aus G0–G3 erfüllt sind. G5 erst nach G4.</li>
-      <li><strong>Alles wird laufend gespeichert</strong> — aber eben nur lokal. JSON-Export ist dein Backup.</li>
+      <li><strong>Alles wird laufend gespeichert</strong> — zentral bei Vercel KV oder lokal je nach Speicherstatus oben.</li>
     </ul>
   `;
   document.getElementById('modal-foot').innerHTML = `<button class="btn-dark primary" onclick="closeModal()">Verstanden</button>`;
