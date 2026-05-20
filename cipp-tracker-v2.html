@@ -491,6 +491,53 @@
   .cal-schedule-grid input, .cal-schedule-grid select { width:100%;font-size:12px;padding:6px 8px;border:1px solid var(--grey-line-soft);border-radius:4px;font-family:inherit; }
   .cal-next-badge { font-size:10px;font-weight:700;color:var(--pink);background:var(--pink-80);padding:2px 8px;border-radius:8px;margin-left:6px; }
 
+  /* Demo · Rollenwahl beim Laden */
+  .demo-picker-backdrop { position:fixed;inset:0;z-index:2000;background:rgba(26,26,26,.55);display:none;align-items:center;justify-content:center;padding:24px; }
+  .demo-picker-backdrop.show { display:flex; }
+  body.demo-pending .app-layout { filter:blur(4px);pointer-events:none;user-select:none; }
+  .demo-picker { background:var(--white);border-radius:var(--radius-lg);padding:36px 40px;max-width:480px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.18); }
+  .demo-picker h1 { font-size:22px;font-weight:700;margin:16px 0 8px; }
+  .demo-picker p { font-size:13px;color:var(--grey-text);line-height:1.5;margin-bottom:24px; }
+  .demo-picker-btns { display:grid;gap:10px; }
+  .demo-picker-btns button { font-family:inherit;font-size:14px;font-weight:600;padding:14px 18px;border-radius:var(--radius-md);border:2px solid var(--grey-line-soft);background:var(--white);cursor:pointer;text-align:left;transition:border-color .2s,background .2s; }
+  .demo-picker-btns button:hover { border-color:var(--lila);background:#faf8fc; }
+  .demo-picker-btns button.primary { background:var(--gradient-full);color:var(--white);border-color:transparent; }
+  .demo-picker-btns button.primary:hover { opacity:.95; }
+  .demo-picker-btns small { display:block;font-size:11px;font-weight:400;opacity:.85;margin-top:4px; }
+
+  /* Cockpit · reduziert */
+  .cockpit-slim { display:grid;gap:20px; }
+  .cockpit-kpi-row { display:grid;grid-template-columns:repeat(4,1fr);gap:12px; }
+  .cockpit-kpi { background:var(--white);border:1px solid var(--grey-line-soft);border-radius:var(--radius-md);padding:16px 18px;border-top:3px solid var(--lila); }
+  .cockpit-kpi strong { display:block;font-size:22px;color:var(--pink);margin-bottom:4px; }
+  .cockpit-kpi span { font-size:11px;color:var(--grey-text); }
+  .cockpit-kpi.red { border-top-color:#c0392b; }
+  .cockpit-kpi.green { border-top-color:#2d8a3e; }
+  .cockpit-skeleton { display:grid;grid-template-columns:repeat(8,1fr);gap:8px; }
+  .sk-gate { background:var(--white);border:1px solid var(--grey-line-soft);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;cursor:pointer;transition:border-color .2s; }
+  .sk-gate:hover { border-color:var(--lila); }
+  .sk-gate.parallel { border-top:3px solid var(--lila); }
+  .sk-gate.convergence { border-top:3px solid var(--pink); }
+  .sk-gate.locked { opacity:.55;cursor:not-allowed; }
+  .sk-gate.done { background:#f0faf2;border-color:#b8dfc4; }
+  .sk-gate-code { font-size:11px;font-weight:700; }
+  .sk-gate-pct { font-size:18px;font-weight:700;color:var(--pink);margin:4px 0; }
+  .sk-gate-label { font-size:9px;color:var(--grey-faint);line-height:1.2; }
+  .cockpit-grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
+  .cockpit-block { background:var(--white);border:1px solid var(--grey-line-soft);border-radius:var(--radius-md);padding:16px 18px; }
+  .cockpit-block h3 { font-size:13px;font-weight:700;margin-bottom:10px; }
+  .cockpit-block ul { font-size:12px;line-height:1.5;list-style:none; }
+  .cockpit-block li { padding:6px 0;border-bottom:1px solid var(--grey-line-soft); }
+  .cockpit-block li:last-child { border-bottom:none; }
+  .tunnel-hero { background:linear-gradient(135deg,#faf8fc,#fff);border:1px solid var(--lila);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:4px; }
+  .tunnel-hero h2 { font-size:18px;font-weight:700;margin-bottom:6px; }
+  .tunnel-hero p { font-size:13px;color:var(--grey-text);line-height:1.45; }
+  .tunnel-q-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px; }
+  .tunnel-q { background:var(--white);border:1px solid var(--grey-line-soft);border-radius:var(--radius-md);padding:16px 18px; }
+  .tunnel-q h4 { font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--lila);margin-bottom:8px; }
+  .tunnel-q .val { font-size:15px;font-weight:600;line-height:1.4; }
+  .tunnel-q .sub { font-size:11px;color:var(--grey-text);margin-top:6px; }
+
   .meeting-runner { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); overflow:hidden; }
   .meeting-runner-head { padding:16px 20px; background:var(--gradient-full); color:var(--white); }
   .meeting-runner-body { padding:20px 24px; }
@@ -592,6 +639,8 @@
     .auto-grid-3 { grid-template-columns:1fr; }
     .cal-schedule-grid { grid-template-columns:1fr 1fr; }
     .cal-event-row { grid-template-columns:1fr; }
+    .cockpit-kpi-row, .tunnel-q-grid, .cockpit-grid-2 { grid-template-columns:1fr; }
+    .cockpit-skeleton { grid-template-columns:repeat(4,1fr); }
     .workspace { flex-direction:column; }
     .side-nav { width:100%; height:auto; position:relative; top:0; display:flex; flex-wrap:wrap; padding:8px; gap:4px; border-right:none; border-bottom:1px solid var(--grey-line-soft); }
     .nav-section { display:flex; flex-wrap:wrap; gap:4px; margin:0; padding:0; }
@@ -621,6 +670,19 @@
 </style>
 </head>
 <body>
+
+<div class="demo-picker-backdrop" id="demo-picker-backdrop">
+  <div class="demo-picker">
+    <img src="./assets/logo-nxtgn-farbig.png" alt="NXTGN" style="height:36px" onerror="this.style.display='none'">
+    <h1>CIPP 2.0 · Demo</h1>
+    <p>Wählen Sie zuerst Ihre Rolle — danach sehen Sie nur das, was für Sie relevant ist: Skelett, Cockpit oder Delivery-Tunnel.</p>
+    <div class="demo-picker-btns">
+      <button type="button" class="primary" onclick="pickDemoRole('admin')">NXTGN · Admin<small>Setup, Baukasten, Cockpit, Gates steuern</small></button>
+      <button type="button" onclick="pickDemoRole('delivery')">Kunde · Delivery<small>Status, Freigaben, nächster Schritt — ohne Methoden-Overload</small></button>
+      <button type="button" onclick="pickDemoRole('startup')">Startup · Lieferung<small>Was muss ich liefern? — fokussierte Aufgaben</small></button>
+    </div>
+  </div>
+</div>
 
 <div class="app-layout">
   <header class="topbar">
@@ -2511,7 +2573,11 @@ function navToGate(gateId) {
   activeGateId = gateId;
   render();
 }
-function navToSetup() { activeView = 'setup'; render(); }
+function navToSetup() {
+  if (isActivePhase()) { toast('Baukasten nur in der Setup-Phase — oben „Setup“ wählen oder Tunnel beenden.'); return; }
+  activeView = 'setup';
+  render();
+}
 function navFromZone(gateId) { navToGate(gateId); }
 
 function applyViewClasses() {
@@ -2536,11 +2602,48 @@ function setAppView(view) {
   else state.meta.view = 'admin';
   if (view === 'delivery') activeView = 'customer-home';
   else if (view === 'startup') activeView = 'startup-home';
-  else if (['customer-home','startup-home','meeting','run','calendar'].includes(activeView)) activeView = 'cockpit';
+  else activeView = isSetupPhase() ? 'setup' : 'cockpit';
   saveStateDebounced();
   render();
-  const msg = view === 'startup' ? 'Startup — Ihre Lieferübersicht.' : view === 'delivery' ? 'Kunde — PoC-Überblick.' : 'Admin — volle Konfiguration.';
+  const msg = view === 'startup' ? 'Startup — Delivery-Tunnel.' : view === 'delivery' ? 'Kunde — Delivery-Tunnel.' : isSetupPhase() ? 'Admin — Baukasten & Setup.' : 'Admin — Cockpit & Steuerung.';
   toast(msg, 'pink');
+}
+
+function shouldShowDemoPicker() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('view')) return false;
+  if (params.get('skipDemo') === '1') return false;
+  return true;
+}
+
+function showDemoPicker() {
+  document.body.classList.add('demo-pending');
+  const el = document.getElementById('demo-picker-backdrop');
+  if (el) el.classList.add('show');
+}
+
+function hideDemoPicker() {
+  document.body.classList.remove('demo-pending');
+  const el = document.getElementById('demo-picker-backdrop');
+  if (el) el.classList.remove('show');
+}
+
+function pickDemoRole(view) {
+  hideDemoPicker();
+  if (view === 'delivery') {
+    state.meta.view = 'delivery';
+    activeView = 'customer-home';
+  } else if (view === 'startup') {
+    state.meta.view = 'startup';
+    activeView = 'startup-home';
+  } else {
+    state.meta.view = 'admin';
+    activeView = isSetupPhase() ? 'setup' : 'cockpit';
+  }
+  saveStateDebounced();
+  applyViewClasses();
+  render();
+  toast(view === 'admin' ? 'Admin — volle Steuerung.' : view === 'delivery' ? 'Kunde — schlanker Tunnel.' : 'Startup — Lieferfokus.', 'pink');
 }
 
 function setProjectPhase(phase) {
@@ -2551,8 +2654,9 @@ function setProjectPhase(phase) {
   }
   state.meta.phase = phase === 'active' ? 'active' : 'setup';
   saveStateDebounced();
+  if (phase === 'active' && isAdminView()) activeView = 'cockpit';
   render();
-  if (phase === 'active') toast('Tunnel aktiv — Kunde kann einfahren.', 'pink');
+  if (phase === 'active') toast('Tunnel aktiv — Baukasten ausgeblendet, Cockpit führt.', 'pink');
 }
 
 function setPocType(val) {
@@ -3302,29 +3406,19 @@ function renderStartupHome() {
     </div>`;
   };
   pane.innerHTML = `<div class="startup-home">
-    <div class="su-kpi-row">
-      <div class="su-kpi"><strong>${open}</strong><span>Offen / in Arbeit</span></div>
-      <div class="su-kpi"><strong>${ready}</strong><span>Bereit</span></div>
-      <div class="su-kpi"><strong>${submitted}</strong><span>Eingereicht</span></div>
-      <div class="su-kpi"><strong>${confirmed}</strong><span>Bestätigt</span></div>
+    <div class="tunnel-hero">
+      <h2>Was muss ich liefern?</h2>
+      <p>Fokussierter Delivery-Tunnel — nur Ihre Aufgaben, Blocker und Termine. Methoden und Gates steuert NXTGN im Hintergrund.</p>
     </div>
-    <div class="ch-grid-2">
-      <div class="ch-card ${urgent.length ? 'red' : 'green'}">
-        <h3>${urgent.length ? 'Jetzt liefern' : 'Kein akuter Lieferdruck'}</h3>
-        ${urgent.length ? urgent.slice(0, 4).map(renderDel).join('') : '<p style="font-size:13px;color:var(--grey-text)">Alle aktuellen Lieferungen sind eingereicht oder das Projekt wartet auf NXTGN/Kunde.</p>'}
-      </div>
-      <div class="ch-card">
-        <h3>Ihr Kontext</h3>
-        <div class="summary-row"><span>Projekt</span><strong>${escapeHtml(state.meta.name || '—')}</strong></div>
-        <div class="summary-row"><span>Ihre Rolle</span><strong>Startup-Lead · ${escapeHtml(state.meta.lead || '—')}</strong></div>
-        <div class="summary-row"><span>NXTGN PM</span><span>${escapeHtml((state.org||{}).nxtgnPm || '—')}</span></div>
-        <div class="summary-row"><span>Aktueller Fokus</span><strong>${escapeHtml(fg ? fg.code + ' · ' + fg.name : '—')}</strong></div>
-        <div class="summary-row"><span>Fortschritt PoC</span><span>${overallProgress()}%</span></div>
-        <div class="summary-row"><span>Nächster Weekly</span><strong>${escapeHtml(getNextMeetingLabel())}</strong></div>
-        <button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="navToMeeting('weekly')">Weekly öffnen →</button>
-      </div>
+    <div class="tunnel-q-grid">
+      <div class="tunnel-q"><h4>Mein nächster Schritt</h4><div class="val">${urgent.length ? escapeHtml(urgent[0].label) : items.find(d => !d.locked && d.status !== 'confirmed') ? escapeHtml((items.find(d => !d.locked && d.status !== 'confirmed')||{}).label || 'Lieferung bearbeiten') : '—'}</div>${urgent.length ? `<div class="sub">${escapeHtml(urgent[0].gateCode)} · ${escapeHtml(urgent[0].phase)}</div>` : ''}${urgent.length ? `<button type="button" class="btn-dark btn-small primary" style="margin-top:8px" onclick="openStartupDeliverable('${urgent[0].gate}','${urgent[0].slug}')">Bearbeiten →</button>` : ''}</div>
+      <div class="tunnel-q"><h4>Was blockiert?</h4><div class="val">${urgent.length ? urgent.length + ' dringend' : 'Nichts Kritisches'}</div><div class="sub">${open} offen · ${ready} bereit zur Einreichung</div></div>
+      <div class="tunnel-q"><h4>Nächster Termin</h4><div class="val">${escapeHtml(getNextMeetingLabel())}</div><div class="sub"><button type="button" class="btn-dark btn-small" onclick="navToMeeting('weekly')">Weekly</button> <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button></div></div>
+      <div class="tunnel-q"><h4>Gesamtstatus</h4><div class="val">${overallProgress()}%</div><div class="sub">Fokus: ${escapeHtml(fg ? fg.code + ' · ' + fg.name : '—')}</div></div>
+      <div class="tunnel-q"><h4>Einreichungen</h4><div class="val">${submitted} eingereicht · ${confirmed} bestätigt</div></div>
+      <div class="tunnel-q"><h4>Ihre Rolle</h4><div class="val">${escapeHtml(state.meta.lead || 'Startup-Lead')}</div><div class="sub">NXTGN PM: ${escapeHtml((state.org||{}).nxtgnPm || '—')}</div></div>
     </div>
-    <div class="ch-card lila"><h3>Alle Lieferungen · Delivery Queue</h3>${items.length ? items.map(renderDel).join('') : '<p style="font-size:13px">Keine Startup-Deliverables für diesen Tunnel aktiviert — NXTGN konfiguriert im Setup.</p>'}</div>
+    <div class="ch-card lila"><h3>Liefer-Queue · nur Ihre Artefakte</h3>${items.length ? items.filter(d => !d.locked).slice(0, 8).map(renderDel).join('') : '<p style="font-size:13px">Keine Deliverables aktiv — NXTGN konfiguriert im Admin-Baukasten.</p>'}${items.filter(d => !d.locked).length > 8 ? `<button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="document.querySelector('.ch-card.lila').scrollIntoView()">Alle ${items.length} anzeigen</button>` : ''}</div>
   </div>`;
 }
 
@@ -3334,93 +3428,44 @@ function renderCustomerHome() {
   const s = getPoCSummary();
   const q = buildDecisionQueue();
   const urgent = q.filter(d => d.urgent);
-  const normal = q.filter(d => !d.urgent);
   const cf = state.customer.confirmations;
   const risk = computeRiskAmpel();
-  const strandHtml = ['g0','g1','g2'].map(id => {
-    const g = GATES.find(x => x.id === id);
-    const pct = gateProgress(id);
-    const meta = STRAND_META[id];
-    return `<div class="strand-bar">
-      <div class="strand-bar-head"><span>${g.code} · ${escapeHtml(meta.strand)}</span><span>${pct}%</span></div>
-      <div class="strand-bar-track"><div class="strand-bar-fill" style="width:${pct}%"></div></div>
-    </div>`;
-  }).join('');
+  const blocker = getCriticalOpenMuss()[0];
+  const action = getTunnelNextAction();
   const decisionHtml = (items, emptyMsg) => items.length ? items.map(d => {
-    if (d.type === 'onboard') return `<div class="decision-item"><h4>${escapeHtml(d.title)}</h4><p>${escapeHtml(d.desc)}</p><p style="font-size:11px;color:var(--grey-faint)">→ Bestätigung im Onboarding-Bereich unten</p></div>`;
+    if (d.type === 'onboard') return `<div class="decision-item"><h4>${escapeHtml(d.title)}</h4><p>${escapeHtml(d.desc)}</p></div>`;
     const actions = d.type === 'g5'
       ? `<button class="approve" onclick="customerGateApproval('g5','approved')">Go</button><button onclick="customerGateApproval('g5','change')">Go unter Bedingungen</button><button class="escalate" onclick="customerGateApproval('g5','deferred')">Stop / Später</button>`
-      : `<button class="approve" onclick="customerGateApproval('${d.gateId}','approved')">Freigeben</button><button class="escalate" onclick="customerGateApproval('${d.gateId}','escalated')">Eskalieren</button><button onclick="customerGateApproval('${d.gateId}','change')">Änderung</button><button class="defer" onclick="customerGateApproval('${d.gateId}','deferred')">Nicht jetzt</button>`;
+      : `<button class="approve" onclick="customerGateApproval('${d.gateId}','approved')">Freigeben</button><button class="escalate" onclick="customerGateApproval('${d.gateId}','escalated')">Eskalieren</button><button class="defer" onclick="customerGateApproval('${d.gateId}','deferred')">Nicht jetzt</button>`;
     return `<div class="decision-item${d.urgent?' urgent':''}"><h4>${escapeHtml(d.title)}</h4><p>${escapeHtml(d.desc)}</p><div class="decision-actions">${actions}</div></div>`;
   }).join('') : `<p style="font-size:13px;color:var(--grey-text)">${emptyMsg}</p>`;
-  const meetingsHtml = MEETING_FLOW.map(m => {
-    const done = state.meetings[m.id] && state.meetings[m.id].done;
-    const occ = getMeetingNextOccurrence(m.id);
-    const when = occ ? formatMeetingWhen(occ) : '—';
-    return `<div class="summary-row"><span>${done ? '✓ ' : ''}${escapeHtml(m.label)}<br><span style="font-size:10px;color:var(--grey-faint)">${escapeHtml(when)}</span></span>
-      <span style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end">
-        <button type="button" class="btn-dark btn-small" onclick="navToMeeting('${m.id}')">Öffnen</button>
-        <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button>
-      </span></div>`;
-  }).join('');
-  const canvas = (state.gates.g0.methods || {})['poc-canvas'] || {};
-  const canvasPreview = (canvas.zielbild || canvas.problem || canvas['kpi-primaer']) ? `
-    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
-      <div style="background:var(--beige);padding:8px;border-radius:4px;grid-column:span 2"><strong style="color:var(--lila)">Problem</strong><br>${escapeHtml((canvas.problem||'—').slice(0,100))}${(canvas.problem||'').length>100?'…':''}</div>
-      <div style="background:#faf8fc;padding:8px;border-radius:4px;border:1px solid var(--lila)"><strong style="color:var(--lila)">KPI</strong><br>${escapeHtml(canvas['kpi-primaer']||'—')}</div>
-      <div style="background:var(--beige);padding:8px;border-radius:4px"><strong style="color:var(--lila)">Zielbild</strong><br>${escapeHtml((canvas.zielbild||'—').slice(0,80))}${(canvas.zielbild||'').length>80?'…':''}</div>
-    </div>` : '';
   pane.innerHTML = `<div class="customer-home">
     ${!onboardingComplete() && isActivePhase() ? `
     <div class="ch-card lila">
-      <h3>A · Onboarding — Freigabe zum Start</h3>
-      <p style="font-size:12px;color:var(--grey-text);margin-bottom:12px">NXTGN hat den PoC vorbereitet. Bitte bestätigen Sie:</p>
-      <div class="confirm-row"><input type="checkbox" ${cf.zielbild?'checked':''} onchange="toggleCustomerConfirm('zielbild')"><span>Ja, das Zielbild stimmt</span></div>
-      <div class="confirm-row"><input type="checkbox" ${cf.kontakte?'checked':''} onchange="toggleCustomerConfirm('kontakte')"><span>Ja, Ansprechpartner &amp; Rollen stimmen</span></div>
-      <div class="confirm-row"><input type="checkbox" ${cf.termine?'checked':''} onchange="toggleCustomerConfirm('termine')"><span>Ja, Termine &amp; Ressourcen sind realistisch</span></div>
+      <h3>Onboarding · Freigabe zum Start</h3>
+      <div class="confirm-row"><input type="checkbox" ${cf.zielbild?'checked':''} onchange="toggleCustomerConfirm('zielbild')"><span>Zielbild stimmt</span></div>
+      <div class="confirm-row"><input type="checkbox" ${cf.kontakte?'checked':''} onchange="toggleCustomerConfirm('kontakte')"><span>Ansprechpartner &amp; Rollen stimmen</span></div>
+      <div class="confirm-row"><input type="checkbox" ${cf.termine?'checked':''} onchange="toggleCustomerConfirm('termine')"><span>Termine &amp; Ressourcen realistisch</span></div>
     </div>` : ''}
-    <div class="ch-grid-2">
-      <div class="ch-card ${urgent.length ? 'red' : 'green'}">
-        <h3>${urgent.length ? 'Braucht Ihre Entscheidung' : 'Läuft planmäßig'}</h3>
-        ${decisionHtml(urgent.length ? urgent : normal.slice(0, 2), urgent.length ? '' : 'Keine offenen Entscheidungen — Sie müssen aktuell nichts tun.')}
-      </div>
-      <div class="ch-card">
-        <h3>PoC Summary</h3>
-        <div class="summary-row"><span>Projekt</span><strong>${escapeHtml(state.meta.name || '—')}</strong></div>
-        <div class="summary-row"><span>Zielbild</span><span>${escapeHtml((s.zielbild || '—').slice(0, 80))}${(s.zielbild||'').length > 80 ? '…' : ''}</span></div>
-        <div class="summary-row"><span>Primäre KPI</span><strong>${escapeHtml(s.kpi || '—')}</strong></div>
-        <div class="summary-row"><span>Gesamtstatus</span><span><span class="ampel ${risk}"></span> ${overallProgress()}%</span></div>
-        <div class="summary-row"><span>Nächster Freigabepunkt</span><strong>G3 · Konvergenz</strong></div>
-        ${canvasPreview}
-        <button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="navToGate('g0')">PoC Canvas ansehen →</button>
-      </div>
+    <div class="tunnel-hero">
+      <h2>${escapeHtml(state.meta.name || 'Ihr PoC')}</h2>
+      <p>Delivery-Tunnel — nur Status, Freigaben und nächste Schritte. Keine Methodenbibliothek, kein PM-Overload.</p>
     </div>
-    <div class="ch-grid-2">
-      <div class="ch-card">
-        <h3>Ihre Rolle &amp; Verantwortung</h3>
-        <div class="summary-row"><span>Sponsor</span><span>${escapeHtml(s.sponsor || '—')}</span></div>
-        <div class="summary-row"><span>Fachowner (Sie)</span><strong>${escapeHtml(s.owner || '—')}</strong></div>
-        <div class="summary-row"><span>NXTGN PM</span><span>${escapeHtml((state.org||{}).nxtgnPm || '—')}</span></div>
-        <div class="summary-row"><span>Startup-Lead</span><span>${escapeHtml(state.meta.lead || '—')}</span></div>
-        <div class="summary-row"><span>Steuerkreis</span><span>${escapeHtml((state.org||{}).steeringCircle || '—')}</span></div>
-      </div>
-      <div class="ch-card">
-        <h3>Parallele Vorbereitung · G0 / G1 / G2</h3>
-        ${strandHtml}
-        <p style="font-size:11px;color:var(--grey-faint);margin-top:8px">G3 wird aktiv, wenn alle drei Stränge geschlossen sind.</p>
-      </div>
+    <div class="tunnel-q-grid">
+      <div class="tunnel-q"><h4>Wo stehen wir?</h4><div class="val"><span class="ampel ${risk}"></span> ${overallProgress()}%</div><div class="sub">${escapeHtml((s.zielbild || 'Zielbild in Vorbereitung').slice(0, 60))}${(s.zielbild||'').length>60?'…':''}</div></div>
+      <div class="tunnel-q"><h4>Nächster Schritt</h4><div class="val">${escapeHtml(action.gate ? action.gate.code + ' · ' : '')}${escapeHtml(action.text.slice(0, 55))}${action.text.length>55?'…':''}</div></div>
+      <div class="tunnel-q"><h4>Was blockiert?</h4><div class="val">${blocker ? escapeHtml(blocker.text.slice(0, 50)) + (blocker.text.length>50?'…':'') : 'Kein kritischer Blocker'}</div>${blocker ? `<div class="sub">${escapeHtml(blocker.code)}</div>` : ''}</div>
+      <div class="tunnel-q"><h4>Freigaben</h4><div class="val">${urgent.length ? urgent.length + ' dringend' : q.length + ' offen'}</div></div>
+      <div class="tunnel-q"><h4>Nächster Termin</h4><div class="val">${escapeHtml(getNextMeetingLabel())}</div><div class="sub"><button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button> <button type="button" class="btn-dark btn-small" onclick="navToMeeting('weekly')">Weekly</button></div></div>
+      <div class="tunnel-q"><h4>Gesamtstatus</h4><div class="val">KPI: ${escapeHtml(s.kpi || '—')}</div><div class="sub">Owner: ${escapeHtml(s.owner || '—')} · NXTGN: ${escapeHtml((state.org||{}).nxtgnPm || '—')}</div></div>
     </div>
-    <div class="ch-grid-2">
-      <div class="ch-card">
-        <h3>Entscheidungsqueue</h3>
-        ${decisionHtml(q.slice(0, 6), 'Keine offenen Entscheidungen.')}
-      </div>
-      <div class="ch-card">
-        <h3>Termine &amp; Meetings</h3>
-        ${meetingsHtml}
-        <div class="summary-row" style="margin-top:12px"><span>Weekly</span><strong>${escapeHtml(getNextMeetingLabel())}</strong></div>
-        <button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="navToCalendar()">Kalender &amp; Outlook-Sync →</button>
-      </div>
+    <div class="cockpit-block" style="margin-bottom:4px">
+      <h3>Skelett · Fortschritt (read-only)</h3>
+      ${renderSkeletonStrip('navToGate')}
+    </div>
+    <div class="ch-card ${urgent.length ? 'red' : ''}">
+      <h3>${urgent.length ? 'Braucht Ihre Entscheidung' : 'Entscheidungen &amp; Freigaben'}</h3>
+      ${decisionHtml(urgent.length ? urgent : q.slice(0, 4), 'Keine offenen Entscheidungen — Sie müssen aktuell nichts tun.')}
     </div>
   </div>`;
 }
@@ -3504,110 +3549,45 @@ function renderG5DecisionPack() {
 function renderSideNav() {
   const nav = document.getElementById('side-nav');
   if (!nav) return;
+  const termNav = `<button type="button" class="nav-item${activeView==='calendar'||activeView==='meeting'?' active':''}" onclick="navToCalendar()">
+    <span class="nav-code">TERM</span><span class="nav-label">Termine${getNextUpcomingMeeting() ? ' · ' + escapeHtml(getNextUpcomingMeeting().label) : ''}</span>
+  </button>`;
   if (isStartupView()) {
-    const items = buildStartupDeliverables();
-    const delNav = items.filter(d => !d.locked).slice(0, 8).map(d =>
-      `<button type="button" class="nav-item" onclick="openStartupDeliverable('${d.gate}','${d.slug}')">
-        <span class="nav-code">${escapeHtml(d.gateCode)}</span><span class="nav-label">${escapeHtml(d.label.slice(0, 28))}${d.label.length>28?'…':''}</span>
-        <span class="su-status ${d.status}" style="font-size:9px;padding:2px 6px">${d.status === 'submitted' ? '✓' : d.status === 'ready' ? '!' : '·'}</span>
-      </button>`
-    ).join('');
-    const meetingItems = MEETING_FLOW.map(m => {
-      const isActive = activeView === 'meeting' && activeMeetingId === m.id;
-      return `<button type="button" class="nav-item${isActive?' active':''}" onclick="navToMeeting('${m.id}')">
-        <span class="nav-code">MTG</span><span class="nav-label">${escapeHtml(m.label)}</span>
-      </button>`;
-    }).join('');
-    const gateItems = ['g1','g2','g3','g4'].map(id => {
-      const g = GATES.find(x => x.id === id);
-      const locked = isGateLocked(id);
-      const pct = gateProgress(id);
-      const isActive = activeView === 'gate' && activeGateId === id;
-      return `<button type="button" class="nav-item${isActive?' active':''}${locked?' locked':''}" ${locked ? '' : `onclick="navToGate('${id}')"`}>
-        <span class="nav-code">${g.code}</span><span class="nav-label">${escapeHtml(g.name)}</span><span class="nav-pct">${locked?'🔒':pct+'%'}</span>
-      </button>`;
-    }).join('');
     nav.innerHTML = `
       <div class="nav-section">
-        <div class="nav-section-label">Startup</div>
+        <div class="nav-section-label">Delivery-Tunnel</div>
         <button type="button" class="nav-item${activeView==='startup-home'?' active':''}" onclick="navToStartupHome()">
-          <span class="nav-code">HOME</span><span class="nav-label">Was muss ich liefern?</span>
+          <span class="nav-code">HOME</span><span class="nav-label">Mein nächster Schritt</span>
         </button>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Meine Deliverables</div>
-        ${delNav || '<div style="font-size:11px;padding:8px;color:var(--grey-faint)">Keine aktiven Lieferungen</div>'}
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Meetings</div>
-        <button type="button" class="nav-item${activeView==='calendar'?' active':''}" onclick="navToCalendar()">
-          <span class="nav-code">CAL</span><span class="nav-label">Kalender · iCal</span>
-        </button>
-        ${meetingItems}
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Gates · Lieferbezug</div>
-        ${gateItems}
+        ${termNav}
       </div>
       <div class="nav-meta-box">
         <strong>Startup · ${isActivePhase() ? 'Tunnel' : 'Vorbereitung'}</strong>
-        ${items.filter(d => d.status === 'open' || d.status === 'progress').length} offen
+        ${buildStartupDeliverables().filter(d => d.status === 'open' || d.status === 'progress').length} offen
       </div>`;
     return;
   }
   if (isCustomerView()) {
-    const gateItems = GATES.filter(g => g.id !== 'begleit').map(g => {
-      const locked = isGateLocked(g.id);
-      const pct = gateProgress(g.id);
-      const done = isMussComplete(g.id);
-      const parallel = ['g0','g1','g2'].includes(g.id);
-      const label = g.id === 'entry' ? 'Entry Check' : g.name;
-      const isActive = activeView === 'gate' && activeGateId === g.id;
-      return `<button type="button" class="nav-item${isActive?' active':''}${locked?' locked':''}${done?' done':''}" ${locked ? '' : `onclick="navToGate('${g.id}')"`}>
-        <span class="nav-code">${g.code}${parallel ? '<span class="nav-badge">∥</span>' : ''}</span>
-        <span class="nav-label">${escapeHtml(label)}</span>
-        <span class="nav-pct">${locked ? '🔒' : pct + '%'}</span>
-      </button>`;
-    }).join('');
-    const meetingItems = MEETING_FLOW.map(m => {
-      const isActive = activeView === 'meeting' && activeMeetingId === m.id;
-      return `<button type="button" class="nav-item${isActive?' active':''}" onclick="navToMeeting('${m.id}')">
-        <span class="nav-code">MTG</span><span class="nav-label">${escapeHtml(m.label)}</span>
-      </button>`;
-    }).join('');
     nav.innerHTML = `
       <div class="nav-section">
-        <div class="nav-section-label">Ihr PoC</div>
+        <div class="nav-section-label">Delivery-Tunnel</div>
         <button type="button" class="nav-item${activeView==='customer-home'?' active':''}" onclick="navToCustomerHome()">
-          <span class="nav-code">HOME</span><span class="nav-label">Status &amp; Entscheidungen</span>
+          <span class="nav-code">HOME</span><span class="nav-label">Status &amp; Freigaben</span>
         </button>
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Meetings</div>
-        <button type="button" class="nav-item${activeView==='calendar'?' active':''}" onclick="navToCalendar()">
-          <span class="nav-code">CAL</span><span class="nav-label">Kalender · iCal</span>
-        </button>
-        ${meetingItems}
-      </div>
-      <div class="nav-section">
-        <div class="nav-section-label">Fortschritt · read-only</div>
-        ${gateItems}
-        <button type="button" class="nav-item${activeView==='gate'&&activeGateId==='begleit'?' active':''}" onclick="navToGate('begleit')">
-          <span class="nav-code">RAID</span><span class="nav-label">Risiken &amp; Änderungen</span>
-        </button>
+        ${termNav}
       </div>
       <div class="nav-meta-box">
         <strong>Kunde · ${isActivePhase() ? 'Tunnel aktiv' : 'Vorbereitung'}</strong>
-        ${buildDecisionQueue().length} offene Entscheidungen
+        ${buildDecisionQueue().filter(d => d.urgent).length} dringend
       </div>`;
     return;
   }
-  const gateItems = GATES.map(g => {
+  const gateItems = GATES.filter(g => g.id !== 'begleit').map(g => {
     const locked = isGateLocked(g.id);
     const pct = gateProgress(g.id);
     const done = isMussComplete(g.id);
     const parallel = ['g0','g1','g2'].includes(g.id);
-    const label = g.id === 'entry' ? 'Entry Check' : g.id === 'begleit' ? 'Begleitung' : g.name;
+    const label = g.id === 'entry' ? 'Entry Check' : g.name;
     const isActive = activeView === 'gate' && activeGateId === g.id;
     return `<button type="button" class="nav-item${isActive?' active':''}${locked?' locked':''}${done?' done':''}" ${locked ? '' : `onclick="navToGate('${g.id}')"`}>
       <span class="nav-code">${g.code}${parallel ? '<span class="nav-badge">∥</span>' : ''}</span>
@@ -3619,34 +3599,31 @@ function renderSideNav() {
     <div class="nav-section">
       <div class="nav-section-label">Steuerung</div>
       <button type="button" class="nav-item${activeView==='cockpit'?' active':''}" onclick="navToCockpit()">
-        <span class="nav-code">OBEYA</span><span class="nav-label">Obeya Cockpit · 9 Zonen</span>
+        <span class="nav-code">COCKPIT</span><span class="nav-label">Status &amp; Blocker</span>
       </button>
-      <button type="button" class="nav-item${activeView==='run'?' active':''}" onclick="navToRun()">
-        <span class="nav-code">AUTO</span><span class="nav-label">Auto-Run · Agenda &amp; Drafts</span>
-      </button>
+      ${termNav}
     </div>
     <div class="nav-section">
-      <div class="nav-section-label">Meetings</div>
-      <button type="button" class="nav-item${activeView==='calendar'?' active':''}" onclick="navToCalendar()">
-        <span class="nav-code">CAL</span><span class="nav-label">Kalender · iCal${getNextUpcomingMeeting() ? ' · ' + escapeHtml(getNextUpcomingMeeting().whenLabel.split(' · ')[0]) : ''}</span>
-      </button>
-      ${MEETING_FLOW.map(m => `<button type="button" class="nav-item${activeView==='meeting'&&activeMeetingId===m.id?' active':''}" onclick="navToMeeting('${m.id}')"><span class="nav-code">MTG</span><span class="nav-label">${escapeHtml(m.label)}</span></button>`).join('')}
-    </div>
-    <div class="nav-section">
-      <div class="nav-section-label">Gates &amp; Tunnel</div>
+      <div class="nav-section-label">Skelett · Gates</div>
       ${gateItems}
-    </div>
-    <div class="nav-section admin-only">
-      <div class="nav-section-label">NXTGN Admin</div>
-      <button type="button" class="nav-item${activeView==='setup'?' active':''}" onclick="navToSetup()">
-        <span class="nav-code">SETUP</span><span class="nav-label">Baukasten &amp; Leitfaden</span>
+      <button type="button" class="nav-item${activeView==='gate'&&activeGateId==='begleit'?' active':''}" onclick="navToGate('begleit')">
+        <span class="nav-code">RAID</span><span class="nav-label">Begleitung</span>
       </button>
+    </div>
+    ${isSetupPhase() ? `<div class="nav-section admin-only">
+      <div class="nav-section-label">Setup · Baukasten</div>
+      <button type="button" class="nav-item${activeView==='setup'?' active':''}" onclick="navToSetup()">
+        <span class="nav-code">SETUP</span><span class="nav-label">Werkzeuge konfigurieren</span>
+      </button>
+    </div>` : ''}
+    <div class="nav-section admin-only">
+      <div class="nav-section-label">Admin</div>
       <button type="button" class="nav-item" onclick="openPortfolio()">
         <span class="nav-code">PORT</span><span class="nav-label">Portfolio</span>
       </button>
     </div>
     <div class="nav-meta-box">
-      <strong>${isAdminView() ? 'Admin' : 'Steuerung'} · ${isActivePhase() ? 'Tunnel' : 'Setup'}</strong>
+      <strong>Admin · ${isActivePhase() ? 'Tunnel' : 'Setup'}</strong>
       Gesamt ${overallProgress()}% · ${getOpenMussCount()} Muss offen
     </div>`;
 }
@@ -3654,17 +3631,17 @@ function renderSideNav() {
 function renderContentHeader() {
   const el = document.getElementById('content-header');
   if (!el) return;
-  let title = 'Obeya Cockpit';
-  let sub = 'Steuerungszentrale mit 9 Zonen — für Weekly, Gate-Review und Delivery-Steuerung.';
+  let title = 'Cockpit · Steuerzentrale';
+  let sub = 'Status, Skelett, Blocker und Termine — das Nötigste für Weekly und Gate-Steuerung.';
   let showProjectBar = true;
   if (isParticipantView()) {
     showProjectBar = false;
     if (activeView === 'customer-home') {
-      title = state.meta.name ? state.meta.name : 'Ihr PoC-Überblick';
-      sub = 'Transparenz, Freigaben und Entscheidungen — NXTGN konfiguriert und steuert, Sie entscheiden wo nötig.';
+      title = state.meta.name ? state.meta.name : 'Delivery-Tunnel';
+      sub = 'Wo stehen wir? Was blockiert? Was muss ich freigeben? — ohne Methoden-Overload.';
     } else if (activeView === 'startup-home') {
-      title = state.meta.name ? state.meta.name + ' · Lieferung' : 'Was muss ich liefern?';
-      sub = 'Ihre Deliverables, Nachweise und Einreichungen — NXTGN moderiert, Sie liefern fokussiert.';
+      title = state.meta.name ? state.meta.name + ' · Lieferung' : 'Delivery-Tunnel · Startup';
+      sub = 'Nächster Schritt, fällige Lieferungen und Termine — NXTGN steuert den Rest.';
     } else if (activeView === 'meeting') {
       const mf = MEETING_FLOW.find(x => x.id === activeMeetingId);
       title = mf ? mf.label + ' · Meeting-Modus' : 'Meeting';
@@ -3718,66 +3695,88 @@ function renderContentHeader() {
   if (showProjectBar) fillMetaInputs();
 }
 
+function renderSkeletonStrip(onclickFn) {
+  const fn = onclickFn || 'navToGate';
+  const skeletonIds = ['entry','g0','g1','g2','g3','g4','g5'];
+  return `<div class="cockpit-skeleton">${skeletonIds.map(id => {
+    const g = GATES.find(x => x.id === id);
+    const locked = isGateLocked(id);
+    const pct = gateProgress(id);
+    const done = isMussComplete(id);
+    const parallel = ['g0','g1','g2'].includes(id);
+    const convergence = id === 'g3';
+    const label = id === 'entry' ? 'Entry' : g.name.split(' ')[0];
+    return `<div class="sk-gate${parallel?' parallel':''}${convergence?' convergence':''}${locked?' locked':''}${done?' done':''}" ${locked ? '' : `onclick="${fn}('${id}')"`}>
+      <div class="sk-gate-code">${g.code}${parallel ? ' ∥' : ''}</div>
+      <div class="sk-gate-pct">${locked ? '🔒' : pct + '%'}</div>
+      <div class="sk-gate-label">${escapeHtml(label)}</div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
 function renderCockpitView() {
   const pane = document.getElementById('view-cockpit');
   if (!pane) return;
-  const zones = OBEYA_ZONES.map((z, i) => `
-    <div class="cockpit-zone">
-      <div class="cz-head"><span>${escapeHtml(z.title)}</span><span class="cz-num">${i + 1}</span></div>
-      <div class="cz-body">${renderCockpitZoneBody(z)}</div>
-      <button type="button" class="cz-go" onclick="navFromZone('${z.gate}')">Zum Gate →</button>
-    </div>
-  `).join('');
-  const parSummary = ['g0','g1','g2'].map(id => {
-    const meta = STRAND_META[id];
-    const g = GATES.find(x => x.id === id);
-    return `<div class="obeya-par-card" onclick="navToGate('${id}')">
-      <div style="font-size:9px;font-weight:700;color:var(--lila)">${meta.strand}</div>
-      <div style="font-weight:700;font-size:13px;margin:4px 0">${g.code} · ${gateProgress(id)}%</div>
-      <div style="font-size:10px;color:var(--grey-text)">${escapeHtml(meta.q)}</div>
-    </div>`;
-  }).join('');
-  const meetings = MEETING_FLOW.map(m => {
-    const done = state.meetings && state.meetings[m.id] && state.meetings[m.id].done;
-    const occ = getMeetingNextOccurrence(m.id);
-    const when = occ ? formatMeetingWhen(occ).split(' · ')[0] : '';
-    return `<div class="meeting-step${done?' done':''}" onclick="navToMeeting('${m.id}')">
-      <div class="ms-title">${done?'✓ ':''}${escapeHtml(m.label)}${when ? `<span style="font-size:10px;font-weight:400;display:block;color:var(--grey-text)">${escapeHtml(when)}</span>` : ''}</div>
-      <ul>${m.checks.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>
-    </div>`;
-  }).join('');
+  const risk = computeRiskAmpel();
+  const action = getTunnelNextAction();
+  const critical = getCriticalOpenMuss().slice(0, 5);
+  const nextMeet = getNextUpcomingMeeting();
+  const o = state.org || {};
   const focus = getCurrentFocusGate();
-  const readiness = generateGateReadiness(focus);
-  const autoSection = isAdminView() ? `
-      <div class="obeya-meetings" style="margin-top:20px;border-top:1px solid var(--grey-line-soft);padding-top:16px">
-        <h3 style="font-size:14px;font-weight:700;margin-bottom:8px">NXTGN Auto-Steuerung</h3>
-        <div class="auto-grid-3" style="margin-bottom:12px">
-          <div class="auto-card"><h3>Gate ${escapeHtml(readiness.gateCode)}</h3><div class="auto-score" style="font-size:20px">${readiness.score}%</div><p style="font-size:11px">${escapeHtml(readiness.recommendation.slice(0,80))}…</p><button type="button" class="btn-dark btn-small" style="margin-top:8px" onclick="navToRun()">Auto-Run →</button></div>
-          <div class="auto-card"><h3>Nächstes Weekly</h3><ul class="auto-list">${generateMeetingPack('weekly').agenda.slice(0,3).map(a=>`<li>${escapeHtml(a.slice(0,50))}</li>`).join('')}</ul><button type="button" class="btn-dark btn-small" style="margin-top:8px" onclick="navToMeeting('weekly')">Weekly →</button></div>
-          <div class="auto-card"><h3>G5 Draft</h3><span class="auto-rec">${escapeHtml(generateG5Draft().recommendation.slice(0,40))}…</span><button type="button" class="btn-dark btn-small" style="margin-top:8px" onclick="applyG5Draft()">Draft übernehmen</button></div>
+  const fg = GATES.find(x => x.id === focus);
+  const evidencePct = Math.round((GATES.filter(g => g.id !== 'begleit').reduce((a, g) => a + gateProgress(g.id), 0)) / 8);
+  const openMuss = getOpenMussCount();
+  pane.innerHTML = `<div class="cockpit-slim">
+    <div class="obeya-full-head" style="margin-bottom:0">
+      <h2>Cockpit · Steuerzentrale</h2>
+      <p>Status, Skelett, Blocker und Termine — ohne Methoden-Overload. Baukasten nur im Admin-Setup.</p>
+    </div>
+    <div class="cockpit-kpi-row">
+      <div class="cockpit-kpi ${risk === 'red' ? 'red' : risk === 'green' ? 'green' : ''}"><strong><span class="ampel ${risk}"></span> ${overallProgress()}%</strong><span>Gesamtfortschritt · ${risk === 'green' ? 'auf Kurs' : risk === 'yellow' ? 'Achtung' : 'kritisch'}</span></div>
+      <div class="cockpit-kpi"><strong>${escapeHtml(fg ? fg.code : '—')}</strong><span>Nächster Meilenstein · ${escapeHtml(fg ? fg.name : '')}</span></div>
+      <div class="cockpit-kpi"><strong>${openMuss}</strong><span>Offene Muss-Kriterien</span></div>
+      <div class="cockpit-kpi"><strong>${nextMeet ? escapeHtml(nextMeet.whenLabel.split(' · ')[0]) : '—'}</strong><span>Nächster Termin${nextMeet ? ' · ' + escapeHtml(nextMeet.label) : ''}</span></div>
+    </div>
+    <div class="cockpit-block">
+      <h3>Skelett · Gates (G0 ∥ G1 ∥ G2 → G3 → G4 → G5)</h3>
+      ${renderSkeletonStrip('navToGate')}
+    </div>
+    <div class="cockpit-grid-2">
+      <div class="cockpit-block">
+        <h3>Nächster Schritt · NXTGN</h3>
+        <p style="font-size:13px;line-height:1.5;margin-bottom:10px">${escapeHtml(action.text)}</p>
+        <button type="button" class="btn-dark btn-small primary" onclick="navToGate('${action.gateId}')">${escapeHtml(action.gate ? action.gate.code : 'Gate')} öffnen →</button>
+        <button type="button" class="btn-dark btn-small" style="margin-left:6px" onclick="navToMeeting('weekly')">Weekly →</button>
+      </div>
+      <div class="cockpit-block">
+        <h3>Verantwortliche</h3>
+        <ul>
+          <li><strong>Sponsor</strong> · ${escapeHtml(o.sponsor || '—')}</li>
+          <li><strong>NXTGN PM</strong> · ${escapeHtml(o.nxtgnPm || '—')}</li>
+          <li><strong>Owner Kunde</strong> · ${escapeHtml(state.meta.owner || '—')}</li>
+          <li><strong>Startup-Lead</strong> · ${escapeHtml(state.meta.lead || '—')}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="cockpit-grid-2">
+      <div class="cockpit-block ${critical.length ? 'red' : ''}" style="${critical.length ? 'border-left:4px solid #c0392b' : ''}">
+        <h3>Rote Blocker · offene Muss-Punkte</h3>
+        ${critical.length ? `<ul>${critical.map(x => `<li><strong>${escapeHtml(x.code)}</strong> · ${escapeHtml(x.text.slice(0, 70))}${x.text.length > 70 ? '…' : ''}</li>`).join('')}</ul>` : '<p style="font-size:12px;color:var(--grey-text)">Keine kritischen Blocker — Weekly kann Fokus auf Fortschritt legen.</p>'}
+      </div>
+      <div class="cockpit-block">
+        <h3>Evidence &amp; Termine</h3>
+        <ul>
+          <li><strong>Artefakt-Fortschritt</strong> · ca. ${evidencePct}% über alle Gates</li>
+          <li><strong>Weekly</strong> · ${escapeHtml((o.weeklyDay || '—') + (o.weeklyTime ? ' · ' + o.weeklyTime : ''))}</li>
+          <li><strong>Entscheidungen offen</strong> · ${buildDecisionQueue().filter(d => d.urgent).length}</li>
+        </ul>
+        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+          <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button>
+          ${isSetupPhase() ? '<button type="button" class="btn-dark btn-small primary" onclick="navToSetup()">Baukasten (Setup)</button>' : ''}
         </div>
-      </div>` : '';
-  pane.innerHTML = `
-    <div class="obeya-full">
-      <div class="obeya-full-head">
-        <h2>Obeya Cockpit · 9 Zonen</h2>
-        <p>Dauerhafte Leitoberfläche — in Terminen Zone für Zone durchgehen, dann ins passende Gate springen.</p>
       </div>
-      <div class="obeya-grid">${zones}</div>
-      <div class="obeya-parallel-summary">${parSummary}
-        <div class="obeya-par-card" style="background:var(--pink-80)" onclick="navToGate('g3')">
-          <div style="font-size:9px;font-weight:700">Konvergenz</div>
-          <div style="font-weight:700;font-size:13px;margin:4px 0">G3 · ${gateProgress('g3')}%</div>
-          <div style="font-size:10px">Erst wenn G0–G2 vollständig</div>
-        </div>
-      </div>
-      <div class="obeya-meetings">
-        <h3 style="font-size:14px;font-weight:700;margin-bottom:8px">Meeting-Steuerung</h3>
-        <p style="font-size:12px;color:var(--grey-text);margin-bottom:10px">Weekly → Gate-Review → Review Point → Retro · <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender &amp; Outlook →</button></p>
-        <div class="meeting-flow-steps">${meetings}</div>
-      </div>
-      ${autoSection}
-    </div>`;
+    </div>
+  </div>`;
 }
 
 function renderGateContext() {
@@ -3829,8 +3828,8 @@ function renderSetupView() {
   pane.innerHTML = `
     <div class="setup-view-grid">
       <div class="setup-card">
-        <h3>Methoden-Baukasten</h3>
-        <p style="font-size:13px;color:var(--grey-text);margin-bottom:12px">PoC-Typ bestimmt Empfehlungen. ${allMethodEntries().filter(m => isMethodEnabled(m.slug)).length} Werkzeuge aktiv.</p>
+        <h3>Admin-Baukasten · nur vor Tunnel-Start</h3>
+        <p style="font-size:13px;color:var(--grey-text);margin-bottom:12px">PoC-Typ, Risiko, Werkzeuge und Meetings konfigurieren. Nach „Tunnel starten“: Cockpit führt, Baukasten verschwindet aus der Navigation.</p>
         <label style="font-size:12px;font-weight:600;display:block;margin-bottom:12px">PoC-Typ
           <select style="display:block;width:100%;margin-top:6px;padding:8px;font-family:inherit;border:1px solid var(--grey-line);border-radius:var(--radius-sm)" onchange="setPocType(this.value)">${pocOpts}</select>
         </label>
@@ -3842,8 +3841,13 @@ function renderSetupView() {
       </div>
       <div class="setup-card">
         <h3>Leitfaden NXTGN-PM</h3>
-        <p style="font-size:13px;color:var(--grey-text);margin-bottom:12px">Was wann — in Reihenfolge abarbeiten.</p>
+        <p style="font-size:13px;color:var(--grey-text);margin-bottom:12px">Was wann — in Reihenfolge abarbeiten. Nach Tunnel-Start: Cockpit statt Baukasten.</p>
         ${playbook}
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--grey-line-soft)">
+          <h4 style="font-size:12px;font-weight:700;margin-bottom:8px">Hintergrund-Tools (nicht im Alltag sichtbar)</h4>
+          <button type="button" class="btn-dark btn-small" onclick="navToRun()">Auto-Run · Agenda &amp; Drafts</button>
+          <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender-Setup</button>
+        </div>
       </div>
     </div>`;
 }
@@ -3977,7 +3981,7 @@ function renderPanel() {
     ${startupBlock}
     ${!isParticipantView() ? orgBlock : ''}
 
-    ${isStartupView() ? '' : `
+    ${isStartupView() || isCustomerView() ? '' : `
     <div class="sec-head">
       ${secTag()}
       <h3 class="sec-title">Muss-Kriterien</h3>
@@ -3989,7 +3993,7 @@ function renderPanel() {
   `}
   `;
 
-  if (!isStartupView() && (g.nice.length || state.gates[g.id].nice.length || niceTotal > 0 || g.id !== 'begleit') && (!deliveryStrict || niceTotal > 0)) {
+  if (!isStartupView() && !isCustomerView() && (g.nice.length || state.gates[g.id].nice.length || niceTotal > 0 || g.id !== 'begleit') && (!deliveryStrict || niceTotal > 0)) {
     html += `
       <div class="sec-head">
         ${secTag('nice')}
@@ -4002,7 +4006,7 @@ function renderPanel() {
     `;
   }
 
-  html += isStartupView() ? '' : `
+  html += isStartupView() || isCustomerView() ? '' : `
     <div class="sec-head">
       ${secTag('methoden')}
       <h3 class="sec-title">KPI-Tracker</h3>
@@ -4013,16 +4017,18 @@ function renderPanel() {
     ${showAddMuss ? renderAddRow(g.id, 'kpis') : ''}
   `;
 
-  html += `
+  html += isCustomerView() ? '' : `
     <div class="sec-head">
       ${secTag('methoden')}
-      <h3 class="sec-title">${isStartupView() ? 'Ihre Lieferartefakte' : 'Methoden'}${deliveryStrict || isCustomerView() ? ' · Übersicht' : ''}</h3>
-      <span class="sec-hint">${filteredMethods.length} Werkzeuge · ${isCustomerView() ? 'von NXTGN gepflegt' : isStartupView() ? 'ausfüllen und einreichen' : 'klick um auszufüllen'}</span>
+      <h3 class="sec-title">${isStartupView() ? 'Ihre Lieferartefakte' : 'Methoden · Baukasten'}</h3>
+      <span class="sec-hint">${filteredMethods.length} Werkzeuge · ${isStartupView() ? 'ausfüllen und einreichen' : 'Admin / Setup'}</span>
     </div>
     <div class="method-list">
-      ${filteredMethods.length ? filteredMethods.map(m => renderMethodCard(g.id, m)).join('') : `<div class="ws-empty">${isStartupView() ? 'In diesem Gate keine Startup-Lieferung aktiv — siehe Lieferübersicht.' : 'Keine Methoden für diesen Tunnel aktiviert — NXTGN Admin konfiguriert im Setup.'}</div>`}
+      ${filteredMethods.length ? filteredMethods.map(m => renderMethodCard(g.id, m)).join('') : `<div class="ws-empty">${isStartupView() ? 'Keine Startup-Lieferung in diesem Gate.' : 'Im Baukasten aktivieren.'}</div>`}
     </div>
+  `;
 
+  html += `
     ${isParticipantView() ? '' : `
     <div class="sec-head">
       ${secTag('notes')}
@@ -4998,14 +5004,16 @@ function toast(msg, color) {
   state = blankState();
   await probeStorage();
   updateStoragePill();
-  applyViewClasses();
-  render();
   await loadState(false);
   ensureMetaOrgConfig(state);
   applyUrlViewHint();
-  if (isCustomerView() && (activeView === 'cockpit' || activeView === 'setup')) activeView = 'customer-home';
-  if (isStartupView() && (activeView === 'cockpit' || activeView === 'setup' || activeView === 'customer-home')) activeView = 'startup-home';
+  if (!shouldShowDemoPicker()) {
+    if (isCustomerView() && (activeView === 'cockpit' || activeView === 'setup')) activeView = 'customer-home';
+    if (isStartupView() && (activeView === 'cockpit' || activeView === 'setup' || activeView === 'customer-home')) activeView = 'startup-home';
+    if (isAdminView() && isSetupPhase() && activeView === 'cockpit') activeView = 'setup';
+  }
   applyViewClasses();
+  if (shouldShowDemoPicker()) showDemoPicker();
   render();
   startRemoteSync();
 })();
