@@ -263,24 +263,104 @@
   footer.bottom .rule { max-width:620px; color:var(--grey-text); font-size:11.5px; line-height:1.5; font-weight:400; letter-spacing:0; }
   footer.bottom .rule strong { color:var(--pink); font-weight:700; }
 
-  /* App shell — persistent Obeya + Tunnel */
-  .app-shell { display:grid; grid-template-columns:360px 1fr; gap:20px; align-items:start; }
-  .cockpit-sidebar { position:sticky; top:16px; background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); box-shadow:var(--shadow-sm); overflow:hidden; }
-  .cockpit-sidebar-head { padding:14px 16px; background:var(--gradient-full); color:var(--white); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
-  .cockpit-sidebar-sub { padding:8px 16px 10px; font-size:10px; color:var(--grey-faint); background:var(--beige); border-bottom:1px solid var(--grey-line-soft); line-height:1.4; }
-  .cockpit-sidebar-body { padding:10px; max-height:calc(100vh - 140px); overflow-y:auto; }
-  .cockpit-zone { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); margin-bottom:8px; background:var(--white); overflow:hidden; transition:border-color .12s; }
+  /* ── APP LAYOUT ── */
+  .app-layout { min-height:100vh; display:flex; flex-direction:column; }
+  .topbar { background:var(--white); border-bottom:1px solid var(--grey-line-soft); padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; gap:16px; position:sticky; top:0; z-index:40; box-shadow:var(--shadow-sm); }
+  .topbar-left { display:flex; align-items:center; gap:12px; min-width:0; }
+  .topbar-left img { width:36px; height:36px; object-fit:contain; }
+  .topbar-brand { font-weight:800; font-size:14px; line-height:1.1; }
+  .topbar-brand span { display:block; font-weight:400; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-faint); margin-top:2px; }
+  .topbar-center { display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center; }
+  .topbar-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
+  .view-switch { display:inline-flex; border:1px solid var(--grey-line); border-radius:var(--radius-sm); overflow:hidden; background:var(--beige); }
+  .view-switch button { font-family:inherit; font-size:11px; font-weight:600; letter-spacing:.06em; padding:7px 16px; border:none; background:transparent; cursor:pointer; color:var(--grey-text); transition:all .12s; }
+  .view-switch button.active { background:var(--pink); color:var(--white); }
+  .view-switch button:first-child.active { background:var(--lila); }
+  .phase-switch { display:inline-flex; gap:4px; }
+  .phase-btn { font-family:inherit; font-size:10px; font-weight:600; padding:5px 10px; border-radius:20px; border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
+  .phase-btn.active { background:var(--lila); color:var(--white); border-color:var(--lila); }
+  .topbar-actions .btn-tb { font-family:inherit; font-size:11px; padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
+  .topbar-actions .btn-tb:hover { border-color:var(--pink); color:var(--pink); }
+  .topbar-actions .btn-tb.primary { background:var(--pink); color:var(--white); border-color:var(--pink); }
+  .storage-dot { width:8px; height:8px; border-radius:50%; background:var(--grey-faint); }
+  .storage-dot.ok { background:#2d8a3e; }
+
+  .workspace { display:flex; flex:1; min-height:0; }
+  .side-nav { width:240px; flex-shrink:0; background:var(--white); border-right:1px solid var(--grey-line-soft); padding:16px 0; overflow-y:auto; position:sticky; top:56px; height:calc(100vh - 56px); }
+  .nav-section { padding:0 12px; margin-bottom:20px; }
+  .nav-section-label { font-size:9px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--grey-faint); padding:0 10px 8px; }
+  .nav-item { display:flex; align-items:center; gap:10px; width:100%; padding:9px 12px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font-family:inherit; text-align:left; color:var(--black); transition:all .12s; margin-bottom:2px; }
+  .nav-item:hover { background:var(--beige); }
+  .nav-item.active { background:var(--pink-80); box-shadow:inset 3px 0 0 var(--pink); }
+  .nav-item.locked { opacity:.45; cursor:not-allowed; }
+  .nav-item.done .nav-code { color:var(--pink); }
+  .nav-code { font-size:10px; font-weight:700; letter-spacing:.08em; min-width:42px; color:var(--grey-faint); }
+  .nav-label { font-size:12px; font-weight:500; flex:1; line-height:1.25; }
+  .nav-pct { font-size:10px; font-weight:600; color:var(--grey-faint); }
+  .nav-badge { font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; background:var(--lila); color:var(--white); letter-spacing:.04em; }
+  .nav-meta-box { margin:12px; padding:12px; background:var(--beige); border-radius:var(--radius-sm); font-size:10px; color:var(--grey-text); line-height:1.45; }
+  .nav-meta-box strong { color:var(--black); display:block; font-size:11px; margin-bottom:4px; }
+
+  .content-area { flex:1; min-width:0; padding:24px 32px 48px; overflow-y:auto; }
+  .content-header { margin-bottom:20px; }
+  .content-header h1 { font-size:22px; font-weight:700; letter-spacing:-.01em; margin-bottom:4px; }
+  .content-header .sub { font-size:13px; color:var(--grey-text); line-height:1.45; max-width:720px; }
+  .content-header .project-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:16px; padding:16px 20px; background:var(--white); border-radius:var(--radius-md); border:1px solid var(--grey-line-soft); }
+  .content-header .project-bar label { display:block; font-size:9px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:4px; }
+  .content-header .project-bar input { width:100%; border:none; border-bottom:1px solid var(--grey-line); background:transparent; font-family:inherit; font-size:13px; padding:2px 0 6px; }
+  .view-pane { display:block; }
+  .view-pane.hidden { display:none; }
+
+  /* Obeya full view */
+  .obeya-full { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); overflow:hidden; }
+  .obeya-full-head { padding:16px 20px; background:var(--gradient-full); color:var(--white); }
+  .obeya-full-head h2 { font-size:14px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
+  .obeya-full-head p { font-size:12px; opacity:.9; margin-top:4px; }
+  .obeya-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--grey-line-soft); }
+  .obeya-grid .cockpit-zone { margin:0; border:none; border-radius:0; }
+  .obeya-grid .cockpit-zone .cz-head { padding:10px 14px; font-size:10px; }
+  .obeya-grid .cockpit-zone .cz-body { padding:12px 14px; min-height:100px; font-size:11px; }
+  .obeya-meetings { padding:20px; border-top:1px solid var(--grey-line-soft); background:var(--beige); }
+  .meeting-flow-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .meeting-step { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:10px; font-size:11px; cursor:pointer; background:var(--white); }
+  .meeting-step:hover { border-color:var(--pink); }
+  .meeting-step.done { background:#f4faf5; border-color:#2d8a3e; }
+  .meeting-step .ms-title { font-weight:700; font-size:11px; margin-bottom:6px; }
+  .meeting-step ul { padding-left:14px; margin:0; font-size:10px; color:var(--grey-text); }
+  .obeya-parallel-summary { padding:16px 20px; border-top:1px solid var(--grey-line-soft); display:grid; grid-template-columns:repeat(3,1fr); gap:12px; background:var(--white); }
+  .obeya-par-card { padding:12px; background:var(--beige); border-radius:var(--radius-sm); cursor:pointer; border:1px solid transparent; }
+  .obeya-par-card:hover { border-color:var(--lila); }
+
+  /* Gate view */
+  .gate-context { margin-bottom:16px; }
+  .parallel-tabs { display:flex; gap:6px; flex-wrap:wrap; }
+  .parallel-tab { font-family:inherit; font-size:11px; font-weight:600; padding:8px 14px; border-radius:var(--radius-sm); border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
+  .parallel-tab.active { border-color:var(--lila); background:rgba(105,74,152,.08); color:var(--lila); }
+  .parallel-tab.done { border-color:#2d8a3e; }
+  .tunnel-hint { background:var(--pink-80); border-left:4px solid var(--pink); padding:12px 16px; border-radius:var(--radius-sm); font-size:13px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  .gate-panel { background:var(--white); border-radius:var(--radius-lg); padding:32px 36px; box-shadow:var(--shadow-sm); border:1px solid var(--grey-line-soft); }
+  .gate-tabs { display:flex; gap:4px; margin-bottom:24px; border-bottom:1px solid var(--grey-line-soft); padding-bottom:0; }
+  .gate-tab { font-family:inherit; font-size:12px; font-weight:600; padding:10px 16px; border:none; background:transparent; cursor:pointer; color:var(--grey-faint); border-bottom:2px solid transparent; margin-bottom:-1px; }
+  .gate-tab.active { color:var(--pink); border-bottom-color:var(--pink); }
+  .gate-tab-pane { display:none; }
+  .gate-tab-pane.active { display:block; }
+
+  /* Setup view */
+  .setup-view-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .setup-card { background:var(--white); border-radius:var(--radius-lg); padding:24px; border:1px solid var(--grey-line-soft); }
+  .setup-card h3 { font-size:16px; font-weight:700; margin-bottom:12px; }
+
+  /* Shared components (keep) */
+  .cockpit-zone { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); background:var(--white); overflow:hidden; transition:border-color .12s; }
   .cockpit-zone:hover { border-color:var(--pink); }
-  .cockpit-zone.active { border-color:var(--pink); box-shadow:0 0 0 2px var(--pink-80); }
-  .cockpit-zone .cz-head { padding:8px 10px; background:var(--beige); font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--pink); cursor:pointer; display:flex; justify-content:space-between; align-items:center; }
+  .cockpit-zone .cz-head { padding:8px 10px; background:var(--beige); font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--pink); display:flex; justify-content:space-between; align-items:center; }
   .cz-num { background:var(--pink); color:var(--white); width:18px; height:18px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:9px; }
   .cockpit-zone .cz-body { padding:8px 10px 6px; font-size:11px; color:var(--grey-text); line-height:1.45; }
   .cockpit-zone .cz-row { display:flex; justify-content:space-between; gap:6px; margin-bottom:4px; font-size:10px; }
   .cockpit-zone .cz-bar { height:3px; background:var(--grey-line-soft); border-radius:2px; margin:4px 0; overflow:hidden; }
   .cockpit-zone .cz-bar-fill { height:100%; background:var(--lila); }
   .cockpit-zone .cz-list { margin:4px 0 0; padding-left:14px; font-size:10px; }
-  .cockpit-zone .cz-list li { margin-bottom:2px; }
-  .cockpit-zone .cz-go { width:100%; border:none; border-top:1px solid var(--grey-line-soft); background:var(--beige); padding:6px; font-family:inherit; font-size:10px; font-weight:600; color:var(--pink); cursor:pointer; }
+  .cockpit-zone .cz-go { width:100%; border:none; border-top:1px solid var(--grey-line-soft); background:var(--beige); padding:8px; font-family:inherit; font-size:10px; font-weight:600; color:var(--pink); cursor:pointer; }
   .cockpit-zone .cz-go:hover { background:var(--pink-80); }
   .ampel { display:inline-block; width:8px; height:8px; border-radius:50%; margin-right:4px; vertical-align:middle; }
   .ampel.green { background:#2d8a3e; } .ampel.yellow { background:var(--gelb); } .ampel.red { background:#c0392b; }
@@ -288,91 +368,34 @@
   .status-chip.open { background:var(--grey-line-soft); } .status-chip.progress { background:#fff3cd; }
   .status-chip.done { background:var(--pink-80); color:var(--pink-dark); } .status-chip.escalated { background:#fde8e8; color:#c0392b; }
   .status-chip.na { background:var(--grey-line); color:var(--grey-faint); }
-  .main-col { min-width:0; }
-
-  .view-mode-banner { background:var(--white); border-radius:var(--radius-md); padding:12px 16px; margin-bottom:16px; font-size:12px; border-left:4px solid var(--lila); color:var(--grey-text); line-height:1.5; }
-  .view-mode-banner.delivery { border-left-color:var(--pink); }
-  .view-mode-banner strong { color:var(--black); }
-
-  .entry-hero, .poc-spotlight, .meeting-flow, .parallel-board { background:var(--white); border-radius:var(--radius-lg); padding:20px 24px; margin-bottom:20px; box-shadow:var(--shadow-sm); border:1px solid var(--grey-line-soft); }
-  .entry-hero { border-left:4px solid var(--orange); }
-  .entry-hero h3, .poc-spotlight h3, .meeting-flow h3, .parallel-board h3 { font-size:16px; font-weight:700; margin-bottom:8px; }
-  .entry-hero .eh-grid { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px; }
-  .entry-hero .eh-stat { background:var(--beige); padding:12px; border-radius:var(--radius-sm); font-size:12px; }
-  .entry-hero .eh-stat strong { display:block; font-size:20px; color:var(--pink); margin-bottom:4px; }
-  .poc-spotlight { border-left:4px solid var(--lila); display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
-  .poc-spotlight.done { opacity:.85; border-left-color:#2d8a3e; }
-  .poc-spotlight p { font-size:13px; color:var(--grey-text); max-width:520px; line-height:1.5; }
-
-  .parallel-board { border-top:3px solid var(--lila); }
-  .parallel-board-head { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; }
-  .parallel-board-head span { font-size:10px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-faint); }
-  .parallel-board-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-  .parallel-strand { border:1px solid var(--grey-line-soft); border-radius:var(--radius-md); padding:14px; background:var(--beige); cursor:pointer; transition:all .15s; }
-  .parallel-strand:hover { border-color:var(--lila); transform:translateY(-1px); }
-  .parallel-strand.active { border-color:var(--lila); box-shadow:0 0 0 2px rgba(105,74,152,.2); background:var(--white); }
-  .parallel-strand.closed { border-color:#2d8a3e; background:#f4faf5; }
-  .parallel-strand .ps-owner { margin:8px 0; }
-  .parallel-strand .ps-owner input { width:100%; font-size:12px; padding:4px 0; border:none; border-bottom:1px solid var(--grey-line); background:transparent; font-family:inherit; }
-  .parallel-strand .ps-muss { font-size:10px; color:var(--grey-text); margin-top:8px; }
-  .parallel-strand .ps-muss li { margin-bottom:3px; list-style:none; padding-left:0; }
-  .parallel-strand .ps-counts { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
-  .convergence-bar { margin-top:14px; padding:12px 16px; background:var(--beige); border-radius:var(--radius-sm); font-size:12px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; }
-  .convergence-bar.locked { opacity:.6; }
-  .convergence-bar.ready { background:var(--pink-80); border:1px solid var(--pink); }
-
-  .meeting-flow-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:12px; }
-  .meeting-step { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:10px; font-size:11px; cursor:pointer; background:var(--beige); }
-  .meeting-step:hover { border-color:var(--pink); }
-  .meeting-step.done { background:#f4faf5; border-color:#2d8a3e; }
-  .meeting-step .ms-title { font-weight:700; font-size:11px; margin-bottom:6px; color:var(--black); }
-  .meeting-step ul { padding-left:14px; margin:0; color:var(--grey-text); font-size:10px; }
-
-  .tunnel-stepper { display:none; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
-  body.view-delivery .tunnel-stepper { display:flex; }
-  body.view-delivery .gate-strip-wrap.full-strip { display:none; }
-  .tunnel-step { font-size:10px; font-weight:600; padding:6px 10px; border-radius:20px; border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
-  .tunnel-step.active { background:var(--pink); color:var(--white); border-color:var(--pink); }
-  .tunnel-step.locked { opacity:.4; cursor:not-allowed; }
-  .tunnel-step.done { background:var(--pink-80); border-color:var(--pink); }
-
-  .muss-status-select { font-family:inherit; font-size:10px; padding:3px 4px; border:1px solid var(--grey-line); border-radius:4px; background:var(--white); min-width:88px; }
+  .muss-status-select { flex-shrink:0; font-family:inherit; font-size:10px; padding:3px 4px; border:1px solid var(--grey-line); border-radius:4px; background:var(--white); min-width:88px; }
   .check-item.escalated { border-left:3px solid #c0392b; }
   .check-item.in-progress { border-left:3px solid var(--gelb); }
-  .gate-tile .gmuss { font-size:9px; color:var(--grey-faint); margin-top:6px; }
-  .family-block { margin-bottom:16px; }
-  .family-block h4 { font-size:12px; font-weight:700; margin-bottom:8px; color:var(--lila); }
-  .tool-grid.family { max-height:none; }
-
-  .view-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
-  .view-pill { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:6px 12px; border-radius:20px; border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
-  .view-pill.active { background:var(--pink); color:var(--white); border-color:var(--pink); }
-  .view-pill.setup { border-color:var(--lila); }
-  .view-pill.setup.active { background:var(--lila); color:var(--white); }
-
-  .setup-panel, .playbook-panel, .tunnel-banner { background:var(--white); border-radius:var(--radius-lg); padding:20px 24px; margin-bottom:20px; box-shadow:var(--shadow-sm); border:1px solid var(--grey-line-soft); }
-  .setup-panel h3, .playbook-panel h3, .tunnel-banner h3 { font-size:16px; font-weight:700; margin-bottom:10px; }
-  .tool-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:6px; margin-top:10px; max-height:220px; overflow-y:auto; }
-  .tool-item { display:flex; align-items:flex-start; gap:8px; font-size:12px; padding:6px 8px; background:var(--beige); border-radius:var(--radius-sm); }
-  .tool-item input { margin-top:2px; }
-  .tool-item.recommended { border:1px solid var(--lila); background:#faf8fc; }
-  .playbook-step { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--grey-line-soft); font-size:13px; }
-  .playbook-step:last-child { border-bottom:none; }
-  .playbook-step .num { font-weight:700; color:var(--pink); min-width:24px; }
-  .playbook-step.done { color:var(--grey-faint); text-decoration:line-through; }
-  .tunnel-banner { border-left:4px solid var(--pink); }
-  .tunnel-next { font-size:13px; color:var(--grey-text); line-height:1.5; }
   .method-guide { background:var(--beige); border-left:3px solid var(--lila); padding:10px 12px; margin-bottom:14px; font-size:12px; color:var(--grey-text); line-height:1.5; }
-  .method-guide strong { color:var(--black); }
   .org-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
   .org-meta label { display:block; font-size:10px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:6px; }
   .org-meta input { width:100%; border:none; border-bottom:1px solid var(--grey-line); background:transparent; font-family:inherit; font-size:14px; padding:4px 0 6px; }
+  .family-block { margin-bottom:16px; }
+  .family-block h4 { font-size:12px; font-weight:700; margin-bottom:8px; color:var(--lila); }
+  .tool-grid { display:grid; grid-template-columns:1fr; gap:6px; }
+  .tool-item { display:flex; align-items:flex-start; gap:8px; font-size:12px; padding:6px 8px; background:var(--beige); border-radius:var(--radius-sm); }
+  .tool-item.recommended { border:1px solid var(--lila); background:#faf8fc; }
+  .playbook-step { display:flex; gap:12px; padding:8px 0; border-bottom:1px solid var(--grey-line-soft); font-size:12px; }
+  .playbook-step.done { color:var(--grey-faint); text-decoration:line-through; }
+  .playbook-step .num { font-weight:700; color:var(--pink); min-width:20px; }
   .portfolio-table { width:100%; border-collapse:collapse; font-size:12px; }
   .portfolio-table th, .portfolio-table td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--grey-line-soft); }
-  .portfolio-table th { font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--grey-faint); }
   body.view-delivery .admin-only { display:none !important; }
-  body.view-delivery .gate-tile.late-phase { opacity:.35; pointer-events:none; }
-  @media (max-width:1100px) { .app-shell { grid-template-columns:1fr; } .cockpit-sidebar { position:relative; top:0; } .tool-grid,.org-meta,.parallel-board-grid,.meeting-flow-steps,.entry-hero .eh-grid { grid-template-columns:1fr; } }
+  @media (max-width:1100px) {
+    .workspace { flex-direction:column; }
+    .side-nav { width:100%; height:auto; position:relative; top:0; display:flex; flex-wrap:wrap; padding:8px; gap:4px; border-right:none; border-bottom:1px solid var(--grey-line-soft); }
+    .nav-section { display:flex; flex-wrap:wrap; gap:4px; margin:0; padding:0; }
+    .nav-section-label { display:none; }
+    .nav-item { width:auto; padding:6px 10px; }
+    .nav-meta-box { display:none; }
+    .obeya-grid, .obeya-parallel-summary, .setup-view-grid, .content-header .project-bar { grid-template-columns:1fr; }
+    .meeting-flow-steps { grid-template-columns:1fr 1fr; }
+  }
 
   @media (max-width: 1100px) { .method-list { grid-template-columns:1fr; } .ws-grid { grid-template-columns:1fr; } }
   @media (max-width: 900px) {
@@ -394,101 +417,48 @@
 </head>
 <body>
 
-<header class="hero">
-  <div class="hero-inner">
-    <div style="display:flex; flex-direction:column; gap:16px;">
-      <div class="logo-mark">
-        <img src="./assets/logo-nxtgn-weiss.png" alt="NXTGN Logo">
-        <div>
-          <div class="logo-text">NXTGN</div>
-          <div class="logo-sub">CIPP Tracker</div>
-        </div>
+<div class="app-layout">
+  <header class="topbar">
+    <div class="topbar-left">
+      <img src="./assets/logo-nxtgn-farbig.png" alt="NXTGN" onerror="this.src='./assets/logo-nxtgn-weiss.png'">
+      <div class="topbar-brand">CIPP 2.0<span id="topbar-project">Demo · PoC Tracker</span></div>
+    </div>
+    <div class="topbar-center">
+      <div class="view-switch" title="Demo: jederzeit zwischen Admin und Delivery wechseln">
+        <button type="button" id="btn-view-admin" onclick="setAppView('admin')">Admin</button>
+        <button type="button" id="btn-view-delivery" onclick="setAppView('delivery')">Delivery</button>
+      </div>
+      <div class="phase-switch admin-only">
+        <button type="button" class="phase-btn" id="pill-phase-setup" onclick="setProjectPhase('setup')">Setup</button>
+        <button type="button" class="phase-btn" id="pill-phase-active" onclick="setProjectPhase('active')">Tunnel</button>
       </div>
     </div>
-    <div class="hero-title">
-      <div class="hero-kicker">Customer Innovation PoC Process</div>
-      <h1 class="hero-h1">CIPP 2.0 — Operating System für Startup-Corporate-PoCs.</h1>
-      <p class="hero-claim">Parallele Vorbereitung G0–G2, Konvergenz in G3, Feldtest G4, Entscheidung G5. Obeya-Cockpit, konfigurierbarer Methodenbaukasten und straffer Delivery-Tunnel.</p>
+    <div class="topbar-right topbar-actions">
+      <span class="storage-dot" id="storage-dot" title="Speicherstatus"></span>
+      <button type="button" class="btn-tb admin-only" onclick="openPortfolio()">Portfolio</button>
+      <button type="button" class="btn-tb" onclick="openManual()">Handbuch</button>
+      <button type="button" class="btn-tb" onclick="importJson()">Import</button>
+      <button type="button" class="btn-tb primary" onclick="saveState(true)">Speichern</button>
+      <button type="button" class="btn-tb" onclick="openExport()">Export</button>
+      <button type="button" class="btn-tb" onclick="confirmReset()" title="Reset">Reset</button>
     </div>
-    <div class="hero-actions">
-      <button class="btn admin-only" id="btn-view-admin" onclick="setAppView('admin')">NXTGN Admin</button>
-      <button class="btn" id="btn-view-delivery" onclick="setAppView('delivery')">Delivery</button>
-      <button class="btn admin-only" onclick="openPortfolio()">Portfolio</button>
-      <button class="btn" onclick="openManual()">Handbuch 2.0</button>
-      <button class="btn" onclick="openHelp()">Info</button>
-      <button class="btn" onclick="importJson()">Import</button>
-      <button class="btn primary" onclick="saveState(true)">Speichern</button>
-      <button class="btn" onclick="openExport()">Export</button>
-      <button class="btn" onclick="confirmReset()">Reset</button>
-    </div>
-  </div>
-</header>
+  </header>
 
-<div class="wrap">
-
-  <div class="storage-pill" id="storage-pill" onclick="openHelp()" title="Klicke für Infos zu Speicher und Teilen">
-    <span class="dot"></span><span id="storage-pill-text">Initialisiere Speicher…</span>
-  </div>
-  <div class="storage-explain" id="storage-explain"></div>
-
-  <div class="view-bar admin-only" id="view-bar">
-    <span class="view-pill setup" id="pill-phase-setup" onclick="setProjectPhase('setup')">Phase: Setup · Baukasten</span>
-    <span class="view-pill" id="pill-phase-active" onclick="setProjectPhase('active')">Phase: Aktiv · Tunnel</span>
-  </div>
-
-  <div class="app-shell">
-    <aside class="cockpit-sidebar" id="cockpit-sidebar">
-      <div class="cockpit-sidebar-head">Obeya Cockpit · 9 Zonen</div>
-      <div class="cockpit-sidebar-sub">Dauerhafte Steuerungszentrale — in Weeklys und Gate-Reviews Zone für Zone durchklicken.</div>
-      <div class="cockpit-sidebar-body" id="cockpit-sidebar-body"></div>
-    </aside>
-    <div class="main-col">
-
-  <div id="view-mode-banner-wrap"></div>
-  <div id="setup-panel-wrap" class="admin-only"></div>
-  <div id="playbook-panel-wrap" class="admin-only"></div>
-  <div id="tunnel-banner-wrap"></div>
-  <div id="entry-hero-wrap"></div>
-  <div id="poc-spotlight-wrap"></div>
-
-  <section class="poc-meta">
-    <div><label>PoC-Name</label><input id="meta-name" placeholder="z.B. Vibration Monitoring Halle 4" oninput="onMeta()"></div>
-    <div><label>Kunde / Partner</label><input id="meta-customer" placeholder="z.B. Musterwerk GmbH" oninput="onMeta()"></div>
-    <div><label>Owner (Kunde)</label><input id="meta-owner" placeholder="Name" oninput="onMeta()"></div>
-    <div><label>Lead (Lösung)</label><input id="meta-lead" placeholder="Name" oninput="onMeta()"></div>
-  </section>
-
-  <section class="dashboard">
-    <div class="dash-head">
-      <span class="dash-label">Gate-Fortschritt · Muss-Checklisten</span>
-      <span class="dash-overall">Gesamt · <strong id="overall-pct">0%</strong></span>
-    </div>
-    <div class="tunnel-stepper" id="tunnel-stepper"></div>
-    <div class="gate-strip-wrap full-strip"><div class="gate-strip" id="gate-strip"></div></div>
-    <div id="meeting-flow-wrap"></div>
-    <div class="parallel-board" id="parallel-board">
-      <div class="parallel-board-head">
-        <h3>Parallelsteuerung · G0 · G1 · G2</h3>
-        <span>Drei Stränge nebeneinander · Konvergenz in G3</span>
+  <div class="workspace">
+    <nav class="side-nav" id="side-nav"></nav>
+    <main class="content-area">
+      <div class="content-header" id="content-header"></div>
+      <div id="view-cockpit" class="view-pane"></div>
+      <div id="view-gate" class="view-pane hidden">
+        <div id="gate-context" class="gate-context"></div>
+        <div class="gate-panel" id="gate-panel"></div>
       </div>
-      <div class="parallel-board-grid" id="parallel-board-grid"></div>
-      <div class="convergence-bar" id="convergence-bar"></div>
-    </div>
-    <div class="always-on">
-      <strong>Begleitlogik ist Pflicht.</strong> &nbsp; Obeya-Cockpit · Kanban · RAID · Change · RACI · Weekly · Gate-Review · Reviews · Retro · EVM-light · Aufwandsschätzung · Decision Hygiene · Case Log.
-    </div>
-  </section>
-
-  <main class="gate-panel" id="gate-panel"></main>
-
-  <footer class="bottom">
-    <div class="rule"><strong>CIPP 2.0:</strong> G0, G1 und G2 laufen parallel. G3 bündelt erst bei vollständigen Muss-Kriterien aus G0–G2. G4 (Feldtest) und G5 (Entscheidung) sind sequenziell.</div>
-    <div>NXTGN · CIPP Tracker 2.0</div>
-  </footer>
-
-    </div><!-- main-col -->
-  </div><!-- app-shell -->
+      <div id="view-setup" class="view-pane hidden admin-only"></div>
+    </main>
+  </div>
 </div>
+
+<div class="storage-explain" id="storage-explain" style="display:none"></div>
 
 <div class="toast" id="toast"></div>
 
@@ -1489,6 +1459,7 @@ function defaultSignals() {
 const STATE_VERSION = 5;
 let state = null;
 let activeGateId = 'entry';
+let activeView = 'cockpit'; // cockpit | gate | setup
 let storageMode = 'memory'; // 'vercel' | 'claude' | 'local' | 'memory'
 
 function newId() { return 'i_' + Math.random().toString(36).slice(2,9); }
@@ -1709,21 +1680,15 @@ async function storageDelete(key) {
 }
 
 function updateStoragePill() {
-  const pill = document.getElementById('storage-pill');
-  const text = document.getElementById('storage-pill-text');
-  pill.className = 'storage-pill';
-  if (storageMode === 'vercel') {
-    pill.classList.add('ok');
-    text.textContent = 'Speicher: Vercel (zentral) · klicken für Infos zum Teilen';
-  } else if (storageMode === 'claude') {
-    pill.classList.add('ok');
-    text.textContent = 'Speicher: Claude-Account · klicken für Infos zum Teilen';
-  } else if (storageMode === 'local') {
-    pill.classList.add('ok');
-    text.textContent = 'Speicher: Browser (localStorage) · klicken für Infos zum Teilen';
-  } else {
-    pill.classList.add('warn');
-    text.textContent = 'Kein persistenter Speicher verfügbar — bitte regelmäßig als JSON exportieren';
+  const dot = document.getElementById('storage-dot');
+  if (dot) {
+    dot.className = 'storage-dot' + (storageMode === 'memory' ? '' : ' ok');
+    dot.title = storageMode === 'vercel' ? 'Speicher: Vercel (zentral)' : storageMode === 'local' ? 'Speicher: localStorage' : storageMode === 'claude' ? 'Speicher: Claude' : 'Kein persistenter Speicher';
+  }
+  const proj = document.getElementById('topbar-project');
+  if (proj && state) {
+    const n = state.meta && state.meta.name ? state.meta.name : 'Demo · PoC Tracker';
+    proj.textContent = n + ' · ' + overallProgress() + '%';
   }
   updateStorageExplain();
 }
@@ -1840,6 +1805,7 @@ async function confirmReset() {
   fillMetaInputs();
   await storageDelete(STORAGE_KEY);
   activeGateId = 'entry';
+  activeView = 'cockpit';
   render();
   toast('Zurückgesetzt.', 'pink');
 }
@@ -1950,6 +1916,16 @@ function getTunnelNextAction() {
   return { gateId, gate: g, text: 'Gate abschließen und Gate-Review durchführen.' };
 }
 
+function navToCockpit() { activeView = 'cockpit'; render(); }
+function navToGate(gateId) {
+  if (isGateLocked(gateId)) { toast(`Gate gesperrt — zuerst Voraussetzungen erfüllen.`); return; }
+  activeView = 'gate';
+  activeGateId = gateId;
+  render();
+}
+function navToSetup() { activeView = 'setup'; render(); }
+function navFromZone(gateId) { navToGate(gateId); }
+
 function applyViewClasses() {
   document.body.classList.toggle('view-delivery', isDeliveryView());
   const ba = document.getElementById('btn-view-admin');
@@ -1964,9 +1940,10 @@ function applyViewClasses() {
 
 function setAppView(view) {
   state.meta.view = view === 'delivery' ? 'delivery' : 'admin';
+  if (isDeliveryView() && activeView === 'setup') activeView = 'cockpit';
   saveStateDebounced();
   render();
-  toast(view === 'delivery' ? 'Delivery-Sicht — straffer Tunnel.' : 'NXTGN Admin-Sicht.', 'pink');
+  toast(view === 'delivery' ? 'Delivery — Tunnel-Sicht aktiv.' : 'Admin — volle Konfiguration.', 'pink');
 }
 
 function setProjectPhase(phase) {
@@ -2007,7 +1984,7 @@ function onOrgField(key, val) {
   if (!state.org) state.org = {};
   state.org[key] = val;
   saveStateDebounced();
-  renderCockpitSidebar();
+  if (activeView === 'cockpit') renderCockpitView();
 }
 
 function onStrandOwner(strandId, val) {
@@ -2034,7 +2011,7 @@ function setMussStatus(gateId, type, itemId, status) {
 }
 
 function openPocCanvas() {
-  activeGateId = 'g0';
+  navToGate('g0');
   openedMethods.add('g0:poc-canvas');
   render();
   setTimeout(() => {
@@ -2145,22 +2122,148 @@ function renderCockpitZoneBody(z) {
   return escapeHtml(z.text);
 }
 
-function renderCockpitSidebar() {
-  const body = document.getElementById('cockpit-sidebar-body');
-  if (!body) return;
-  body.innerHTML = OBEYA_ZONES.map((z, i) => `
-    <div class="cockpit-zone${activeGateId === z.gate ? ' active' : ''}">
-      <div class="cz-head" onclick="activeGateId='${z.gate}';render();"><span>${escapeHtml(z.title)}</span><span class="cz-num">${i+1}</span></div>
-      <div class="cz-body">${renderCockpitZoneBody(z)}</div>
-      <button type="button" class="cz-go" onclick="event.stopPropagation();activeGateId='${z.gate}';render();">Zone öffnen →</button>
+function renderSideNav() {
+  const nav = document.getElementById('side-nav');
+  if (!nav) return;
+  const gateItems = GATES.map(g => {
+    const locked = isGateLocked(g.id);
+    const pct = gateProgress(g.id);
+    const done = isMussComplete(g.id);
+    const parallel = ['g0','g1','g2'].includes(g.id);
+    const label = g.id === 'entry' ? 'Entry Check' : g.id === 'begleit' ? 'Begleitung' : g.name;
+    const isActive = activeView === 'gate' && activeGateId === g.id;
+    return `<button type="button" class="nav-item${isActive?' active':''}${locked?' locked':''}${done?' done':''}" ${locked ? '' : `onclick="navToGate('${g.id}')"`}>
+      <span class="nav-code">${g.code}${parallel ? '<span class="nav-badge">∥</span>' : ''}</span>
+      <span class="nav-label">${escapeHtml(label)}</span>
+      <span class="nav-pct">${locked ? '🔒' : pct + '%'}</span>
+    </button>`;
+  }).join('');
+  nav.innerHTML = `
+    <div class="nav-section">
+      <div class="nav-section-label">Steuerung</div>
+      <button type="button" class="nav-item${activeView==='cockpit'?' active':''}" onclick="navToCockpit()">
+        <span class="nav-code">OBEYA</span><span class="nav-label">Obeya Cockpit · 9 Zonen</span>
+      </button>
     </div>
-  `).join('');
+    <div class="nav-section">
+      <div class="nav-section-label">Gates &amp; Tunnel</div>
+      ${gateItems}
+    </div>
+    <div class="nav-section admin-only">
+      <div class="nav-section-label">NXTGN Admin</div>
+      <button type="button" class="nav-item${activeView==='setup'?' active':''}" onclick="navToSetup()">
+        <span class="nav-code">SETUP</span><span class="nav-label">Baukasten &amp; Leitfaden</span>
+      </button>
+      <button type="button" class="nav-item" onclick="openPortfolio()">
+        <span class="nav-code">PORT</span><span class="nav-label">Portfolio</span>
+      </button>
+    </div>
+    <div class="nav-meta-box">
+      <strong>${isDeliveryView() ? 'Delivery' : 'Admin'} · ${isActivePhase() ? 'Tunnel' : 'Setup'}</strong>
+      Gesamt ${overallProgress()}% · ${getOpenMussCount()} Muss offen
+    </div>`;
 }
 
-function renderSetupPanel() {
-  const wrap = document.getElementById('setup-panel-wrap');
-  if (!wrap) return;
-  if (!isAdminView() || !isSetupPhase()) { wrap.innerHTML = ''; return; }
+function renderContentHeader() {
+  const el = document.getElementById('content-header');
+  if (!el) return;
+  let title = 'Obeya Cockpit';
+  let sub = 'Steuerungszentrale mit 9 Zonen — für Weekly, Gate-Review und Delivery-Steuerung.';
+  if (activeView === 'gate') {
+    const g = GATES.find(x => x.id === activeGateId);
+    title = g.code + ' · ' + g.name;
+    sub = g.goal;
+  } else if (activeView === 'setup') {
+    title = 'Setup · Methoden-Baukasten';
+    sub = 'PoC-Typ wählen, Werkzeuge aktivieren, Tunnel starten. Skelett (Gates, Muss, Cockpit) bleibt fix.';
+  }
+  const action = getTunnelNextAction();
+  const tunnelLine = (isActivePhase() || isDeliveryView()) && activeView !== 'setup'
+    ? `<p class="sub" style="margin-top:8px;padding:8px 12px;background:var(--pink-80);border-radius:var(--radius-sm);font-size:12px"><strong>Nächster Schritt:</strong> ${escapeHtml(action.gate ? action.gate.code : '')} — ${escapeHtml(action.text)} <button type="button" class="btn-dark btn-small" style="margin-left:8px" onclick="navToGate('${action.gateId}')">→</button></p>` : '';
+  el.innerHTML = `
+    <h1>${escapeHtml(title)}</h1>
+    <p class="sub">${escapeHtml(sub)}</p>
+    ${tunnelLine}
+    <div class="project-bar">
+      <div><label>PoC-Name</label><input id="meta-name" placeholder="PoC-Name" oninput="onMeta()"></div>
+      <div><label>Kunde / Partner</label><input id="meta-customer" placeholder="Kunde" oninput="onMeta()"></div>
+      <div><label>Owner (Kunde)</label><input id="meta-owner" placeholder="Owner" oninput="onMeta()"></div>
+      <div><label>Lead (Lösung)</label><input id="meta-lead" placeholder="Lead" oninput="onMeta()"></div>
+    </div>`;
+  fillMetaInputs();
+}
+
+function renderCockpitView() {
+  const pane = document.getElementById('view-cockpit');
+  if (!pane) return;
+  const zones = OBEYA_ZONES.map((z, i) => `
+    <div class="cockpit-zone">
+      <div class="cz-head"><span>${escapeHtml(z.title)}</span><span class="cz-num">${i + 1}</span></div>
+      <div class="cz-body">${renderCockpitZoneBody(z)}</div>
+      <button type="button" class="cz-go" onclick="navFromZone('${z.gate}')">Zum Gate →</button>
+    </div>
+  `).join('');
+  const parSummary = ['g0','g1','g2'].map(id => {
+    const meta = STRAND_META[id];
+    const g = GATES.find(x => x.id === id);
+    return `<div class="obeya-par-card" onclick="navToGate('${id}')">
+      <div style="font-size:9px;font-weight:700;color:var(--lila)">${meta.strand}</div>
+      <div style="font-weight:700;font-size:13px;margin:4px 0">${g.code} · ${gateProgress(id)}%</div>
+      <div style="font-size:10px;color:var(--grey-text)">${escapeHtml(meta.q)}</div>
+    </div>`;
+  }).join('');
+  const meetings = MEETING_FLOW.map(m => {
+    const done = state.meetings && state.meetings[m.id] && state.meetings[m.id].done;
+    return `<div class="meeting-step${done?' done':''}" onclick="toggleMeetingDone('${m.id}');navToCockpit();">
+      <div class="ms-title">${done?'✓ ':''}${escapeHtml(m.label)}</div>
+      <ul>${m.checks.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>
+    </div>`;
+  }).join('');
+  pane.innerHTML = `
+    <div class="obeya-full">
+      <div class="obeya-full-head">
+        <h2>Obeya Cockpit · 9 Zonen</h2>
+        <p>Dauerhafte Leitoberfläche — in Terminen Zone für Zone durchgehen, dann ins passende Gate springen.</p>
+      </div>
+      <div class="obeya-grid">${zones}</div>
+      <div class="obeya-parallel-summary">${parSummary}
+        <div class="obeya-par-card" style="background:var(--pink-80)" onclick="navToGate('g3')">
+          <div style="font-size:9px;font-weight:700">Konvergenz</div>
+          <div style="font-weight:700;font-size:13px;margin:4px 0">G3 · ${gateProgress('g3')}%</div>
+          <div style="font-size:10px">Erst wenn G0–G2 vollständig</div>
+        </div>
+      </div>
+      <div class="obeya-meetings">
+        <h3 style="font-size:14px;font-weight:700;margin-bottom:8px">Meeting-Steuerung</h3>
+        <p style="font-size:12px;color:var(--grey-text);margin-bottom:10px">Weekly → Gate-Review → Review Point → Retro</p>
+        <div class="meeting-flow-steps">${meetings}</div>
+      </div>
+    </div>`;
+}
+
+function renderGateContext() {
+  const ctx = document.getElementById('gate-context');
+  if (!ctx) return;
+  let html = '';
+  if (['g0','g1','g2'].includes(activeGateId)) {
+    html = `<div class="parallel-tabs">${['g0','g1','g2'].map(id => {
+      const g = GATES.find(x => x.id === id);
+      const done = isMussComplete(id);
+      return `<button type="button" class="parallel-tab${activeGateId===id?' active':''}${done?' done':''}" onclick="navToGate('${id}')">${g.code} · ${gateProgress(id)}%${done?' ✓':''}</button>`;
+    }).join('')}</div>`;
+  }
+  if (activeGateId === 'g0') {
+    const canvasOk = methodHasData((state.gates.g0.methods||{})['poc-canvas'], METHOD_TEMPLATES['poc-canvas']);
+    if (!canvasOk) {
+      html += `<div class="tunnel-hint"><span><strong>PoC Canvas</strong> — zentrales Startartefakt (Handbuch 2.0)</span><button type="button" class="btn-dark btn-small primary" onclick="openPocCanvas()">Canvas öffnen</button></div>`;
+    }
+  }
+  ctx.innerHTML = html;
+}
+
+function renderSetupView() {
+  const pane = document.getElementById('view-setup');
+  if (!pane) return;
   const pocOpts = Object.keys(POC_TYPES).map(k => `<option value="${escapeAttr(k)}" ${state.meta.pocType===k?'selected':''}>${escapeHtml(POC_TYPES[k].label)}</option>`).join('');
   const slugToEntry = {};
   allMethodEntries().forEach(m => { slugToEntry[m.slug] = m; });
@@ -2169,220 +2272,52 @@ function renderSetupPanel() {
       const m = slugToEntry[slug];
       const on = isMethodEnabled(slug);
       const rec = isRecommendedMethod(slug);
-      return `<label class="tool-item${rec?' recommended':''}"><input type="checkbox" ${on?'checked':''} onchange="toggleMethodConfig('${slug}', this.checked)"><span><strong>${escapeHtml(m.gateCode)} · ${escapeHtml(m.name)}</strong><br><span style="color:var(--grey-faint);font-size:11px">${escapeHtml(m.desc)}</span></span></label>`;
+      return `<label class="tool-item${rec?' recommended':''}"><input type="checkbox" ${on?'checked':''} onchange="toggleMethodConfig('${slug}', this.checked)"><span><strong>${escapeHtml(m.gateCode)} · ${escapeHtml(m.name)}</strong></span></label>`;
     }).join('');
     if (!tools) return '';
-    return `<div class="family-block"><h4>${escapeHtml(fam.label)}</h4><div class="tool-grid family">${tools}</div></div>`;
+    return `<div class="family-block"><h4>${escapeHtml(fam.label)}</h4><div class="tool-grid">${tools}</div></div>`;
   }).join('');
-  const enabledCount = allMethodEntries().filter(m => isMethodEnabled(m.slug)).length;
-  wrap.innerHTML = `<div class="setup-panel">
-    <h3>Setup · Methoden-Baukasten</h3>
-    <p style="font-size:13px;color:var(--grey-text);margin-bottom:14px;">PoC-Typ und Komplexität bestimmen die Empfehlung. Das Skelett (Gates, Muss-Kriterien, Cockpit) bleibt fix — du aktivierst nur die Werkzeuge für den Tunnel. <strong>${enabledCount}</strong> Methoden aktiv.</p>
-    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:16px;">
-      <label style="font-size:12px;font-weight:600;">PoC-Typ
-        <select style="margin-left:8px;padding:6px 10px;font-family:inherit;border:1px solid var(--grey-line);border-radius:var(--radius-sm);" onchange="setPocType(this.value)">${pocOpts}</select>
-      </label>
-      <button class="btn-dark btn-small" onclick="applyPocTypeRecommendations()">Empfehlungen übernehmen</button>
-      <button class="btn-dark btn-small primary" onclick="setProjectPhase('active')">Tunnel starten →</button>
-    </div>
-    ${familyBlocks}
-  </div>`;
-}
-
-function renderPlaybookPanel() {
-  const wrap = document.getElementById('playbook-panel-wrap');
-  if (!wrap) return;
-  if (!isAdminView()) { wrap.innerHTML = ''; return; }
-  const steps = PM_PLAYBOOK.map((s, i) => {
+  const playbook = PM_PLAYBOOK.map((s, i) => {
     const done = s.check(state);
-    return `<div class="playbook-step${done?' done':''}"><span class="num">${i+1}</span><span>${escapeHtml(s.text)}${!done ? ` <button class="btn-dark btn-small" style="margin-left:8px" onclick="activeGateId='${s.gate}';render();">→ Gate</button>` : ''}</span></div>`;
+    return `<div class="playbook-step${done?' done':''}"><span class="num">${i+1}</span><span>${escapeHtml(s.text)}${!done ? ` <button type="button" class="btn-dark btn-small" onclick="navToGate('${s.gate}')">→</button>` : ''}</span></div>`;
   }).join('');
-  wrap.innerHTML = `<div class="playbook-panel"><h3>Leitfaden NXTGN-Projektmanager · Was wann?</h3>${steps}</div>`;
-}
-
-function renderTunnelBanner() {
-  const wrap = document.getElementById('tunnel-banner-wrap');
-  if (!wrap) return;
-  if (isAdminView() && isSetupPhase()) { wrap.innerHTML = ''; return; }
-  const action = getTunnelNextAction();
-  const g = action.gate;
-  const locked = ['g3','g4','g5'].filter(id => isGateLocked(id)).map(id => GATES.find(x=>x.id===id).code);
-  wrap.innerHTML = `<div class="tunnel-banner">
-    <h3>${isDeliveryView() ? 'Tunnel · Pflichtpfad' : 'Steuerung · Fokus'}</h3>
-    <p class="tunnel-next"><strong>${escapeHtml(g ? g.code+' · '+g.name : '')}</strong> — ${escapeHtml(action.text)}</p>
-    ${locked.length && isDeliveryView() ? `<p class="tunnel-next" style="margin-top:8px;font-size:11px">Gesperrt bis Voraussetzungen erfüllt: ${locked.join(', ')}</p>` : ''}
-    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn-dark btn-small primary" onclick="activeGateId='${action.gateId}';render();">Nächster Schritt →</button>
-      ${isDeliveryView() ? '' : '<button class="btn-dark btn-small" onclick="setAppView(\'delivery\')">Delivery-Vorschau</button>'}
-    </div>
-  </div>`;
-}
-
-function renderViewModeBanner() {
-  const wrap = document.getElementById('view-mode-banner-wrap');
-  if (!wrap) return;
-  if (isDeliveryView()) {
-    wrap.innerHTML = `<div class="view-mode-banner delivery"><strong>Delivery-Sicht · Tunnel</strong> — Du siehst nur den aktiven Pfad, aktivierte Methoden und kannst Muss-Kriterien abhaken (nicht umbauen). Nächster Schritt im Banner oben. Admin-Konfiguration ist ausgeblendet.</div>`;
-  } else if (isAdminView()) {
-    wrap.innerHTML = `<div class="view-mode-banner"><strong>NXTGN Admin</strong> — Volle Konfiguration: Setup-Baukasten, Gate-Checklisten bearbeiten, Organisation, Portfolio. Für Kunde/Startup den Delivery-Link teilen.</div>`;
-  } else wrap.innerHTML = '';
-}
-
-function renderEntryHero() {
-  const wrap = document.getElementById('entry-hero-wrap');
-  if (!wrap) return;
-  const done = isMussComplete('entry');
-  if (done && isActivePhase() && activeGateId !== 'entry') { wrap.innerHTML = ''; return; }
-  const mussDone = state.gates.entry.muss.filter(isMussItemComplete).length;
-  const mussTotal = state.gates.entry.muss.length;
-  const o = state.org || {};
-  wrap.innerHTML = `<div class="entry-hero">
-    <h3>Entry Check · Schwelle vor G0</h3>
-    <p style="font-size:13px;color:var(--grey-text);line-height:1.5;">Hier werden Go/No-Go, minimaler Steuerkreis, vorläufige RACI, Weekly, Cockpit-Owner und erste Aufwandsschätzung gesetzt — <strong>bevor</strong> die parallelen Stränge G0–G2 starten.</p>
-    <div class="eh-grid">
-      <div class="eh-stat"><strong>${mussDone}/${mussTotal}</strong>Muss-Kriterien Entry</div>
-      <div class="eh-stat"><strong>${o.nxtgnPm ? '✓' : '—'}</strong>Cockpit-Owner (NXTGN PM)</div>
-      <div class="eh-stat"><strong>${o.sponsor ? '✓' : '—'}</strong>Sponsor benannt</div>
-      <div class="eh-stat"><strong>${o.weeklyDay ? '✓' : '—'}</strong>Weekly-Termin</div>
-    </div>
-    <button class="btn-dark btn-small primary" style="margin-top:14px" onclick="activeGateId='entry';render();">Entry Check öffnen →</button>
-  </div>`;
-}
-
-function renderPocSpotlight() {
-  const wrap = document.getElementById('poc-spotlight-wrap');
-  if (!wrap) return;
-  const data = (state.gates.g0.methods||{})['poc-canvas'];
-  const done = methodHasData(data, METHOD_TEMPLATES['poc-canvas']);
-  if (done && isMussComplete('g0')) { wrap.innerHTML = ''; return; }
-  wrap.innerHTML = `<div class="poc-spotlight${done?' done':''}">
-    <div>
-      <h3>PoC Canvas · zentrales Startartefakt (G0)</h3>
-      <p>Das Einseiten-Artefakt aus Handbuch 2.0: Problem, Ziel, KPI, Scope, Rollen, Annahmen, Risiken. Referenz für alle Gates und Cockpit Zone 5.</p>
-    </div>
-    <button class="btn-dark primary" onclick="openPocCanvas()">${done ? 'Canvas bearbeiten' : 'PoC Canvas jetzt anlegen →'}</button>
-  </div>`;
-}
-
-function renderMeetingFlow() {
-  const wrap = document.getElementById('meeting-flow-wrap');
-  if (!wrap) return;
-  const steps = MEETING_FLOW.map(m => {
-    const done = state.meetings && state.meetings[m.id] && state.meetings[m.id].done;
-    return `<div class="meeting-step${done?' done':''}" onclick="toggleMeetingDone('${m.id}');activeGateId='${m.gate}';render();">
-      <div class="ms-title">${done?'✓ ':''}${escapeHtml(m.label)}</div>
-      <ul>${m.checks.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>
-    </div>`;
-  }).join('');
-  wrap.innerHTML = `<div class="meeting-flow">
-    <h3>Meeting-Steuerung · durch Cockpit klicken</h3>
-    <p style="font-size:12px;color:var(--grey-text);margin-bottom:4px;">Weekly → Gate-Review → Review Point → Retro. Jeder Schritt verweist auf Cockpit-Zonen — abhaken wenn im Termin erledigt.</p>
-    <div class="meeting-flow-steps">${steps}</div>
-  </div>`;
-}
-
-function renderParallelBoard() {
-  const grid = document.getElementById('parallel-board-grid');
-  if (!grid) return;
-  grid.innerHTML = ['g0','g1','g2'].map(id => {
-    const meta = STRAND_META[id];
-    const g = GATES.find(x => x.id === id);
-    const pct = gateProgress(id);
-    const done = isMussComplete(id);
-    const counts = getMussStatusCounts(id);
-    const openMuss = state.gates[id].muss.filter(it => !isMussItemComplete(it)).slice(0, 3);
-    const owner = (state.strands && state.strands[id] && state.strands[id].owner) || '';
-    const ro = isDeliveryView() && isActivePhase() ? 'readonly' : '';
-    return `<div class="parallel-strand${activeGateId===id?' active':''}${done?' closed':''}" onclick="activeGateId='${id}';render();">
-      <div class="strand">${meta.strand}</div>
-      <div class="gate-code">${g.code} · ${escapeHtml(g.name)}</div>
-      <div class="gate-q">${escapeHtml(meta.q)}</div>
-      <div class="ps-owner"><label style="font-size:9px;font-weight:600;color:var(--grey-faint);">Strang-Owner</label>
-        <input ${ro} value="${escapeAttr(owner)}" onclick="event.stopPropagation()" oninput="onStrandOwner('${id}', this.value)" placeholder="Name"></div>
-      <div class="gbar"><div class="gbar-fill" style="width:${pct}%"></div></div>
-      <div class="ps-counts">
-        <span class="status-chip open">${counts.open} offen</span>
-        <span class="status-chip progress">${counts.progress} in Arbeit</span>
-        <span class="status-chip done">${counts.done} erfüllt</span>
-        ${counts.escalated ? `<span class="status-chip escalated">${counts.escalated} eskaliert</span>` : ''}
+  pane.innerHTML = `
+    <div class="setup-view-grid">
+      <div class="setup-card">
+        <h3>Methoden-Baukasten</h3>
+        <p style="font-size:13px;color:var(--grey-text);margin-bottom:12px">PoC-Typ bestimmt Empfehlungen. ${allMethodEntries().filter(m => isMethodEnabled(m.slug)).length} Werkzeuge aktiv.</p>
+        <label style="font-size:12px;font-weight:600;display:block;margin-bottom:12px">PoC-Typ
+          <select style="display:block;width:100%;margin-top:6px;padding:8px;font-family:inherit;border:1px solid var(--grey-line);border-radius:var(--radius-sm)" onchange="setPocType(this.value)">${pocOpts}</select>
+        </label>
+        <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+          <button type="button" class="btn-dark btn-small" onclick="applyPocTypeRecommendations()">Empfehlungen</button>
+          <button type="button" class="btn-dark btn-small primary" onclick="setProjectPhase('active')">Tunnel starten</button>
+        </div>
+        ${familyBlocks}
       </div>
-      <div class="ps-muss"><strong style="font-size:9px;">Top offen:</strong><ul>${openMuss.length ? openMuss.map(it => `<li>· ${escapeHtml(it.text.slice(0,50))}${it.text.length>50?'…':''}</li>`).join('') : '<li>— keine offenen Muss-Punkte</li>'}</ul>
-      <div style="font-size:9px;color:var(--grey-faint);margin-top:6px">Artefakt: ${escapeHtml(meta.artifact)}</div>
+      <div class="setup-card">
+        <h3>Leitfaden NXTGN-PM</h3>
+        <p style="font-size:13px;color:var(--grey-text);margin-bottom:12px">Was wann — in Reihenfolge abarbeiten.</p>
+        ${playbook}
+      </div>
     </div>`;
-  }).join('');
-  renderConvergenceBar();
-}
-
-function renderConvergenceBar() {
-  const bar = document.getElementById('convergence-bar');
-  if (!bar) return;
-  const ready = ['g0','g1','g2'].every(isMussComplete);
-  const g3locked = isGateLocked('g3');
-  bar.className = 'convergence-bar' + (ready ? ' ready' : g3locked ? ' locked' : '');
-  bar.innerHTML = `<span><strong>G3 · Konvergenz</strong> — ${ready ? 'Alle parallelen Stränge geschlossen · G3 freigeben' : 'Wartet auf vollständige Muss-Kriterien aus G0, G1 und G2'}</span>
-    <button class="btn-dark btn-small${ready?' primary':''}" ${g3locked && !ready ? 'disabled style="opacity:.5"' : ''} onclick="activeGateId='g3';render();">G3 öffnen →</button>`;
-}
-
-function renderTunnelStepper() {
-  const el = document.getElementById('tunnel-stepper');
-  if (!el) return;
-  const steps = [
-    { id:'entry', label:'Entry' },
-    { id:'parallel', label:'G0∥G1∥G2' },
-    { id:'g3', label:'G3' },
-    { id:'g4', label:'G4' },
-    { id:'g5', label:'G5' }
-  ];
-  const focus = getCurrentFocusGate();
-  el.innerHTML = steps.map(s => {
-    let locked = false, done = false, active = false;
-    if (s.id === 'parallel') {
-      locked = !isMussComplete('entry');
-      done = ['g0','g1','g2'].every(isMussComplete);
-      active = ['g0','g1','g2'].includes(focus);
-    } else {
-      locked = isGateLocked(s.id);
-      done = isMussComplete(s.id);
-      active = focus === s.id;
-    }
-    return `<span class="tunnel-step${active?' active':''}${done?' done':''}${locked?' locked':''}" onclick="${locked?'':s.id==='parallel'?'activeGateId=\'g0\';render();':'activeGateId=\''+s.id+'\';render();'}">${s.label}${locked?' 🔒':''}</span>`;
-  }).join('');
 }
 
 // ============================================================
-// RENDER — Dashboard
+// RENDER — Dashboard (legacy stubs)
 // ============================================================
-function renderStrip() {
-  const strip = document.getElementById('gate-strip');
-  strip.innerHTML = '';
-  GATES.forEach(g => {
-    const locked = isGateLocked(g.id);
-    const pct = gateProgress(g.id);
-    const done = isMussComplete(g.id) && pct === 100;
-    const isActive = g.id === activeGateId;
-    const tile = document.createElement('button');
-    tile.className = 'gate-tile' + (isActive?' active':'') + (locked?' locked':'') + (done?' done':'') + (isLatePhaseGate(g.id)?' late-phase':'');
-    const dispName = g.id==='entry'?'Entry Check':g.id==='begleit'?'Begleitung':g.name;
-    const mussDoneCount = state.gates[g.id].muss.filter(isMussItemComplete).length;
-    const mussTotalCount = state.gates[g.id].muss.length;
-    tile.innerHTML = `${locked?'<span class="lock-badge">!</span>':''}
-      <div class="gid">${g.code}</div>
-      <div class="gname">${dispName}</div>
-      <div class="gbar"><div class="gbar-fill" style="width:${pct}%"></div></div>
-      <div class="gmuss">Muss ${mussDoneCount}/${mussTotalCount}</div>
-      <div class="gstat">${locked?'gesperrt':done?'bestanden':pct+'% erfüllt'}</div>`;
-    tile.onclick = () => {
-      if (locked) { toast(`Gate ${g.code} gesperrt — zuerst vorherige Muss-Kriterien erfüllen.`); return; }
-      activeGateId = g.id; render();
-    };
-    strip.appendChild(tile);
-  });
-  document.getElementById('overall-pct').textContent = overallProgress() + '%';
-  renderParallelBoard();
-  renderTunnelStepper();
-}
-
-function renderParallelStrip() { renderParallelBoard(); }
+function renderStrip() {}
+function renderParallelBoard() {}
+function renderCockpitSidebar() {}
+function renderSetupPanel() {}
+function renderPlaybookPanel() {}
+function renderTunnelBanner() {}
+function renderViewModeBanner() {}
+function renderEntryHero() {}
+function renderPocSpotlight() {}
+function renderMeetingFlow() {}
+function renderTunnelStepper() {}
+function renderConvergenceBar() {}
 
 // ============================================================
 // RENDER — Panel
@@ -2627,16 +2562,15 @@ function renderMethodWorksheet(gateId, slug) {
 const openedMethods = new Set();
 function render() {
   applyViewClasses();
-  renderViewModeBanner();
-  renderCockpitSidebar();
-  renderSetupPanel();
-  renderPlaybookPanel();
-  renderTunnelBanner();
-  renderEntryHero();
-  renderPocSpotlight();
-  renderStrip();
-  renderMeetingFlow();
-  renderPanel();
+  renderSideNav();
+  renderContentHeader();
+  document.getElementById('view-cockpit').classList.toggle('hidden', activeView !== 'cockpit');
+  document.getElementById('view-gate').classList.toggle('hidden', activeView !== 'gate');
+  document.getElementById('view-setup').classList.toggle('hidden', activeView !== 'setup');
+  if (activeView === 'cockpit') renderCockpitView();
+  if (activeView === 'gate') { renderGateContext(); renderPanel(); }
+  if (activeView === 'setup') renderSetupView();
+  updateStoragePill();
 }
 
 // ============================================================
@@ -2755,6 +2689,8 @@ function onMeta() {
   state.meta.owner = document.getElementById('meta-owner').value;
   state.meta.lead = document.getElementById('meta-lead').value;
   saveStateDebounced();
+  const proj = document.getElementById('topbar-project');
+  if (proj) proj.textContent = (state.meta.name || 'Demo · PoC Tracker') + ' · ' + overallProgress() + '%';
 }
 function fillMetaInputs() {
   document.getElementById('meta-name').value = state.meta.name || '';
@@ -2892,6 +2828,7 @@ document.getElementById('import-input').addEventListener('change', function(ev) 
       state = migrate(parsed);
       fillMetaInputs();
       activeGateId = 'entry';
+      activeView = 'cockpit';
       render();
       saveState(false);
       toast('Import erfolgreich.', 'pink');
@@ -2907,11 +2844,7 @@ function listHtml(items) {
   return `<ul>${items.map(x => `<li>${escapeHtml(x)}</li>`).join('')}</ul>`;
 }
 
-function openCockpit() {
-  const el = document.getElementById('cockpit-sidebar');
-  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
-  toast('Obeya Cockpit ist dauerhaft links sichtbar.', 'pink');
-}
+function openCockpit() { navToCockpit(); }
 
 async function openPortfolio() {
   document.getElementById('modal-title').textContent = 'NXTGN Portfolio · projektübergreifend';
