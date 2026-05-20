@@ -385,8 +385,213 @@
   .playbook-step .num { font-weight:700; color:var(--pink); min-width:20px; }
   .portfolio-table { width:100%; border-collapse:collapse; font-size:12px; }
   .portfolio-table th, .portfolio-table td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--grey-line-soft); }
-  body.view-delivery .admin-only { display:none !important; }
+  body.view-delivery .admin-only,
+  body.view-startup .admin-only { display:none !important; }
+  body.view-delivery .participant-only,
+  body.view-startup .participant-only { display:block; }
+  body.view-delivery .participant-only.hidden,
+  body.view-startup .participant-only.hidden { display:none !important; }
+  body.view-admin .participant-only:not(.hidden) { display:none; }
+  body.view-delivery .content-header .project-bar,
+  body.view-startup .content-header .project-bar { grid-template-columns:repeat(4,1fr); }
+
+  /* Delivery — Kunden-Journey (read-mostly) */
+  .delivery-context-bar { background:var(--white); border-bottom:1px solid var(--grey-line-soft); padding:10px 24px; display:none; gap:16px; flex-wrap:wrap; align-items:center; font-size:12px; }
+  body.view-delivery .delivery-context-bar,
+  body.view-startup .delivery-context-bar { display:flex; }
+  .dcb-item { display:flex; align-items:center; gap:6px; }
+  .dcb-item strong { font-weight:600; }
+  .dcb-weekly { margin-left:auto; }
+
+  .customer-home { display:grid; gap:20px; }
+  .ch-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+  .ch-card { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); padding:20px 24px; }
+  .ch-card h3 { font-size:15px; font-weight:700; margin-bottom:12px; }
+  .ch-card.red { border-left:4px solid #c0392b; }
+  .ch-card.green { border-left:4px solid #2d8a3e; }
+  .ch-card.lila { border-left:4px solid var(--lila); }
+  .summary-row { display:flex; justify-content:space-between; font-size:12px; padding:6px 0; border-bottom:1px solid var(--grey-line-soft); }
+  .summary-row:last-child { border-bottom:none; }
+  .strand-bar { margin-bottom:12px; }
+  .strand-bar-head { display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px; }
+  .strand-bar-track { height:8px; background:var(--grey-line-soft); border-radius:4px; overflow:hidden; }
+  .strand-bar-fill { height:100%; background:var(--lila); transition:width .3s; }
+  .decision-item { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:8px; background:var(--beige); }
+  .decision-item.urgent { border-color:#c0392b; background:#fef5f5; }
+  .decision-item h4 { font-size:13px; font-weight:700; margin-bottom:4px; }
+  .decision-item p { font-size:12px; color:var(--grey-text); margin-bottom:10px; line-height:1.45; }
+  .decision-actions { display:flex; gap:6px; flex-wrap:wrap; }
+  .decision-actions button { font-family:inherit; font-size:10px; font-weight:600; padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
+  .decision-actions button.approve { background:#2d8a3e; color:var(--white); border-color:#2d8a3e; }
+  .decision-actions button.escalate { background:#c0392b; color:var(--white); border-color:#c0392b; }
+  .decision-actions button.defer { opacity:.8; }
+  .confirm-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--grey-line-soft); font-size:13px; }
+  .confirm-row:last-child { border-bottom:none; }
+  .confirm-row input { width:18px; height:18px; }
+
+  /* Startup — Liefer-Sicht */
+  .startup-home { display:grid; gap:20px; }
+  .su-deliverable { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:8px; background:var(--white); display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; }
+  .su-deliverable.urgent { border-left:4px solid #c0392b; background:#fef5f5; }
+  .su-deliverable.done { border-left:4px solid #2d8a3e; opacity:.92; }
+  .su-deliverable h4 { font-size:13px; font-weight:700; margin-bottom:4px; }
+  .su-deliverable p { font-size:12px; color:var(--grey-text); line-height:1.45; }
+  .su-deliverable-meta { font-size:10px; color:var(--grey-faint); margin-top:6px; }
+  .su-status { font-size:10px; font-weight:700; padding:4px 10px; border-radius:10px; white-space:nowrap; }
+  .su-status.open { background:#f5eef8; color:var(--lila); }
+  .su-status.progress { background:#fffbf0; color:#a67c00; }
+  .su-status.ready { background:#e8f4fd; color:#1565c0; }
+  .su-status.submitted { background:#e8f5e9; color:#2d8a3e; }
+  .su-status.confirmed { background:#2d8a3e; color:var(--white); }
+  .su-status.locked { background:var(--grey-line-soft); color:var(--grey-faint); }
+  .su-actions { display:flex; flex-direction:column; gap:6px; align-items:flex-end; }
+  .su-kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+  .su-kpi { background:var(--white); border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:14px; text-align:center; }
+  .su-kpi strong { display:block; font-size:22px; color:var(--pink); }
+  .su-kpi span { font-size:10px; color:var(--grey-text); }
+  body.view-startup .gate-panel.startup-gate .method:not(.startup-editable) .method-body input,
+  body.view-startup .gate-panel.startup-gate .method:not(.startup-editable) .method-body textarea,
+  body.view-startup .gate-panel.startup-gate .method:not(.startup-editable) .method-body select { pointer-events:none; opacity:.55; }
+  body.view-startup .method.startup-editable { border:1px solid var(--lila); border-radius:var(--radius-md); }
+
+  /* NXTGN Auto-Generierung */
+  .auto-run { display:grid; gap:20px; }
+  .auto-grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+  .auto-card { background:var(--white); border:1px solid var(--grey-line-soft); border-radius:var(--radius-lg); padding:18px 20px; border-top:3px solid var(--lila); }
+  .auto-card h3 { font-size:14px;font-weight:700;margin-bottom:10px; }
+  .auto-card.green { border-top-color:#2d8a3e; }
+  .auto-card.yellow { border-top-color:#d4a017; }
+  .auto-card.red { border-top-color:#c0392b; }
+  .auto-list { font-size:12px;line-height:1.5; }
+  .auto-list li { padding:5px 0;border-bottom:1px solid var(--grey-line-soft);list-style:none; }
+  .auto-list li::before { content:"▸ ";color:var(--pink);font-weight:700; }
+  .auto-score { font-size:28px;font-weight:700;color:var(--pink); }
+  .auto-readiness-bar { height:10px;background:var(--grey-line-soft);border-radius:5px;overflow:hidden;margin:8px 0; }
+  .auto-readiness-fill { height:100%;background:var(--lila);transition:width .3s; }
+  .auto-protocol { background:var(--beige);border:1px solid var(--grey-line-soft);border-radius:var(--radius-sm);padding:12px;font-size:11px;line-height:1.55;white-space:pre-wrap;max-height:200px;overflow:auto;font-family:inherit; }
+  .auto-gate-readiness { background:linear-gradient(135deg,#faf8fc,#fff);border:1px solid var(--lila);border-radius:var(--radius-md);padding:16px 20px;margin-bottom:20px; }
+  .auto-gate-readiness h4 { font-size:13px;font-weight:700;margin-bottom:8px; }
+  .auto-kpi-table { width:100%;font-size:11px;border-collapse:collapse;margin-top:8px; }
+  .auto-kpi-table th, .auto-kpi-table td { text-align:left;padding:6px 8px;border-bottom:1px solid var(--grey-line-soft); }
+  .auto-rec { display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:10px;background:#f5eef8;color:var(--lila); }
+
+  /* Kalender · iCal / Outlook */
+  .cal-view { display:grid; gap:20px; }
+  .cal-subscribe { background:linear-gradient(135deg,#faf8fc,#fff);border:1px solid var(--lila);border-radius:var(--radius-lg);padding:20px 24px; }
+  .cal-subscribe h3 { font-size:15px;font-weight:700;margin-bottom:8px; }
+  .cal-url { display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap; }
+  .cal-url code { flex:1;min-width:200px;font-size:11px;background:var(--white);padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--grey-line-soft);word-break:break-all; }
+  .cal-event-row { display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;border:1px solid var(--grey-line-soft);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:8px;background:var(--white); }
+  .cal-event-row.next { border-left:4px solid var(--pink); }
+  .cal-event-meta { font-size:11px;color:var(--grey-text);margin-top:4px; }
+  .cal-event-actions { display:flex;flex-direction:column;gap:6px;align-items:flex-end; }
+  .cal-event-actions button { font-size:10px; }
+  .cal-schedule-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px; }
+  .cal-schedule-grid label { font-size:10px;font-weight:600;display:block;margin-bottom:4px; }
+  .cal-schedule-grid input, .cal-schedule-grid select { width:100%;font-size:12px;padding:6px 8px;border:1px solid var(--grey-line-soft);border-radius:4px;font-family:inherit; }
+  .cal-next-badge { font-size:10px;font-weight:700;color:var(--pink);background:var(--pink-80);padding:2px 8px;border-radius:8px;margin-left:6px; }
+
+  .meeting-runner { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); overflow:hidden; }
+  .meeting-runner-head { padding:16px 20px; background:var(--gradient-full); color:var(--white); }
+  .meeting-runner-body { padding:20px 24px; }
+  .meeting-agenda li { font-size:13px; padding:8px 0; border-bottom:1px solid var(--grey-line-soft); list-style:none; }
+  .meeting-agenda li::before { content:"→ "; color:var(--pink); font-weight:700; }
+  .meeting-protocol { width:100%; min-height:120px; margin-top:16px; font-family:inherit; font-size:13px; padding:12px; border:1px solid var(--grey-line); border-radius:var(--radius-sm); }
+  .customer-gate-summary { background:var(--beige); padding:16px 20px; border-radius:var(--radius-md); margin-bottom:20px; font-size:13px; line-height:1.5; }
+  .customer-gate-readonly .method-body input, .customer-gate-readonly .method-body textarea,
+  .customer-gate-readonly .method-body select, .customer-gate-readonly .add-item-row,
+  .customer-gate-readonly .sec-add-btn, .customer-gate-readonly .check-actions { display:none !important; }
+  .g5-decision-pack { display:grid; gap:16px; }
+  .g5-scorecard { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .g5-sc { background:var(--beige); padding:16px; border-radius:var(--radius-sm); text-align:center; }
+  .g5-sc strong { display:block; font-size:24px; color:var(--pink); }
+
+  /* Visuelle Methoden */
+  .method-visual { margin-top:4px; }
+  .vm-canvas-grid { display:grid; grid-template-columns:1fr 1fr 220px; grid-template-rows:auto auto auto auto auto; gap:10px; }
+  .vm-cell { background:var(--beige); border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:10px 12px; display:flex; flex-direction:column; min-height:72px; }
+  .vm-cell.span-2 { grid-column:span 2; }
+  .vm-cell.span-3 { grid-column:1 / -1; }
+  .vm-cell.kpi-hero { background:linear-gradient(135deg,#faf8fc,#f5eef8); border-color:var(--lila); }
+  .vm-cell label { font-size:9px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--lila); margin-bottom:6px; }
+  .vm-cell textarea, .vm-cell input { flex:1; min-height:48px; border:none; background:transparent; font-family:inherit; font-size:12px; line-height:1.45; resize:vertical; padding:0; }
+  .vm-cell textarea:focus, .vm-cell input:focus { outline:none; }
+  .vm-ro-val { font-size:12px; line-height:1.5; color:var(--grey-text); white-space:pre-wrap; min-height:32px; }
+  .vm-scope-map { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .vm-scope-col { border-radius:var(--radius-md); padding:12px; min-height:120px; }
+  .vm-scope-col.in { background:#f0faf2; border:1px solid #b8dfc4; }
+  .vm-scope-col.out { background:#fef5f5; border:1px solid #e8b4b4; }
+  .vm-scope-col.grey { background:var(--beige); border:1px solid var(--grey-line); grid-column:1/-1; }
+  .vm-scope-col h4 { font-size:11px; font-weight:700; margin-bottom:8px; text-transform:uppercase; letter-spacing:.05em; }
+  .vm-scope-item { font-size:12px; padding:6px 8px; background:var(--white); border-radius:var(--radius-sm); margin-bottom:6px; }
+  .vm-kpi-tree { display:flex; flex-direction:column; align-items:center; gap:0; padding:16px 0; }
+  .vm-kpi-root { background:var(--gradient-full); color:var(--white); padding:14px 24px; border-radius:var(--radius-md); font-weight:700; font-size:14px; text-align:center; min-width:200px; }
+  .vm-kpi-root input { background:transparent; border:none; color:var(--white); font-weight:700; font-size:14px; text-align:center; width:100%; font-family:inherit; }
+  .vm-kpi-root input::placeholder { color:rgba(255,255,255,.6); }
+  .vm-kpi-connector { width:2px; height:16px; background:var(--lila); }
+  .vm-kpi-branches { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; width:100%; }
+  .vm-kpi-branch { flex:1; min-width:140px; max-width:220px; }
+  .vm-kpi-branch label { display:block; font-size:9px; font-weight:700; color:var(--lila); margin-bottom:4px; text-transform:uppercase; }
+  .vm-kpi-branch textarea { width:100%; min-height:64px; font-family:inherit; font-size:11px; padding:8px; border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); background:var(--white); }
+  .vm-readiness-board { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:10px; }
+  .vm-ready-card { border-radius:var(--radius-sm); padding:12px; border:2px solid var(--grey-line); background:var(--white); }
+  .vm-ready-card.green { border-color:#2d8a3e; background:#f0faf2; }
+  .vm-ready-card.yellow { border-color:#d4a017; background:#fffbf0; }
+  .vm-ready-card.red { border-color:#c0392b; background:#fef5f5; }
+  .vm-ready-card select { width:100%; font-size:11px; margin-bottom:6px; font-family:inherit; }
+  .vm-ready-card textarea { width:100%; min-height:40px; font-size:11px; font-family:inherit; border:1px solid var(--grey-line-soft); border-radius:4px; padding:6px; }
+  .vm-assumption-matrix { display:grid; grid-template-columns:1fr 1fr; grid-template-rows:auto 1fr 1fr; gap:8px; }
+  .vm-matrix-label { font-size:10px; font-weight:700; color:var(--grey-faint); text-align:center; padding:4px; }
+  .vm-matrix-quadrant { background:var(--beige); border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:8px; min-height:80px; }
+  .vm-matrix-quadrant.critical { background:#fef5f5; border-color:#c0392b; }
+  .vm-matrix-quadrant.watch { background:#fffbf0; border-color:#d4a017; }
+  .vm-matrix-chip { display:inline-block; font-size:10px; padding:3px 8px; background:var(--white); border-radius:10px; margin:2px; border:1px solid var(--grey-line); }
+  .vm-discovery-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .vm-fit-card { background:var(--beige); border-radius:var(--radius-md); padding:16px; border-left:4px solid var(--lila); }
+  .vm-fit-card h4 { font-size:12px; font-weight:700; margin-bottom:10px; }
+  .vm-ampel-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:12px; }
+  .vm-ampel-row input[type=range] { flex:1; accent-color:var(--pink); }
+  .vm-decision-card { background:var(--white); border:2px solid var(--lila); border-radius:var(--radius-md); padding:16px; text-align:center; }
+  .vm-decision-card select { font-size:14px; font-weight:700; padding:8px 16px; border-radius:var(--radius-sm); font-family:inherit; }
+  .vm-threshold-grid { display:grid; gap:10px; }
+  .vm-threshold-row { display:grid; grid-template-columns:140px 1fr 100px 100px; gap:8px; align-items:center; font-size:12px; background:var(--beige); padding:10px 12px; border-radius:var(--radius-sm); }
+  .vm-threshold-bar { height:8px; background:var(--grey-line-soft); border-radius:4px; overflow:hidden; display:flex; }
+  .vm-threshold-bar .go { background:#2d8a3e; }
+  .vm-threshold-bar .stop { background:#c0392b; }
+  .vm-doc-matrix { display:grid; gap:10px; }
+  .vm-doc-row { display:grid; grid-template-columns:160px 1fr 140px; gap:12px; align-items:center; background:var(--beige); padding:12px 14px; border-radius:var(--radius-sm); }
+  .vm-doc-bar { height:10px; background:var(--grey-line-soft); border-radius:5px; overflow:hidden; }
+  .vm-doc-bar-fill { height:100%; background:var(--lila); transition:width .3s; }
+  .vm-messplan { display:grid; gap:6px; }
+  .vm-mess-row { display:grid; grid-template-columns:1.2fr 1fr 100px 1fr 120px; gap:8px; align-items:center; font-size:11px; background:var(--beige); padding:8px 10px; border-radius:var(--radius-sm); }
+  .vm-mess-row input, .vm-mess-row select, .vm-mess-row textarea { font-family:inherit; font-size:11px; padding:4px 6px; border:1px solid var(--grey-line-soft); border-radius:4px; background:var(--white); }
+  .vm-mess-head { font-size:9px; font-weight:700; text-transform:uppercase; color:var(--grey-faint); padding:0 10px; }
+  .vm-baseline-compare { display:grid; gap:10px; }
+  .vm-base-row { display:grid; grid-template-columns:1fr 80px 80px; gap:12px; align-items:end; background:var(--beige); padding:12px; border-radius:var(--radius-sm); }
+  .vm-base-bars { display:flex; gap:4px; align-items:flex-end; height:48px; }
+  .vm-base-bar { flex:1; border-radius:4px 4px 0 0; min-width:24px; }
+  .vm-base-bar.ist { background:var(--grey-line); }
+  .vm-base-bar.ziel { background:var(--pink); }
+  .vm-gostop { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+  .vm-gostop-opt { border:2px solid var(--grey-line); border-radius:var(--radius-md); padding:16px; text-align:center; cursor:pointer; transition:border-color .2s; }
+  .vm-gostop-opt.selected { border-color:var(--lila); background:#faf8fc; }
+  .vm-gostop-opt input { display:none; }
+  .vm-gostop-opt strong { display:block; font-size:16px; margin-bottom:6px; }
+  .method-visual-badge { font-size:9px; font-weight:700; color:var(--lila); background:#f5eef8; padding:2px 6px; border-radius:8px; margin-left:6px; }
+  .customer-gate-readonly .method-visual textarea,
+  .customer-gate-readonly .method-visual input,
+  .customer-gate-readonly .method-visual select { display:none !important; }
+  .customer-gate-readonly .method-visual .vm-ro-val { display:block !important; }
+
   @media (max-width:1100px) {
+    .ch-grid-2, .g5-scorecard { grid-template-columns:1fr; }
+    .vm-canvas-grid { grid-template-columns:1fr; }
+    .vm-cell.span-2, .vm-cell.kpi-hero { grid-column:1; }
+    .vm-scope-map, .vm-discovery-grid, .vm-gostop { grid-template-columns:1fr; }
+    .vm-mess-row, .vm-threshold-row, .vm-doc-row, .vm-base-row { grid-template-columns:1fr; }
+    .auto-grid-3 { grid-template-columns:1fr; }
+    .cal-schedule-grid { grid-template-columns:1fr 1fr; }
+    .cal-event-row { grid-template-columns:1fr; }
     .workspace { flex-direction:column; }
     .side-nav { width:100%; height:auto; position:relative; top:0; display:flex; flex-wrap:wrap; padding:8px; gap:4px; border-right:none; border-bottom:1px solid var(--grey-line-soft); }
     .nav-section { display:flex; flex-wrap:wrap; gap:4px; margin:0; padding:0; }
@@ -424,9 +629,10 @@
       <div class="topbar-brand">CIPP 2.0<span id="topbar-project">Demo · PoC Tracker</span></div>
     </div>
     <div class="topbar-center">
-      <div class="view-switch" title="Demo: jederzeit zwischen Admin und Delivery wechseln">
+      <div class="view-switch" title="Demo: Rolle wechseln — Admin · Kunde · Startup">
         <button type="button" id="btn-view-admin" onclick="setAppView('admin')">Admin</button>
-        <button type="button" id="btn-view-delivery" onclick="setAppView('delivery')">Delivery</button>
+        <button type="button" id="btn-view-delivery" onclick="setAppView('delivery')">Kunde</button>
+        <button type="button" id="btn-view-startup" onclick="setAppView('startup')">Startup</button>
       </div>
       <div class="phase-switch admin-only">
         <button type="button" class="phase-btn" id="pill-phase-setup" onclick="setProjectPhase('setup')">Setup</button>
@@ -445,9 +651,15 @@
   </header>
 
   <div class="workspace">
+    <div class="delivery-context-bar" id="delivery-context-bar"></div>
     <nav class="side-nav" id="side-nav"></nav>
     <main class="content-area">
       <div class="content-header" id="content-header"></div>
+      <div id="view-customer-home" class="view-pane hidden participant-only"></div>
+      <div id="view-startup-home" class="view-pane hidden participant-only"></div>
+      <div id="view-meeting" class="view-pane hidden participant-only"></div>
+      <div id="view-calendar" class="view-pane hidden"></div>
+      <div id="view-run" class="view-pane hidden admin-only"></div>
       <div id="view-cockpit" class="view-pane"></div>
       <div id="view-gate" class="view-pane hidden">
         <div id="gate-context" class="gate-context"></div>
@@ -1424,6 +1636,25 @@ const PFLICHT_ARTEFAKTE = [
   { slug:'case-card', gate:'g5', label:'Case Card' }
 ];
 
+/** Startup-Lieferungen — methodisch zugeordnete Deliverables (G1–G4) */
+const STARTUP_DELIVERABLES = [
+  { id:'d-vendor', gate:'g1', slug:'vendor-onboarding', label:'Vendor-Onboarding · Unterlagen', desc:'Einkaufs- und Sicherheitsunterlagen einreichen, Ansprechpartner benennen.', phase:'Vorbereitung' },
+  { id:'d-baseline', gate:'g2', slug:'baseline', label:'Baseline-Daten liefern', desc:'Ist-Werte und Messdaten für KPI-Baseline — ohne diese kein belastbares G4.', phase:'G2 · Nachweis' },
+  { id:'d-messplan', gate:'g2', slug:'messplan', label:'Messplan · Datenpunkte', desc:'Welche KPIs, aus welcher Quelle, in welchem Rhythmus — technisch lieferbar?', phase:'G2 · Nachweis' },
+  { id:'d-logging', gate:'g2', slug:'logging-zeitsync', label:'Logging & Zeitsynchronisation', desc:'Datenquellen, Formate und Sync-Logik für Auswertung bereitstellen.', phase:'G2 · Nachweis' },
+  { id:'d-kpi-tree', gate:'g2', slug:'kpi-tree', label:'KPI Tree · Operative Kennzahlen', desc:'Hebel- und operative KPIs aus Implementierungssicht beisteuern.', phase:'G2 · Nachweis' },
+  { id:'d-msa', gate:'g2', slug:'measurement-system-check', label:'Measurement System Check', desc:'Nachweis, dass das Messsystem wiederholbar und reproduzierbar misst.', phase:'G2 · Nachweis' },
+  { id:'d-fat', gate:'g3', slug:'fat', label:'FAT · Factory Acceptance Test', desc:'Grundfunktionalität in kontrollierter Umgebung testen und dokumentieren.', phase:'G3 · Einsatzreife' },
+  { id:'d-sat', gate:'g3', slug:'sat', label:'SAT · Site Acceptance Test', desc:'Stabilität am realen Einsatzort nachweisen.', phase:'G3 · Einsatzreife' },
+  { id:'d-shadow', gate:'g3', slug:'shadow-mode', label:'Shadow Mode', desc:'Parallelbetrieb ohne Produktiveingriff — Abweichungen dokumentieren.', phase:'G3 · Einsatzreife' },
+  { id:'d-dryrun', gate:'g3', slug:'dry-run', label:'Dry Run / Simulation', desc:'Operativen Ablauf probehalten, Korrekturen festhalten.', phase:'G3 · Einsatzreife' },
+  { id:'d-training', gate:'g3', slug:'training-enablement', label:'Training & Enablement', desc:'Nutzer und Beteiligte auf den Start vorbereiten.', phase:'G3 · Einsatzreife' },
+  { id:'d-feldtest', gate:'g4', slug:'feldtest', label:'Feldtest · Durchführung', desc:'Realer Einsatz — Ergebnis, Umfang und Beteiligte dokumentieren.', phase:'G4 · Feldtest' },
+  { id:'d-kpi', gate:'g4', slug:'kpi-tracking', label:'KPI-Tracking · Live-Daten', desc:'Ist-Werte laufend pflegen — Basis für G5-Entscheidung.', phase:'G4 · Feldtest' },
+  { id:'d-feedback', gate:'g4', slug:'user-feedback', label:'User Feedback', desc:'Akzeptanzsignale und qualitative Rückmeldungen erfassen.', phase:'G4 · Feldtest' },
+  { id:'d-exceptions', gate:'g4', slug:'exception-logging', label:'Exception Log', desc:'Sonderfälle und Abweichungen während des Tests sichtbar machen.', phase:'G4 · Feldtest' }
+];
+
 const METHOD_FAMILIES = [
   { id:'steuerung', label:'Steuerung · Cockpit · Meetings', slugs:['obeya','weekly-steuerung','gate-review','gate-checklistensteuerung','review-points','retros','sponsor-kurzbrief','kommunikationsmatrix','stakeholder-register'] },
   { id:'performance', label:'Performance · Schätzung · EVM', slugs:['evm-light','rom-estimate','t-shirt-sizing','kanban','control-room-daily'] },
@@ -1435,20 +1666,304 @@ const METHOD_FAMILIES = [
 ];
 
 const MEETING_FLOW = [
-  { id:'weekly', label:'Weekly', gate:'begleit', zones:['z1','z4','z6','z7'], checks:['Zone 1: Ampel & Blocker','Zone 4: offene Muss-Punkte','Zone 6: Delivery-Fluss','Zone 7: RAID & Changes'] },
-  { id:'gateReview', label:'Gate-Review', gate:'begleit', zones:['z4','z5'], checks:['Muss-Kriterien vollständig?','Artefakte & Evidence ok?','Freigabe schriftlich dokumentiert'] },
-  { id:'reviewPoint', label:'Review Point', gate:'begleit', zones:['z5','z8'], checks:['Qualität der Artefakte','Performance / EVM prüfen'] },
-  { id:'retro', label:'Retro', gate:'begleit', zones:['z9'], checks:['Learnings festhalten','Case Log aktualisieren'] }
+  { id:'weekly', label:'Weekly', gate:'begleit', zones:['z1','z4','z6','z7'], checks:['Zone 1: Ampel & Blocker','Zone 4: offene Muss-Punkte','Zone 6: Delivery-Fluss','Zone 7: RAID & Changes'], durationMin:60, recurrence:'WEEKLY', offsetWeeks:0 },
+  { id:'gateReview', label:'Gate-Review', gate:'begleit', zones:['z4','z5'], checks:['Muss-Kriterien vollständig?','Artefakte & Evidence ok?','Freigabe schriftlich dokumentiert'], durationMin:90, recurrence:'NONE', offsetWeeks:2 },
+  { id:'reviewPoint', label:'Review Point', gate:'begleit', zones:['z5','z8'], checks:['Qualität der Artefakte','Performance / EVM prüfen'], durationMin:60, recurrence:'NONE', offsetWeeks:3 },
+  { id:'retro', label:'Retro', gate:'begleit', zones:['z9'], checks:['Learnings festhalten','Case Log aktualisieren'], durationMin:60, recurrence:'NONE', offsetWeeks:8 }
 ];
+
+const DE_WEEKDAY_MAP = { montag:1, dienstag:2, mittwoch:3, donnerstag:4, freitag:5, samstag:6, sonntag:0 };
+const ICS_BYDAY = ['SU','MO','TU','WE','TH','FR','SA'];
+const CALENDAR_TZ = 'Europe/Berlin';
+
+function defaultMeetingEntry(mf) {
+  return {
+    done: false,
+    startDate: '',
+    startTime: mf && mf.id === 'weekly' ? '' : '10:00',
+    durationMin: mf ? mf.durationMin : 60,
+    recurrence: mf ? mf.recurrence : 'NONE',
+    location: 'Microsoft Teams · CIPP Obeya',
+    timezone: CALENDAR_TZ
+  };
+}
+
+function defaultMeetings() {
+  const m = {};
+  MEETING_FLOW.forEach(x => { m[x.id] = defaultMeetingEntry(x); });
+  return m;
+}
 
 function defaultStrands() {
   return { g0:{ owner:'' }, g1:{ owner:'' }, g2:{ owner:'' } };
 }
-function defaultMeetings() {
-  const m = {};
-  MEETING_FLOW.forEach(x => { m[x.id] = { done:false }; });
-  return m;
+
+function ensureMeetingSchedule(s) {
+  if (!s.meetings) s.meetings = defaultMeetings();
+  MEETING_FLOW.forEach(mf => {
+    if (!s.meetings[mf.id]) s.meetings[mf.id] = defaultMeetingEntry(mf);
+    const m = s.meetings[mf.id];
+    if (m.durationMin == null) m.durationMin = mf.durationMin;
+    if (!m.recurrence) m.recurrence = mf.recurrence;
+    if (!m.location) m.location = 'Microsoft Teams · CIPP Obeya';
+    if (!m.timezone) m.timezone = CALENDAR_TZ;
+    if (mf.id === 'weekly' && !m.startTime && s.org && s.org.weeklyTime) m.startTime = s.org.weeklyTime;
+    if (!m.startTime) m.startTime = '10:00';
+  });
 }
+
+const MEETING_CAL_LABELS = {
+  weekly: 'Weekly · CIPP Steuerung',
+  gateReview: 'Gate-Review · CIPP',
+  reviewPoint: 'Review Point · CIPP',
+  retro: 'Retro · CIPP'
+};
+
+function padCal(n) { return String(n).padStart(2, '0'); }
+function formatDateIso(d) {
+  return `${d.getFullYear()}-${padCal(d.getMonth() + 1)}-${padCal(d.getDate())}`;
+}
+function weekdayFromGerman(name) {
+  if (!name) return null;
+  const n = String(name).toLowerCase().trim();
+  if (DE_WEEKDAY_MAP[n] !== undefined) return DE_WEEKDAY_MAP[n];
+  return null;
+}
+function parseMeetingDateTime(startDate, startTime) {
+  if (!startDate) return null;
+  const [y, m, day] = startDate.split('-').map(Number);
+  const [h, min] = (startTime || '10:00').split(':').map(Number);
+  if (!y || !m || !day) return null;
+  const d = new Date(y, m - 1, day, h || 10, min || 0, 0, 0);
+  return isNaN(d.getTime()) ? null : d;
+}
+function formatMeetingWhen(d) {
+  if (!d) return '—';
+  const days = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+  return `${days[d.getDay()]}, ${padCal(d.getDate())}.${padCal(d.getMonth() + 1)}.${d.getFullYear()} · ${padCal(d.getHours())}:${padCal(d.getMinutes())}`;
+}
+function computeNextWeeklyOccurrence(dayName, fromDate) {
+  const targetWd = weekdayFromGerman(dayName);
+  if (targetWd === null) return null;
+  const base = new Date(fromDate || Date.now());
+  base.setHours(0, 0, 0, 0);
+  for (let i = 0; i < 8; i++) {
+    const check = new Date(base);
+    check.setDate(base.getDate() + i);
+    if (check.getDay() === targetWd) return check;
+  }
+  return null;
+}
+function getMeetingNextOccurrence(meetingId) {
+  ensureMeetingSchedule(state);
+  const m = state.meetings[meetingId];
+  if (!m) return null;
+  const now = new Date();
+  if (meetingId === 'weekly') {
+    if (m.startDate) {
+      let start = parseMeetingDateTime(m.startDate, m.startTime);
+      if (start) {
+        if (m.recurrence === 'WEEKLY') {
+          while (start < now) start = new Date(start.getTime() + 7 * 86400000);
+          return start;
+        }
+        if (start >= now) return start;
+      }
+    }
+    const next = computeNextWeeklyOccurrence((state.org || {}).weeklyDay || 'dienstag', now);
+    if (next) {
+      const [h, min] = (m.startTime || '10:00').split(':').map(Number);
+      next.setHours(h || 10, min || 0, 0, 0);
+      if (next >= now) return next;
+      next.setDate(next.getDate() + 7);
+      return next;
+    }
+    return null;
+  }
+  if (!m.startDate) return null;
+  const dt = parseMeetingDateTime(m.startDate, m.startTime);
+  return dt && dt >= now ? dt : dt;
+}
+function getNextUpcomingMeeting() {
+  let best = null;
+  MEETING_FLOW.forEach(mf => {
+    const occ = getMeetingNextOccurrence(mf.id);
+    if (!occ) return;
+    if (!best || occ < best.when) best = { id: mf.id, label: mf.label, when: occ };
+  });
+  if (!best) return null;
+  return { ...best, whenLabel: formatMeetingWhen(best.when) };
+}
+function icsEscapeCal(s) {
+  return String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+}
+function formatIcsLocal(d) {
+  return `${d.getFullYear()}${padCal(d.getMonth() + 1)}${padCal(d.getDate())}T${padCal(d.getHours())}${padCal(d.getMinutes())}00`;
+}
+function buildMeetingIcsLines(meetingId) {
+  ensureMeetingSchedule(state);
+  const m = state.meetings[meetingId];
+  if (!m || !m.startDate) return [];
+  const start = parseMeetingDateTime(m.startDate, m.startTime);
+  if (!start) return [];
+  const end = new Date(start.getTime() + (m.durationMin || 60) * 60000);
+  const label = MEETING_CAL_LABELS[meetingId] || meetingId;
+  const project = state.meta.name || 'CIPP PoC';
+  const uid = `cipp-${REMOTE_DOC}-${meetingId}@nxtgn`;
+  const desc = [`PoC: ${project}`, `Kunde: ${state.meta.customer || '—'}`, `NXTGN PM: ${(state.org || {}).nxtgnPm || '—'}`, 'CIPP 2.0 — Termin im System öffnen für Auto-Agenda.'].join('\\n');
+  const lines = [
+    'BEGIN:VEVENT',
+    `UID:${uid}`,
+    `DTSTAMP:${new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '')}`,
+    `DTSTART;TZID=${m.timezone || CALENDAR_TZ}:${formatIcsLocal(start)}`,
+    `DTEND;TZID=${m.timezone || CALENDAR_TZ}:${formatIcsLocal(end)}`,
+    `SUMMARY:${icsEscapeCal(label + ' · ' + project)}`,
+    `DESCRIPTION:${icsEscapeCal(desc)}`,
+    `LOCATION:${icsEscapeCal(m.location || '')}`
+  ];
+  if (meetingId === 'weekly' && m.recurrence === 'WEEKLY') {
+    const wd = weekdayFromGerman((state.org || {}).weeklyDay);
+    lines.push(wd !== null ? `RRULE:FREQ=WEEKLY;BYDAY=${ICS_BYDAY[wd]}` : 'RRULE:FREQ=WEEKLY');
+  }
+  lines.push('END:VEVENT');
+  return lines;
+}
+function buildFullIcsCalendar() {
+  const project = state.meta.name || 'CIPP PoC';
+  const lines = [
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//NXTGN//CIPP 2.0//DE', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+    `X-WR-CALNAME:CIPP · ${icsEscapeCal(project)}`, 'X-WR-TIMEZONE:Europe/Berlin',
+    'BEGIN:VTIMEZONE', 'TZID:Europe/Berlin',
+    'BEGIN:DAYLIGHT', 'TZOFFSETFROM:+0100', 'TZOFFSETTO:+0200', 'TZNAME:CEST', 'DTSTART:19700329T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU', 'END:DAYLIGHT',
+    'BEGIN:STANDARD', 'TZOFFSETFROM:+0200', 'TZOFFSETTO:+0100', 'TZNAME:CET', 'DTSTART:19701025T030000', 'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU', 'END:STANDARD',
+    'END:VTIMEZONE'
+  ];
+  MEETING_FLOW.forEach(mf => { lines.push(...buildMeetingIcsLines(mf.id)); });
+  lines.push('END:VCALENDAR');
+  return lines.join('\r\n') + '\r\n';
+}
+function getCalendarApiUrl() {
+  const url = new URL('/api/calendar', location.origin);
+  url.searchParams.set('doc', REMOTE_DOC);
+  return url.toString();
+}
+function getWebcalSubscribeUrl() {
+  return getCalendarApiUrl().replace(/^https:/, 'webcal:').replace(/^http:/, 'webcal:');
+}
+function downloadIcsBlob(content, filename) {
+  const blob = new Blob([content], { type: 'text/calendar;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+function downloadMeetingIcs(meetingId) {
+  const lines = buildMeetingIcsLines(meetingId);
+  if (!lines.length) { toast('Bitte zuerst Datum setzen.'); return; }
+  downloadIcsBlob(['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//NXTGN//CIPP 2.0//DE', ...lines, 'END:VCALENDAR'].join('\r\n') + '\r\n', `cipp-${meetingId}.ics`);
+  toast('ICS heruntergeladen.', 'pink');
+}
+function downloadFullIcs() {
+  if (storageMode === 'vercel') {
+    window.open(getCalendarApiUrl(), '_blank');
+    return;
+  }
+  downloadIcsBlob(buildFullIcsCalendar(), `cipp-${REMOTE_DOC}-termine.ics`);
+  toast('Kalenderdatei heruntergeladen.', 'pink');
+}
+async function copyCalendarSubscribeLink() {
+  const link = storageMode === 'vercel' ? getWebcalSubscribeUrl() : getCalendarApiUrl();
+  try {
+    await navigator.clipboard.writeText(link);
+    toast(storageMode === 'vercel' ? 'Webcal-Abo-Link kopiert — in Outlook/Apple Calendar einfügen.' : 'Kalender-URL kopiert.', 'pink');
+  } catch (e) { toast('Kopieren fehlgeschlagen.'); }
+}
+function getGoogleCalendarUrl(meetingId) {
+  const m = state.meetings[meetingId];
+  const start = getMeetingNextOccurrence(meetingId) || parseMeetingDateTime(m.startDate, m.startTime);
+  if (!start) return null;
+  const end = new Date(start.getTime() + (m.durationMin || 60) * 60000);
+  const fmt = d => `${d.getFullYear()}${padCal(d.getMonth() + 1)}${padCal(d.getDate())}T${padCal(d.getHours())}${padCal(d.getMinutes())}00`;
+  const label = MEETING_CAL_LABELS[meetingId] || meetingId;
+  const project = state.meta.name || 'CIPP PoC';
+  const url = new URL('https://calendar.google.com/calendar/render');
+  url.searchParams.set('action', 'TEMPLATE');
+  url.searchParams.set('text', `${label} · ${project}`);
+  url.searchParams.set('dates', `${fmt(start)}/${fmt(end)}`);
+  url.searchParams.set('ctz', m.timezone || CALENDAR_TZ);
+  url.searchParams.set('details', `CIPP 2.0 · ${project}`);
+  if (m.location) url.searchParams.set('location', m.location);
+  return url.toString();
+}
+function getOutlookWebUrl(meetingId) {
+  const m = state.meetings[meetingId];
+  const start = getMeetingNextOccurrence(meetingId) || parseMeetingDateTime(m.startDate, m.startTime);
+  if (!start) return null;
+  const end = new Date(start.getTime() + (m.durationMin || 60) * 60000);
+  const iso = d => d.toISOString();
+  const label = MEETING_CAL_LABELS[meetingId] || meetingId;
+  const project = state.meta.name || 'CIPP PoC';
+  const url = new URL('https://outlook.live.com/calendar/0/deeplink/compose');
+  url.searchParams.set('subject', `${label} · ${project}`);
+  url.searchParams.set('startdt', iso(start));
+  url.searchParams.set('enddt', iso(end));
+  url.searchParams.set('body', `CIPP 2.0 · ${project}`);
+  if (m.location) url.searchParams.set('location', m.location);
+  return url.toString();
+}
+function renderMeetingCalendarActions(meetingId) {
+  const m = state.meetings[meetingId] || {};
+  const occ = getMeetingNextOccurrence(meetingId);
+  const when = occ ? formatMeetingWhen(occ) : (m.startDate ? formatMeetingWhen(parseMeetingDateTime(m.startDate, m.startTime)) : 'Datum noch nicht geplant');
+  const gUrl = getGoogleCalendarUrl(meetingId);
+  const oUrl = getOutlookWebUrl(meetingId);
+  const hasDate = !!(m.startDate || occ);
+  return `<div style="margin-bottom:16px;padding:12px;background:var(--beige);border-radius:var(--radius-sm);border:1px solid var(--grey-line-soft)">
+    <strong style="font-size:11px">Kalender</strong>
+    <div class="cal-event-meta">${escapeHtml(when)}${meetingId === 'weekly' && m.recurrence === 'WEEKLY' ? ' · wöchentlich' : ''}${m.location ? ' · ' + escapeHtml(m.location) : ''}</div>
+    <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+      ${gUrl ? `<a class="btn-dark btn-small" href="${escapeAttr(gUrl)}" target="_blank" rel="noopener">Google Calendar</a>` : ''}
+      ${oUrl ? `<a class="btn-dark btn-small" href="${escapeAttr(oUrl)}" target="_blank" rel="noopener">Outlook Web</a>` : ''}
+      ${hasDate ? `<button type="button" class="btn-dark btn-small" onclick="downloadMeetingIcs('${meetingId}')">Download .ics</button>` : ''}
+      <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Alle Termine →</button>
+    </div>
+  </div>`;
+}
+function syncWeeklyMeetingFromOrg() {
+  ensureMeetingSchedule(state);
+  const m = state.meetings.weekly;
+  if ((state.org || {}).weeklyTime) m.startTime = state.org.weeklyTime;
+  const next = computeNextWeeklyOccurrence((state.org || {}).weeklyDay || 'dienstag', new Date());
+  if (next) m.startDate = formatDateIso(next);
+}
+function onMeetingScheduleField(meetingId, field, val) {
+  if (!isAdminView()) return;
+  if (!state.meetings) state.meetings = defaultMeetings();
+  if (!state.meetings[meetingId]) state.meetings[meetingId] = defaultMeetingEntry(MEETING_FLOW.find(x => x.id === meetingId));
+  state.meetings[meetingId][field] = val;
+  saveStateDebounced();
+  if (activeView === 'calendar') renderCalendarView();
+  else if (activeView === 'meeting' && activeMeetingId === meetingId) renderMeetingView();
+}
+function autoScheduleMeetingSeries() {
+  if (!isAdminView()) return;
+  ensureMeetingSchedule(state);
+  const anchor = new Date();
+  anchor.setHours(0, 0, 0, 0);
+  syncWeeklyMeetingFromOrg();
+  MEETING_FLOW.filter(x => x.id !== 'weekly').forEach(mf => {
+    const m = state.meetings[mf.id];
+    const d = new Date(anchor);
+    d.setDate(d.getDate() + (mf.offsetWeeks || 0) * 7);
+    m.startDate = formatDateIso(d);
+    if (!m.startTime) m.startTime = '10:00';
+  });
+  saveState(true);
+  render();
+  toast('Terminserie aus Weekly-Rhythmus geplant.', 'pink');
+}
+
 function defaultSignals() {
   return { risk:'green', resource:'green', decision:'offen' };
 }
@@ -1456,13 +1971,33 @@ function defaultSignals() {
 // ============================================================
 // STATE
 // ============================================================
-const STATE_VERSION = 5;
+const STATE_VERSION = 9;
 let state = null;
 let activeGateId = 'entry';
-let activeView = 'cockpit'; // cockpit | gate | setup
+let activeView = 'cockpit'; // cockpit | gate | setup | customer-home | startup-home | meeting | calendar | run
+let activeMeetingId = 'weekly';
 let storageMode = 'memory'; // 'vercel' | 'claude' | 'local' | 'memory'
 
 function newId() { return 'i_' + Math.random().toString(36).slice(2,9); }
+
+function defaultCustomerState() {
+  return {
+    confirmations: { zielbild: false, kontakte: false, termine: false },
+    approvals: {},
+    meetingNotes: { weekly: '', gateReview: '', reviewPoint: '', retro: '' },
+    decisionNotes: {}
+  };
+}
+
+function defaultStartupState() {
+  const submissions = {};
+  STARTUP_DELIVERABLES.forEach(d => { submissions[d.id] = { status:'open', note:'', updated:null }; });
+  return { submissions };
+}
+
+function defaultNxtgnState() {
+  return { meetingNotes: { weekly:'', gateReview:'', reviewPoint:'', retro:'' }, g5DraftCache: '' };
+}
 
 function blankState() {
   const s = {
@@ -1472,6 +2007,9 @@ function blankState() {
     strands: defaultStrands(),
     meetings: defaultMeetings(),
     signals: defaultSignals(),
+    customer: defaultCustomerState(),
+    startup: defaultStartupState(),
+    nxtgn: defaultNxtgnState(),
     config: { enabledMethods: defaultEnabledMethods() },
     gates: {}
   };
@@ -1510,7 +2048,11 @@ function ensureMetaOrgConfig(s) {
   if (!s.strands) s.strands = defaultStrands();
   ['g0','g1','g2'].forEach(k => { if (!s.strands[k]) s.strands[k] = { owner:'' }; });
   if (!s.meetings) s.meetings = defaultMeetings();
-  MEETING_FLOW.forEach(x => { if (!s.meetings[x.id]) s.meetings[x.id] = { done:false }; });
+  MEETING_FLOW.forEach(x => {
+    if (!s.meetings[x.id]) s.meetings[x.id] = defaultMeetingEntry(MEETING_FLOW.find(m => m.id === x.id));
+    else s.meetings[x.id] = { ...defaultMeetingEntry(MEETING_FLOW.find(m => m.id === x.id)), ...s.meetings[x.id] };
+  });
+  ensureMeetingSchedule(s);
   if (!s.signals) s.signals = defaultSignals();
   if (!s.config) s.config = { enabledMethods: defaultEnabledMethods() };
   if (!s.config.enabledMethods) s.config.enabledMethods = defaultEnabledMethods();
@@ -1518,6 +2060,20 @@ function ensureMetaOrgConfig(s) {
     if (s.config.enabledMethods[m.slug] == null) s.config.enabledMethods[m.slug] = true;
   });
   normalizeAllMuss(s);
+  if (!s.customer) s.customer = defaultCustomerState();
+  if (!s.customer.confirmations) s.customer.confirmations = { zielbild: false, kontakte: false, termine: false };
+  if (!s.customer.approvals) s.customer.approvals = {};
+  if (!s.customer.meetingNotes) s.customer.meetingNotes = { weekly: '', gateReview: '', reviewPoint: '', retro: '' };
+  if (!s.customer.decisionNotes) s.customer.decisionNotes = {};
+  MEETING_FLOW.forEach(x => { if (s.customer.meetingNotes[x.id] == null) s.customer.meetingNotes[x.id] = ''; });
+  if (!s.startup) s.startup = defaultStartupState();
+  if (!s.startup.submissions) s.startup.submissions = {};
+  STARTUP_DELIVERABLES.forEach(d => {
+    if (!s.startup.submissions[d.id]) s.startup.submissions[d.id] = { status:'open', note:'', updated:null };
+  });
+  if (!s.nxtgn) s.nxtgn = defaultNxtgnState();
+  if (!s.nxtgn.meetingNotes) s.nxtgn.meetingNotes = { weekly:'', gateReview:'', reviewPoint:'', retro:'' };
+  MEETING_FLOW.forEach(x => { if (s.nxtgn.meetingNotes[x.id] == null) s.nxtgn.meetingNotes[x.id] = ''; });
 }
 
 function migrate(loaded) {
@@ -1528,6 +2084,21 @@ function migrate(loaded) {
   if (loaded.strands) fresh.strands = { ...fresh.strands, ...loaded.strands };
   if (loaded.meetings) fresh.meetings = { ...fresh.meetings, ...loaded.meetings };
   if (loaded.signals) fresh.signals = { ...fresh.signals, ...loaded.signals };
+  if (loaded.customer) {
+    fresh.customer = { ...fresh.customer, ...loaded.customer };
+    fresh.customer.confirmations = { ...fresh.customer.confirmations, ...(loaded.customer.confirmations || {}) };
+    fresh.customer.approvals = { ...(loaded.customer.approvals || {}) };
+    fresh.customer.meetingNotes = { ...fresh.customer.meetingNotes, ...(loaded.customer.meetingNotes || {}) };
+    fresh.customer.decisionNotes = { ...(loaded.customer.decisionNotes || {}) };
+  }
+  if (loaded.startup) {
+    fresh.startup = { ...fresh.startup, ...loaded.startup };
+    fresh.startup.submissions = { ...fresh.startup.submissions, ...(loaded.startup.submissions || {}) };
+  }
+  if (loaded.nxtgn) {
+    fresh.nxtgn = { ...fresh.nxtgn, ...loaded.nxtgn };
+    fresh.nxtgn.meetingNotes = { ...fresh.nxtgn.meetingNotes, ...(loaded.nxtgn.meetingNotes || {}) };
+  }
   if (loaded.config && loaded.config.enabledMethods) {
     fresh.config.enabledMethods = { ...fresh.config.enabledMethods, ...loaded.config.enabledMethods };
   }
@@ -1704,7 +2275,7 @@ function updateStorageExplain() {
         ? 'Browser localStorage'
         : 'Nur In-Memory (nicht persistent)';
   const sharingHint = storageMode === 'vercel'
-    ? `Alle Änderungen landen zentral im Vercel-Speicher. Projekt-ID: <code>${escapeHtml(REMOTE_DOC)}</code>. Delivery-Link (ohne Admin): <code>?doc=${escapeHtml(REMOTE_DOC)}&amp;view=delivery</code>. <button class="btn-dark btn-small" onclick="copyShareLink()">Link kopieren</button> <button class="btn-dark btn-small" onclick="copyDeliveryLink()">Delivery-Link</button>`
+    ? `Alle Änderungen landen zentral im Vercel-Speicher. Projekt-ID: <code>${escapeHtml(REMOTE_DOC)}</code>. Delivery-Link: <code>?doc=${escapeHtml(REMOTE_DOC)}&amp;view=delivery</code>. Kalender-Abo: <code>webcal://…/api/calendar?doc=${escapeHtml(REMOTE_DOC)}</code>. <button class="btn-dark btn-small" onclick="copyShareLink()">Link kopieren</button> <button class="btn-dark btn-small" onclick="copyDeliveryLink()">Delivery-Link</button> <button class="btn-dark btn-small" onclick="copyCalendarSubscribeLink()">Kalender-Abo</button>`
     : 'Zentral für Team/Kunde: JSON über <em>Export</em> in OneDrive speichern, von Kollegin per <em>Import</em> laden und weiterbearbeiten.';
   box.innerHTML = `<strong>Aktueller Speicher:</strong> ${current}. ${sharingHint}`;
 }
@@ -1869,10 +2440,22 @@ function overallProgress() {
 
 function applyUrlViewHint() {
   const params = new URLSearchParams(location.search);
-  if (params.get('view') === 'delivery') state.meta.view = 'delivery';
+  const v = params.get('view');
+  if (v === 'delivery' || v === 'customer') {
+    state.meta.view = 'delivery';
+    activeView = 'customer-home';
+  } else if (v === 'startup') {
+    state.meta.view = 'startup';
+    activeView = 'startup-home';
+  } else if (v === 'calendar') {
+    activeView = 'calendar';
+  }
 }
-function isAdminView() { return !state || !state.meta || state.meta.view !== 'delivery'; }
-function isDeliveryView() { return state && state.meta && state.meta.view === 'delivery'; }
+function isAdminView() { return !state || !state.meta || !state.meta.view || state.meta.view === 'admin'; }
+function isCustomerView() { return state && state.meta && state.meta.view === 'delivery'; }
+function isStartupView() { return state && state.meta && state.meta.view === 'startup'; }
+function isDeliveryView() { return isCustomerView(); }
+function isParticipantView() { return isCustomerView() || isStartupView(); }
 function isSetupPhase() { return state && state.meta && state.meta.phase === 'setup'; }
 function isActivePhase() { return state && state.meta && state.meta.phase === 'active'; }
 function isMethodEnabled(slug) { return state && state.config && state.config.enabledMethods && state.config.enabledMethods[slug] !== false; }
@@ -1881,7 +2464,7 @@ function isRecommendedMethod(slug) {
   return t && Array.isArray(t.recommend) && t.recommend.includes(slug);
 }
 function isLatePhaseGate(id) {
-  if (isDeliveryView() && isActivePhase()) {
+  if (isParticipantView() && isActivePhase()) {
     if (id === 'g4') return !isMussComplete('g3');
     if (id === 'g5') return !isMussComplete('g4');
   }
@@ -1916,7 +2499,12 @@ function getTunnelNextAction() {
   return { gateId, gate: g, text: 'Gate abschließen und Gate-Review durchführen.' };
 }
 
+function navToRun() { activeView = 'run'; render(); }
+function navToCalendar() { activeView = 'calendar'; render(); }
 function navToCockpit() { activeView = 'cockpit'; render(); }
+function navToCustomerHome() { activeView = 'customer-home'; render(); }
+function navToStartupHome() { activeView = 'startup-home'; render(); }
+function navToMeeting(meetingId) { activeMeetingId = meetingId || 'weekly'; activeView = 'meeting'; render(); }
 function navToGate(gateId) {
   if (isGateLocked(gateId)) { toast(`Gate gesperrt — zuerst Voraussetzungen erfüllen.`); return; }
   activeView = 'gate';
@@ -1927,11 +2515,15 @@ function navToSetup() { activeView = 'setup'; render(); }
 function navFromZone(gateId) { navToGate(gateId); }
 
 function applyViewClasses() {
-  document.body.classList.toggle('view-delivery', isDeliveryView());
+  document.body.classList.toggle('view-delivery', isCustomerView());
+  document.body.classList.toggle('view-startup', isStartupView());
+  document.body.classList.toggle('view-admin', isAdminView());
   const ba = document.getElementById('btn-view-admin');
   const bd = document.getElementById('btn-view-delivery');
+  const bs = document.getElementById('btn-view-startup');
   if (ba) ba.classList.toggle('active', isAdminView());
-  if (bd) bd.classList.toggle('active', isDeliveryView());
+  if (bd) bd.classList.toggle('active', isCustomerView());
+  if (bs) bs.classList.toggle('active', isStartupView());
   const ps = document.getElementById('pill-phase-setup');
   const pa = document.getElementById('pill-phase-active');
   if (ps) ps.classList.toggle('active', isSetupPhase());
@@ -1939,11 +2531,16 @@ function applyViewClasses() {
 }
 
 function setAppView(view) {
-  state.meta.view = view === 'delivery' ? 'delivery' : 'admin';
-  if (isDeliveryView() && activeView === 'setup') activeView = 'cockpit';
+  if (view === 'startup') state.meta.view = 'startup';
+  else if (view === 'delivery') state.meta.view = 'delivery';
+  else state.meta.view = 'admin';
+  if (view === 'delivery') activeView = 'customer-home';
+  else if (view === 'startup') activeView = 'startup-home';
+  else if (['customer-home','startup-home','meeting','run','calendar'].includes(activeView)) activeView = 'cockpit';
   saveStateDebounced();
   render();
-  toast(view === 'delivery' ? 'Delivery — Tunnel-Sicht aktiv.' : 'Admin — volle Konfiguration.', 'pink');
+  const msg = view === 'startup' ? 'Startup — Ihre Lieferübersicht.' : view === 'delivery' ? 'Kunde — PoC-Überblick.' : 'Admin — volle Konfiguration.';
+  toast(msg, 'pink');
 }
 
 function setProjectPhase(phase) {
@@ -1983,8 +2580,10 @@ function applyPocTypeRecommendations() {
 function onOrgField(key, val) {
   if (!state.org) state.org = {};
   state.org[key] = val;
+  if (key === 'weeklyDay' || key === 'weeklyTime') syncWeeklyMeetingFromOrg();
   saveStateDebounced();
   if (activeView === 'cockpit') renderCockpitView();
+  if (activeView === 'calendar') renderCalendarView();
 }
 
 function onStrandOwner(strandId, val) {
@@ -2122,9 +2721,887 @@ function renderCockpitZoneBody(z) {
   return escapeHtml(z.text);
 }
 
+function getPoCSummary() {
+  const c = (state.gates.g0.methods || {})['poc-canvas'] || {};
+  return {
+    problem: c.problem || '',
+    zielbild: c.zielbild || '',
+    kpi: c['kpi-primaer'] || '',
+    scope: c.scope || '',
+    owner: state.meta.owner || '',
+    sponsor: (state.org || {}).sponsor || ''
+  };
+}
+
+function onboardingComplete() {
+  const cf = state.customer.confirmations;
+  return cf.zielbild && cf.kontakte && cf.termine;
+}
+
+function toggleCustomerConfirm(key) {
+  if (!state.customer) state.customer = defaultCustomerState();
+  state.customer.confirmations[key] = !state.customer.confirmations[key];
+  saveStateDebounced();
+  render();
+}
+
+function customerGateApproval(gateId, action, note) {
+  if (!state.customer) state.customer = defaultCustomerState();
+  state.customer.approvals[gateId] = action;
+  if (note) state.customer.decisionNotes[gateId] = note;
+  saveStateDebounced();
+  render();
+  const labels = { approved:'Freigegeben', escalated:'Eskaliert', deferred:'Zurückgestellt', change:'Änderung angefordert' };
+  toast(labels[action] || 'Entscheidung gespeichert.', action === 'approved' ? 'pink' : '');
+}
+
+function buildDecisionQueue() {
+  if (!state.customer) state.customer = defaultCustomerState();
+  const q = [];
+  const cf = state.customer.confirmations;
+  if (isActivePhase() && !onboardingComplete()) {
+    if (!cf.zielbild) q.push({ id:'onboard-zielbild', type:'onboard', urgent:false, title:'Zielbild bestätigen', desc:'Bitte prüfen Sie das vorbereitete PoC-Zielbild und bestätigen Sie die Richtung.' });
+    if (!cf.kontakte) q.push({ id:'onboard-kontakte', type:'onboard', urgent:false, title:'Ansprechpartner bestätigen', desc:'Sponsor, Owner und NXTGN-Kontakte stimmen?' });
+    if (!cf.termine) q.push({ id:'onboard-termine', type:'onboard', urgent:false, title:'Termine & Ressourcen bestätigen', desc:'Weekly-Rhythmus und Steuerkreis realistisch?' });
+  }
+  ['entry','g0','g1','g2','g3','g4'].forEach(gid => {
+    if (isMussComplete(gid) && !state.customer.approvals[gid]) {
+      const g = GATES.find(x => x.id === gid);
+      q.push({ id:'gate-'+gid, type:'gate', gateId:gid, urgent:gid==='g3', title:`${g.code} bereit zur Freigabe`, desc:`Alle Muss-Kriterien in ${g.name} erfüllt — Ihre Freigabe wird benötigt.` });
+    }
+  });
+  GATES.forEach(g => {
+    (state.gates[g.id].muss || []).filter(it => it.status === 'escalated').forEach(it => {
+      q.push({ id:`esc-${g.id}-${it.id}`, type:'escalation', gateId:g.id, itemId:it.id, urgent:true, title:`Eskalation: ${g.code}`, desc: it.text });
+    });
+  });
+  if (isMussComplete('g4') && !state.customer.approvals.g5) {
+    q.push({ id:'gate-g5', type:'g5', gateId:'g5', urgent:true, title:'G5 · Go / Stop / Conditional Go', desc:'Feldtest abgeschlossen — finale Entscheidung über Weiterführung erforderlich.' });
+  }
+  return q;
+}
+
+function generateMeetingDelta(meetingId) {
+  const focus = getCurrentFocusGate();
+  const fg = GATES.find(x => x.id === focus);
+  const lines = [
+    `Projekt: ${state.meta.name || '—'} · Fortschritt ${overallProgress()}% (Δ seit letztem ${MEETING_FLOW.find(m=>m.id===meetingId)?.label || 'Termin'})`,
+    `Fokus-Gate: ${fg ? fg.code + ' · ' + fg.name : '—'} (${gateProgress(focus)}%)`,
+    `Offene Muss-Kriterien: ${getOpenMussCount()} · Eskalationen: ${getEscalatedCount()} · Risiko: ${computeRiskAmpel()}`
+  ];
+  if (isActivePhase()) {
+    const startupOpen = buildStartupDeliverables().filter(d => d.status === 'open' || d.status === 'progress').length;
+    if (startupOpen) lines.push(`Startup-Lieferungen offen: ${startupOpen}`);
+    const pendingSub = buildStartupDeliverables().filter(d => d.status === 'submitted').length;
+    if (pendingSub) lines.push(`Startup zur Bestätigung: ${pendingSub}`);
+  }
+  return lines;
+}
+
+function generateGateReadiness(gateId) {
+  const g = GATES.find(x => x.id === gateId);
+  if (!g) return null;
+  const muss = state.gates[gateId].muss || [];
+  const mussDone = muss.filter(isMussItemComplete).length;
+  const mussTotal = muss.length;
+  const mussPct = mussTotal ? Math.round((mussDone / mussTotal) * 100) : 100;
+  const openMuss = muss.filter(x => !isMussItemComplete(x));
+  const escalated = muss.filter(x => x.status === 'escalated');
+  const locked = isGateLocked(gateId);
+  const methods = (g.methoden || []).filter(m => isMethodEnabled(m.slug));
+  const methodsFilled = methods.filter(m => methodHasData((state.gates[gateId].methods || {})[m.slug], METHOD_TEMPLATES[m.slug] || {}));
+  const methodPct = methods.length ? Math.round((methodsFilled.length / methods.length) * 100) : 100;
+  const artifacts = PFLICHT_ARTEFAKTE.filter(a => a.gate === gateId);
+  const artifactsOk = artifacts.filter(a => methodHasData((state.gates[a.gate].methods || {})[a.slug], METHOD_TEMPLATES[a.slug]));
+  const artPct = artifacts.length ? Math.round((artifactsOk.length / artifacts.length) * 100) : 100;
+  const score = locked ? 0 : Math.round(mussPct * 0.55 + methodPct * 0.25 + artPct * 0.2);
+  const ready = !locked && mussPct === 100 && escalated.length === 0 && openMuss.length === 0 && (artifacts.length === 0 || artifactsOk.length === artifacts.length);
+  const ampel = locked ? 'red' : ready ? 'green' : score >= 75 ? 'yellow' : 'red';
+  let recommendation = ready ? 'Freigabe empfohlen — alle Muss-Kriterien und Pflichtartefakte erfüllt.' :
+    locked ? `Gate gesperrt — Voraussetzungen aus vorherigen Gates noch nicht erfüllt.` :
+    escalated.length ? `Noch nicht bereit — ${escalated.length} eskalierte Punkt(e) brauchen Entscheidung.` :
+    openMuss.length ? `In Arbeit — ${openMuss.length} Muss-Kriterien offen.` :
+    artifactsOk.length < artifacts.length ? `Artefakte vervollständigen — ${artifacts.length - artifactsOk.length} Pflichtartefakt(e) offen.` :
+    'Fast bereit — letzte Evidenz prüfen.';
+  const missingArtifacts = artifacts.filter(a => !methodHasData((state.gates[a.gate].methods || {})[a.slug], METHOD_TEMPLATES[a.slug])).map(a => a.label);
+  const missingMethods = methods.filter(m => !methodHasData((state.gates[gateId].methods || {})[m.slug], METHOD_TEMPLATES[m.slug] || {})).slice(0, 5).map(m => m.name);
+  const protocolLines = [
+    `Gate-Review · ${g.code} · ${g.name}`,
+    `Datum: ${new Date().toLocaleDateString('de-DE')}`,
+    `Readiness-Score: ${score}% · Muss ${mussDone}/${mussTotal} · Methoden ${methodsFilled.length}/${methods.length}`,
+    `Empfehlung: ${recommendation}`,
+    openMuss.length ? `\nOffene Muss-Kriterien:\n${openMuss.map(x => '• ' + x.text).join('\n')}` : '',
+    missingArtifacts.length ? `\nFehlende Artefakte:\n${missingArtifacts.map(x => '• ' + x).join('\n')}` : '',
+    escalated.length ? `\nEskalationen:\n${escalated.map(x => '• ' + x.text).join('\n')}` : ''
+  ].filter(Boolean);
+  return {
+    gateId, gateCode: g.code, gateName: g.name, ready, score, ampel, locked,
+    mussDone, mussTotal, mussPct, methodPct, artPct,
+    openMuss, escalated, missingArtifacts, missingMethods, recommendation,
+    protocolDraft: protocolLines.join('\n')
+  };
+}
+
+function generateG5Draft() {
+  const canvas = (state.gates.g0.methods || {})['poc-canvas'] || {};
+  const primaryKpi = canvas['kpi-primaer'] || 'Primäre KPI';
+  const g5Question = canvas.erfolg || canvas.zielbild || 'Ist eine Weiterführung des PoC sinnvoll und risikoarm?';
+  const zielbild = canvas.zielbild || state.meta.name || 'PoC';
+  const kpiRows = (state.gates.g4.methods || {})['kpi-tracking']?.__rows || [];
+  const thresholds = (state.gates.g2.methods || {})['success-threshold']?.__rows || [];
+  const g5Kpis = state.gates.g5.kpis || [];
+  const escalated = [
+    ...getCriticalOpenMuss(),
+    ...GATES.flatMap(g => (state.gates[g.id].muss || []).filter(x => x.status === 'escalated').map(x => ({ code: g.code, text: x.text })))
+  ];
+  const startupConfirmed = buildStartupDeliverables().filter(d => d.status === 'confirmed').length;
+  const startupTotal = buildStartupDeliverables().length;
+  const kpiComparison = [];
+  const thresholdMap = {};
+  thresholds.forEach(r => { if (r.kpi) thresholdMap[r.kpi.toLowerCase()] = r; });
+  if (kpiRows.length) {
+    kpiRows.forEach(r => {
+      const th = thresholdMap[(r.kpi || '').toLowerCase()] || {};
+      const ist = parseFloat(String(r.ist || '').replace(',', '.'));
+      const ziel = parseFloat(String(r.ziel || th.go || '').replace(',', '.'));
+      let status = 'offen';
+      if (!isNaN(ist) && !isNaN(ziel)) status = ist >= ziel ? 'go' : ist >= ziel * 0.8 ? 'bedingt' : 'stop';
+      kpiComparison.push({ kpi: r.kpi || primaryKpi, ist: r.ist || '—', ziel: r.ziel || th.go || '—', go: th.go || '—', stop: th.stop || '—', status });
+    });
+  } else if (g5Kpis.length) {
+    g5Kpis.forEach(k => {
+      kpiComparison.push({ kpi: k.text, ist: k.done ? 'erfüllt' : 'offen', ziel: 'Muss', go: '—', stop: '—', status: k.done ? 'go' : 'offen' });
+    });
+  } else {
+    kpiComparison.push({ kpi: primaryKpi, ist: '—', ziel: '—', go: '—', stop: '—', status: 'offen' });
+  }
+  const goCount = kpiComparison.filter(k => k.status === 'go').length;
+  const stopCount = kpiComparison.filter(k => k.status === 'stop').length;
+  let recommendation = 'Go unter Bedingungen';
+  let ampel = 'yellow';
+  if (goCount > 0 && stopCount === 0 && getEscalatedCount() === 0 && isMussComplete('g4')) {
+    recommendation = 'Go — KPIs und Feldtest sprechen für Weiterführung.';
+    ampel = 'green';
+  } else if (stopCount > 0 || getEscalatedCount() > 2) {
+    recommendation = 'Stop — kritische KPIs oder Eskalationen sprechen gegen unbedingten Go.';
+    ampel = 'red';
+  }
+  const executiveSummary = [
+    `PoC „${state.meta.name || '—'}“ für ${state.meta.customer || 'Kunde'} — Entscheidungsvorlage G5`,
+    ``,
+    `Zielbild: ${(zielbild || '').slice(0, 200)}${(zielbild||'').length > 200 ? '…' : ''}`,
+    `G5-Frage: ${g5Question}`,
+    ``,
+    `Ergebnis: Gesamtfortschritt ${overallProgress()}% · G4 ${isMussComplete('g4') ? 'abgeschlossen' : 'offen'} · Startup-Lieferungen ${startupConfirmed}/${startupTotal} bestätigt.`,
+    `KPI-Bild: ${goCount} im Ziel · ${stopCount} unter Schwelle · ${getEscalatedCount()} Eskalation(en).`,
+    ``,
+    `Empfehlung NXTGN: ${recommendation}`,
+    escalated.length ? `\nRestrisiken:\n${escalated.slice(0, 5).map(x => '• [' + x.code + '] ' + x.text).join('\n')}` : ''
+  ].join('\n');
+  const options = {
+    go: 'Weiterführung / Skalierung — KPIs und Evidenz tragen die Hypothese.',
+    conditional: 'Pilot verlängern oder eingeschränkter Rollout unter klaren Bedingungen.',
+    stop: 'Beenden oder Pivot — Nutzenhypothese nicht ausreichend belegt.'
+  };
+  return { executiveSummary, g5Question, primaryKpi, kpiComparison, escalated, recommendation, ampel, options, fullDraft: executiveSummary };
+}
+
+function generateMeetingPack(meetingId) {
+  const mf = MEETING_FLOW.find(x => x.id === meetingId) || MEETING_FLOW[0];
+  const delta = generateMeetingDelta(meetingId);
+  const agenda = [];
+  const nextActions = [];
+  const focus = getCurrentFocusGate();
+  if (meetingId === 'weekly') {
+    agenda.push('1. Ampel & Gesamtstatus (Cockpit Zone 1)');
+    agenda.push('2. Offene Muss-Kriterien & Blocker (Zone 4)');
+    getCriticalOpenMuss().slice(0, 5).forEach((x, i) => agenda.push(`   ${i + 1}. ${x.code}: ${x.text.slice(0, 55)}${x.text.length > 55 ? '…' : ''}`));
+    agenda.push('3. Delivery-Fluss & nächste Schritte (Zone 6)');
+    const action = getTunnelNextAction();
+    agenda.push(`   → Fokus: ${action.gate ? action.gate.code : ''} — ${action.text.slice(0, 60)}`);
+    agenda.push('4. RAID & Changes (Zone 7)');
+    if (getEscalatedCount()) agenda.push(`   → ${getEscalatedCount()} Eskalation(en) klären`);
+    buildStartupDeliverables().filter(d => d.status === 'submitted').slice(0, 2).forEach(d => agenda.push(`5. Startup-Einreichung prüfen: ${d.label}`));
+    nextActions.push(getTunnelNextAction().text);
+    buildDecisionQueue().slice(0, 2).forEach(d => nextActions.push(d.title));
+  } else if (meetingId === 'gateReview') {
+    const readiness = generateGateReadiness(focus);
+    agenda.push(`1. Gate-Readiness ${readiness.gateCode}: Score ${readiness.score}% (${readiness.ampel})`);
+    agenda.push(`2. ${readiness.recommendation}`);
+    readiness.openMuss.slice(0, 4).forEach(x => agenda.push(`   • Offen: ${x.text.slice(0, 50)}`));
+    readiness.missingArtifacts.forEach(a => agenda.push(`   • Artefakt fehlt: ${a}`));
+    agenda.push('3. Freigabe dokumentieren / Entscheidung Kunde');
+    buildDecisionQueue().filter(d => d.type === 'gate').forEach(d => nextActions.push(d.title));
+  } else if (meetingId === 'reviewPoint') {
+    agenda.push('1. Qualität Pflichtartefakte');
+    PFLICHT_ARTEFAKTE.forEach(a => {
+      const ok = methodHasData((state.gates[a.gate].methods || {})[a.slug], METHOD_TEMPLATES[a.slug]);
+      agenda.push(`   ${ok ? '✓' : '○'} ${a.label} (${a.gate.toUpperCase()})`);
+    });
+    agenda.push('2. Performance / EVM-light prüfen');
+    agenda.push(`3. Fortschritt parallele Stränge: G0 ${gateProgress('g0')}% · G1 ${gateProgress('g1')}% · G2 ${gateProgress('g2')}%`);
+    nextActions.push('Artefakt-Lücken schließen');
+  } else if (meetingId === 'retro') {
+    agenda.push('1. Was lief gut / was blockierte?');
+    agenda.push('2. Learnings für Case Card / Portfolio');
+    agenda.push('3. Annahmen-Updates (Begleitlogik)');
+    const caseOk = methodHasData((state.gates.g5.methods || {})['case-card'], METHOD_TEMPLATES['case-card']);
+    agenda.push(`4. Case Card: ${caseOk ? 'gepflegt' : 'noch anlegen'}`);
+    nextActions.push('Case Card aktualisieren');
+  }
+  mf.checks.forEach(c => { if (!agenda.some(a => a.includes(c.slice(0, 15)))) agenda.push('• ' + c); });
+  const protocolDraft = [
+    `${mf.label} · ${state.meta.name || 'PoC'} · ${new Date().toLocaleDateString('de-DE')}`,
+    `Teilnehmer: ${(state.org || {}).nxtgnPm || 'NXTGN PM'}, ${state.meta.owner || 'Owner'}, ${state.meta.lead || 'Startup-Lead'}`,
+    '',
+    '--- STATUS ---',
+    ...delta.map(l => '• ' + l),
+    '',
+    '--- AGENDA ---',
+    ...agenda.map(a => a.startsWith(' ') || a.match(/^\d/) ? a : '• ' + a),
+    '',
+    '--- BESCHLÜSSE ---',
+    '(automatisch vorbereitet — im Termin ergänzen)',
+    '',
+    '--- NÄCHSTE SCHRITTE ---',
+    ...nextActions.map(a => '→ ' + a)
+  ].join('\n');
+  return { meetingId, label: mf.label, delta, agenda, nextActions, protocolDraft };
+}
+
+function buildMeetingAgenda(meetingId) {
+  return generateMeetingPack(meetingId).agenda;
+}
+
+function applyMeetingProtocol(meetingId) {
+  const pack = generateMeetingPack(meetingId);
+  if (!state.nxtgn) state.nxtgn = defaultNxtgnState();
+  state.nxtgn.meetingNotes[meetingId] = pack.protocolDraft;
+  if (!state.customer) state.customer = defaultCustomerState();
+  state.customer.meetingNotes[meetingId] = pack.protocolDraft;
+  saveStateDebounced();
+  render();
+  toast('Auto-Protokoll übernommen.', 'pink');
+}
+
+function applyG5Draft() {
+  const draft = generateG5Draft();
+  state.gates.g5.notes = draft.fullDraft;
+  if (!state.gates.g5.methods) state.gates.g5.methods = {};
+  if (!state.gates.g5.methods['go-stop']) state.gates.g5.methods['go-stop'] = {};
+  state.gates.g5.methods['go-stop'].entscheidung = draft.recommendation.startsWith('Stop') ? 'Stop' : draft.recommendation.startsWith('Go —') ? 'Go' : 'Go unter Bedingungen';
+  state.gates.g5.methods['go-stop'].begruendung = draft.recommendation;
+  if (!state.nxtgn) state.nxtgn = defaultNxtgnState();
+  state.nxtgn.g5DraftCache = draft.fullDraft;
+  saveStateDebounced();
+  render();
+  toast('G5 Decision Draft ins Gate übernommen.', 'pink');
+}
+
+function renderAutoGateReadiness(gateId) {
+  const r = generateGateReadiness(gateId);
+  if (!r) return '';
+  const cls = r.ampel === 'green' ? 'green' : r.ampel === 'yellow' ? 'yellow' : 'red';
+  return `<div class="auto-gate-readiness">
+    <h4>Auto Gate-Readiness · ${escapeHtml(r.gateCode)} · ${escapeHtml(r.gateName)}</h4>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px">
+      <span class="auto-score" style="font-size:22px">${r.score}%</span>
+      <span class="ampel ${r.ampel}"></span>
+      <span class="auto-rec">${r.ready ? 'FREIGABEBEREIT' : r.locked ? 'GESPERRT' : 'NOCH NICHT BEREIT'}</span>
+    </div>
+    <div class="auto-readiness-bar"><div class="auto-readiness-fill" style="width:${r.score}%"></div></div>
+    <p style="font-size:12px;margin:8px 0">${escapeHtml(r.recommendation)}</p>
+    <div style="font-size:11px;color:var(--grey-text)">Muss ${r.mussDone}/${r.mussTotal} · Methoden ${r.methodPct}% · Artefakte ${r.artPct}%</div>
+    ${r.missingArtifacts.length ? `<ul class="auto-list">${r.missingArtifacts.map(a => `<li>Artefakt: ${escapeHtml(a)}</li>`).join('')}</ul>` : ''}
+    ${isAdminView() ? `<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+      <button type="button" class="btn-dark btn-small" onclick="navToMeeting('gateReview')">Gate-Review öffnen</button>
+      <button type="button" class="btn-dark btn-small primary" onclick="applyGateReviewProtocol('${gateId}')">Review-Protokoll übernehmen</button>
+    </div>` : ''}
+  </div>`;
+}
+
+function applyGateReviewProtocol(gateId) {
+  const r = generateGateReadiness(gateId);
+  if (!state.nxtgn) state.nxtgn = defaultNxtgnState();
+  state.nxtgn.meetingNotes.gateReview = r.protocolDraft;
+  if (!state.customer) state.customer = defaultCustomerState();
+  state.customer.meetingNotes.gateReview = r.protocolDraft;
+  activeMeetingId = 'gateReview';
+  saveStateDebounced();
+  toast('Gate-Review-Protokoll generiert.', 'pink');
+  if (activeView === 'gate') render(); else navToMeeting('gateReview');
+}
+
+function renderG5AutoDraftAdmin() {
+  const draft = generateG5Draft();
+  const kpiRows = draft.kpiComparison.map(k => {
+    const sc = k.status === 'go' ? 'green' : k.status === 'stop' ? 'red' : 'yellow';
+    return `<tr><td>${escapeHtml(k.kpi)}</td><td>${escapeHtml(String(k.ist))}</td><td>${escapeHtml(String(k.ziel))}</td><td><span class="su-status ${sc}">${escapeHtml(k.status)}</span></td></tr>`;
+  }).join('');
+  return `<div class="auto-card ${draft.ampel === 'green' ? 'green' : draft.ampel === 'red' ? 'red' : 'yellow'}" style="margin-bottom:20px">
+    <h3>Auto G5 · Decision Draft</h3>
+    <p style="font-size:12px;line-height:1.5;margin-bottom:10px">${escapeHtml(draft.executiveSummary.slice(0, 400))}${draft.executiveSummary.length > 400 ? '…' : ''}</p>
+    <span class="auto-rec">Empfehlung: ${escapeHtml(draft.recommendation)}</span>
+    <table class="auto-kpi-table"><thead><tr><th>KPI</th><th>Ist</th><th>Ziel</th><th>Status</th></tr></thead><tbody>${kpiRows}</tbody></table>
+    <div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">
+      <button type="button" class="btn-dark btn-small primary" onclick="applyG5Draft()">Draft ins G5-Gate übernehmen</button>
+      <button type="button" class="btn-dark btn-small" onclick="navToGate('g5')">G5 öffnen</button>
+    </div>
+    <pre class="auto-protocol" style="margin-top:12px">${escapeHtml(draft.fullDraft)}</pre>
+  </div>`;
+}
+
+function renderCalendarView() {
+  const pane = document.getElementById('view-calendar');
+  if (!pane) return;
+  ensureMeetingSchedule(state);
+  const nextUp = getNextUpcomingMeeting();
+  const subscribeBlock = storageMode === 'vercel' ? `
+    <div class="cal-subscribe">
+      <h3>Kalender abonnieren · iCal / Outlook</h3>
+      <p style="font-size:12px;color:var(--grey-text)">Alle CIPP-Termine als Live-Feed — Änderungen am Weekly-Rhythmus werden mit synchronisiert (ca. 5 Min. Cache).</p>
+      <div class="cal-url">
+        <code id="cal-subscribe-url">${escapeHtml(getWebcalSubscribeUrl())}</code>
+        <button type="button" class="btn-dark btn-small primary" onclick="copyCalendarSubscribeLink()">Abo-Link kopieren</button>
+        <button type="button" class="btn-dark btn-small" onclick="downloadFullIcs()">.ics öffnen</button>
+      </div>
+    </div>` : `
+    <div class="cal-subscribe">
+      <h3>Kalender exportieren</h3>
+      <p style="font-size:12px;color:var(--grey-text)">Ohne Vercel-Speicher: Termine als .ics-Datei herunterladen und in Outlook, Apple Calendar oder Google importieren.</p>
+      <button type="button" class="btn-dark btn-small primary" onclick="downloadFullIcs()">Alle Termine als .ics</button>
+    </div>`;
+  const adminTools = isAdminView() ? `
+    <div class="ch-card lila">
+      <h3>Terminplanung · Admin</h3>
+      <p style="font-size:12px;color:var(--grey-text);margin-bottom:10px">Serie aus Weekly-Tag/-Zeit (${escapeHtml((state.org||{}).weeklyDay||'—')} ${escapeHtml((state.org||{}).weeklyTime||'')}) plus Gate-Review (+2 Wo.), Review Point (+3 Wo.), Retro (+8 Wo.).</p>
+      <button type="button" class="btn-dark btn-small primary" onclick="autoScheduleMeetingSeries()">Terminserie auto-planen</button>
+    </div>` : '';
+  const eventRows = MEETING_FLOW.map(mf => {
+    const m = state.meetings[mf.id] || {};
+    const occ = getMeetingNextOccurrence(mf.id);
+    const isNext = nextUp && nextUp.id === mf.id;
+    const when = occ ? formatMeetingWhen(occ) : (m.startDate ? formatMeetingWhen(parseMeetingDateTime(m.startDate, m.startTime)) : 'Noch nicht geplant');
+    const gUrl = getGoogleCalendarUrl(mf.id);
+    const oUrl = getOutlookWebUrl(mf.id);
+    const scheduleAdmin = isAdminView() ? `
+      <div class="cal-schedule-grid">
+        <div><label>Datum</label><input type="date" value="${escapeAttr(m.startDate||'')}" onchange="onMeetingScheduleField('${mf.id}','startDate',this.value)"></div>
+        <div><label>Uhrzeit</label><input type="time" value="${escapeAttr(m.startTime||'10:00')}" onchange="onMeetingScheduleField('${mf.id}','startTime',this.value)"></div>
+        <div><label>Dauer (Min.)</label><input type="number" min="15" step="15" value="${escapeAttr(String(m.durationMin||60))}" onchange="onMeetingScheduleField('${mf.id}','durationMin',parseInt(this.value,10)||60)"></div>
+        <div><label>Ort / Link</label><input type="text" value="${escapeAttr(m.location||'')}" onchange="onMeetingScheduleField('${mf.id}','location',this.value)"></div>
+      </div>` : `<div class="cal-event-meta">${escapeHtml(when)}${mf.id==='weekly'&&m.recurrence==='WEEKLY'?' · wöchentlich':''} · ${m.durationMin||60} Min.${m.location?' · '+escapeHtml(m.location):''}</div>`;
+    return `<div class="cal-event-row${isNext?' next':''}">
+      <div>
+        <strong>${escapeHtml(mf.label)}${isNext?' <span class="cal-next-badge">Nächster Termin</span>':''}</strong>
+        ${scheduleAdmin}
+        <div style="margin-top:8px"><button type="button" class="btn-dark btn-small" onclick="navToMeeting('${mf.id}')">Meeting-Modus →</button></div>
+      </div>
+      <div class="cal-event-actions">
+        ${gUrl ? `<a class="btn-dark btn-small" href="${escapeAttr(gUrl)}" target="_blank" rel="noopener">Google</a>` : `<span style="font-size:10px;color:var(--grey-faint)">Datum setzen</span>`}
+        ${oUrl ? `<a class="btn-dark btn-small" href="${escapeAttr(oUrl)}" target="_blank" rel="noopener">Outlook</a>` : ''}
+        ${m.startDate ? `<button type="button" class="btn-dark btn-small" onclick="downloadMeetingIcs('${mf.id}')">.ics</button>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+  pane.innerHTML = `<div class="cal-view">
+    ${subscribeBlock}
+    ${adminTools}
+    <div class="ch-card">
+      <h3>CIPP Terminserie</h3>
+      <p style="font-size:12px;color:var(--grey-text);margin-bottom:12px">Weekly → Gate-Review → Review Point → Retro — mit Auto-Agenda im Meeting-Modus.</p>
+      ${eventRows}
+    </div>
+  </div>`;
+}
+
+function renderRunView() {
+  const pane = document.getElementById('view-run');
+  if (!pane) return;
+  const focus = getCurrentFocusGate();
+  const readiness = generateGateReadiness(focus);
+  const g5 = generateG5Draft();
+  const meetings = MEETING_FLOW.map(m => {
+    const pack = generateMeetingPack(m.id);
+    const cls = m.id === 'weekly' ? '' : '';
+    return `<div class="auto-card">
+      <h3>${escapeHtml(m.label)}</h3>
+      <ul class="auto-list">${pack.agenda.slice(0, 5).map(a => `<li>${escapeHtml(a.replace(/^\d+\.\s*/, '').slice(0, 70))}</li>`).join('')}</ul>
+      <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+        <button type="button" class="btn-dark btn-small" onclick="navToMeeting('${m.id}')">Termin öffnen</button>
+        <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button>
+        <button type="button" class="btn-dark btn-small primary" onclick="applyMeetingProtocol('${m.id}')">Protokoll auto-fill</button>
+      </div>
+    </div>`;
+  }).join('');
+  pane.innerHTML = `<div class="auto-run">
+    <div class="ch-card lila" style="margin-bottom:4px">
+      <h3 style="font-size:16px">NXTGN Auto-Run · aus Projektstate generiert</h3>
+      <p style="font-size:12px;color:var(--grey-text)">Agenda, Gate-Readiness und G5-Draft werden live aus Muss-Kriterien, Artefakten, KPIs und Lieferstatus berechnet — kein manuelles Zusammensuchen.</p>
+    </div>
+    <div class="auto-grid-3">${meetings}</div>
+    <div class="ch-grid-2">
+      <div class="auto-card ${readiness.ampel === 'green' ? 'green' : readiness.ampel === 'yellow' ? 'yellow' : 'red'}">
+        <h3>Gate-Readiness · ${escapeHtml(readiness.gateCode)}</h3>
+        <div class="auto-score">${readiness.score}%</div>
+        <div class="auto-readiness-bar"><div class="auto-readiness-fill" style="width:${readiness.score}%"></div></div>
+        <p style="font-size:12px;margin-top:8px">${escapeHtml(readiness.recommendation)}</p>
+        <button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="navToGate('${focus}')">Gate öffnen</button>
+        <button type="button" class="btn-dark btn-small primary" style="margin-top:6px" onclick="applyGateReviewProtocol('${focus}')">Review-Protokoll</button>
+      </div>
+      <div class="auto-card ${g5.ampel === 'green' ? 'green' : g5.ampel === 'red' ? 'red' : 'yellow'}">
+        <h3>G5 Decision Draft</h3>
+        <span class="auto-rec">${escapeHtml(g5.recommendation)}</span>
+        <pre class="auto-protocol" style="margin-top:10px">${escapeHtml(g5.executiveSummary.slice(0, 500))}${g5.executiveSummary.length > 500 ? '…' : ''}</pre>
+        <button type="button" class="btn-dark btn-small primary" style="margin-top:10px" onclick="applyG5Draft()">Draft übernehmen</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function getNextMeetingLabel() {
+  const next = getNextUpcomingMeeting();
+  if (next) return next.whenLabel;
+  const o = state.org || {};
+  const day = o.weeklyDay || 'Weekly';
+  const time = o.weeklyTime ? ' · ' + o.weeklyTime : '';
+  return day + time;
+}
+
+function renderDeliveryContextBar() {
+  const bar = document.getElementById('delivery-context-bar');
+  if (!bar) return;
+  if (!isParticipantView()) { bar.innerHTML = ''; return; }
+  const risk = computeRiskAmpel();
+  const focus = getCurrentFocusGate();
+  const fg = GATES.find(x => x.id === focus);
+  if (isStartupView()) {
+    const items = buildStartupDeliverables();
+    const due = items.filter(d => d.urgent && d.status !== 'submitted' && d.status !== 'confirmed').length;
+    const next = items.find(d => !d.locked && d.status !== 'submitted' && d.status !== 'confirmed');
+    bar.innerHTML = `
+      <div class="dcb-item"><span class="ampel ${risk}"></span><strong>Startup</strong></div>
+      <div class="dcb-item">Fokus: <strong>${escapeHtml(fg ? fg.code : '—')}</strong></div>
+      <div class="dcb-item">Offen: <strong>${due}</strong></div>
+      <div class="dcb-item">Nächste Lieferung: <strong>${next ? escapeHtml(next.label.slice(0, 35)) + (next.label.length > 35 ? '…' : '') : '—'}</strong></div>
+      <div class="dcb-item">Weekly: <strong>${escapeHtml(getNextMeetingLabel())}</strong></div>
+      <div class="dcb-item dcb-weekly"><button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button><button type="button" class="btn-dark btn-small primary" onclick="navToStartupHome()">Lieferübersicht</button></div>`;
+    return;
+  }
+  const critical = getCriticalOpenMuss()[0];
+  const decisions = buildDecisionQueue().filter(d => d.urgent || d.type === 'gate' || d.type === 'g5').length;
+  bar.innerHTML = `
+    <div class="dcb-item"><span class="ampel ${risk}"></span><strong>${risk === 'green' ? 'Auf Kurs' : risk === 'yellow' ? 'Achtung' : 'Kritisch'}</strong></div>
+    <div class="dcb-item">Stadium: <strong>${escapeHtml(fg ? fg.code + ' · ' + fg.name : '—')}</strong></div>
+    <div class="dcb-item">Fortschritt: <strong>${overallProgress()}%</strong></div>
+    <div class="dcb-item">Blocker: <strong>${critical ? escapeHtml(critical.text.slice(0, 40)) + (critical.text.length > 40 ? '…' : '') : 'keine'}</strong></div>
+    <div class="dcb-item">Entscheidungen: <strong>${decisions}</strong></div>
+    <div class="dcb-item">Nächster Termin: <strong>${escapeHtml(getNextMeetingLabel())}</strong></div>
+    <div class="dcb-item dcb-weekly"><button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button><button type="button" class="btn-dark btn-small primary" onclick="navToMeeting('weekly')">Weekly →</button></div>`;
+}
+
+function getDeliverableFillStatus(gateId, slug) {
+  const tpl = METHOD_TEMPLATES[slug];
+  const data = (state.gates[gateId].methods || {})[slug];
+  if (!tpl) return 'open';
+  if (methodHasData(data, tpl)) return 'ready';
+  if (data && (tpl.fields && tpl.fields.some(f => data[f.key] && String(data[f.key]).trim()) ||
+      (tpl.table && data.__rows && data.__rows.some(r => Object.values(r).some(v => v && String(v).trim()))))) return 'progress';
+  return 'open';
+}
+
+function buildStartupDeliverables() {
+  if (!state.startup) state.startup = defaultStartupState();
+  return STARTUP_DELIVERABLES.filter(d => isMethodEnabled(d.slug)).map(d => {
+    const locked = isGateLocked(d.gate);
+    const sub = state.startup.submissions[d.id] || { status:'open', note:'' };
+    let status = sub.status || 'open';
+    if (locked) status = 'locked';
+    else if (status !== 'submitted' && status !== 'confirmed') {
+      const fill = getDeliverableFillStatus(d.gate, d.slug);
+      if (fill === 'ready') status = sub.status === 'submitted' || sub.status === 'confirmed' ? sub.status : 'ready';
+      else if (fill === 'progress') status = 'progress';
+      else status = 'open';
+    }
+    const g = GATES.find(x => x.id === d.gate);
+    return { ...d, status, submission: sub, locked, gateCode: g ? g.code : d.gate, urgent: !locked && (status === 'open' || status === 'progress') && isActivePhase() };
+  });
+}
+
+function submitStartupDeliverable(deliverableId) {
+  if (!state.startup) state.startup = defaultStartupState();
+  const d = STARTUP_DELIVERABLES.find(x => x.id === deliverableId);
+  if (!d) return;
+  const fill = getDeliverableFillStatus(d.gate, d.slug);
+  if (fill !== 'ready' && fill !== 'progress') {
+    toast('Bitte zuerst das Artefakt ausfüllen, dann einreichen.');
+    openStartupDeliverable(d.gate, d.slug);
+    return;
+  }
+  state.startup.submissions[deliverableId] = {
+    status: 'submitted',
+    note: state.startup.submissions[deliverableId]?.note || '',
+    updated: new Date().toISOString()
+  };
+  saveStateDebounced();
+  render();
+  toast('Lieferung eingereicht — NXTGN prüft und bestätigt.', 'pink');
+}
+
+function setStartupDeliverableNote(deliverableId, note) {
+  if (!state.startup) state.startup = defaultStartupState();
+  if (!state.startup.submissions[deliverableId]) state.startup.submissions[deliverableId] = { status:'open', note:'' };
+  state.startup.submissions[deliverableId].note = note;
+  saveStateDebounced();
+}
+
+function openStartupDeliverable(gateId, slug) {
+  if (isGateLocked(gateId)) { toast('Gate noch gesperrt — Fokus auf aktuelle Phase.'); return; }
+  activeGateId = gateId;
+  activeView = 'gate';
+  openedMethods.add(`${gateId}:${slug}`);
+  saveStateDebounced();
+  render();
+  setTimeout(() => {
+    const el = document.querySelector(`[data-method="${slug}"]`);
+    if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 80);
+}
+
+function isStartupEditableMethod(gateId, slug) {
+  if (!isStartupView()) return false;
+  return STARTUP_DELIVERABLES.some(d => d.gate === gateId && d.slug === slug && isMethodEnabled(d.slug));
+}
+
+function renderStartupHome() {
+  const pane = document.getElementById('view-startup-home');
+  if (!pane) return;
+  const items = buildStartupDeliverables();
+  const open = items.filter(d => d.status === 'open' || d.status === 'progress').length;
+  const ready = items.filter(d => d.status === 'ready').length;
+  const submitted = items.filter(d => d.status === 'submitted').length;
+  const confirmed = items.filter(d => d.status === 'confirmed').length;
+  const urgent = items.filter(d => d.urgent && d.status !== 'submitted' && d.status !== 'confirmed' && d.status !== 'locked');
+  const focus = getCurrentFocusGate();
+  const fg = GATES.find(x => x.id === focus);
+  const statusLabel = { open:'Offen', progress:'In Arbeit', ready:'Bereit zur Einreichung', submitted:'Eingereicht', confirmed:'Bestätigt', locked:'Gesperrt' };
+  const renderDel = (d) => {
+    const canSubmit = !d.locked && (d.status === 'ready' || d.status === 'progress');
+    return `<div class="su-deliverable${d.urgent && d.status !== 'submitted' ? ' urgent' : ''}${d.status === 'confirmed' || d.status === 'submitted' ? ' done' : ''}">
+      <div>
+        <h4>${escapeHtml(d.label)}</h4>
+        <p>${escapeHtml(d.desc)}</p>
+        <div class="su-deliverable-meta">${escapeHtml(d.phase)} · ${escapeHtml(d.gateCode)} · ${escapeHtml(d.slug)}</div>
+        ${!d.locked && d.status !== 'confirmed' ? `<input type="text" style="width:100%;margin-top:8px;font-size:11px;padding:6px 8px;border:1px solid var(--grey-line-soft);border-radius:4px;font-family:inherit" placeholder="Kurznotiz (optional) …" value="${escapeAttr(d.submission.note||'')}" oninput="setStartupDeliverableNote('${d.id}', this.value)">` : ''}
+      </div>
+      <div class="su-actions">
+        <span class="su-status ${d.status}">${statusLabel[d.status]||d.status}</span>
+        ${d.locked ? '' : `<button type="button" class="btn-dark btn-small" onclick="openStartupDeliverable('${d.gate}','${d.slug}')">Bearbeiten</button>`}
+        ${canSubmit ? `<button type="button" class="btn-dark btn-small primary" onclick="submitStartupDeliverable('${d.id}')">Einreichen ✓</button>` : ''}
+      </div>
+    </div>`;
+  };
+  pane.innerHTML = `<div class="startup-home">
+    <div class="su-kpi-row">
+      <div class="su-kpi"><strong>${open}</strong><span>Offen / in Arbeit</span></div>
+      <div class="su-kpi"><strong>${ready}</strong><span>Bereit</span></div>
+      <div class="su-kpi"><strong>${submitted}</strong><span>Eingereicht</span></div>
+      <div class="su-kpi"><strong>${confirmed}</strong><span>Bestätigt</span></div>
+    </div>
+    <div class="ch-grid-2">
+      <div class="ch-card ${urgent.length ? 'red' : 'green'}">
+        <h3>${urgent.length ? 'Jetzt liefern' : 'Kein akuter Lieferdruck'}</h3>
+        ${urgent.length ? urgent.slice(0, 4).map(renderDel).join('') : '<p style="font-size:13px;color:var(--grey-text)">Alle aktuellen Lieferungen sind eingereicht oder das Projekt wartet auf NXTGN/Kunde.</p>'}
+      </div>
+      <div class="ch-card">
+        <h3>Ihr Kontext</h3>
+        <div class="summary-row"><span>Projekt</span><strong>${escapeHtml(state.meta.name || '—')}</strong></div>
+        <div class="summary-row"><span>Ihre Rolle</span><strong>Startup-Lead · ${escapeHtml(state.meta.lead || '—')}</strong></div>
+        <div class="summary-row"><span>NXTGN PM</span><span>${escapeHtml((state.org||{}).nxtgnPm || '—')}</span></div>
+        <div class="summary-row"><span>Aktueller Fokus</span><strong>${escapeHtml(fg ? fg.code + ' · ' + fg.name : '—')}</strong></div>
+        <div class="summary-row"><span>Fortschritt PoC</span><span>${overallProgress()}%</span></div>
+        <div class="summary-row"><span>Nächster Weekly</span><strong>${escapeHtml(getNextMeetingLabel())}</strong></div>
+        <button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="navToMeeting('weekly')">Weekly öffnen →</button>
+      </div>
+    </div>
+    <div class="ch-card lila"><h3>Alle Lieferungen · Delivery Queue</h3>${items.length ? items.map(renderDel).join('') : '<p style="font-size:13px">Keine Startup-Deliverables für diesen Tunnel aktiviert — NXTGN konfiguriert im Setup.</p>'}</div>
+  </div>`;
+}
+
+function renderCustomerHome() {
+  const pane = document.getElementById('view-customer-home');
+  if (!pane) return;
+  const s = getPoCSummary();
+  const q = buildDecisionQueue();
+  const urgent = q.filter(d => d.urgent);
+  const normal = q.filter(d => !d.urgent);
+  const cf = state.customer.confirmations;
+  const risk = computeRiskAmpel();
+  const strandHtml = ['g0','g1','g2'].map(id => {
+    const g = GATES.find(x => x.id === id);
+    const pct = gateProgress(id);
+    const meta = STRAND_META[id];
+    return `<div class="strand-bar">
+      <div class="strand-bar-head"><span>${g.code} · ${escapeHtml(meta.strand)}</span><span>${pct}%</span></div>
+      <div class="strand-bar-track"><div class="strand-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+  const decisionHtml = (items, emptyMsg) => items.length ? items.map(d => {
+    if (d.type === 'onboard') return `<div class="decision-item"><h4>${escapeHtml(d.title)}</h4><p>${escapeHtml(d.desc)}</p><p style="font-size:11px;color:var(--grey-faint)">→ Bestätigung im Onboarding-Bereich unten</p></div>`;
+    const actions = d.type === 'g5'
+      ? `<button class="approve" onclick="customerGateApproval('g5','approved')">Go</button><button onclick="customerGateApproval('g5','change')">Go unter Bedingungen</button><button class="escalate" onclick="customerGateApproval('g5','deferred')">Stop / Später</button>`
+      : `<button class="approve" onclick="customerGateApproval('${d.gateId}','approved')">Freigeben</button><button class="escalate" onclick="customerGateApproval('${d.gateId}','escalated')">Eskalieren</button><button onclick="customerGateApproval('${d.gateId}','change')">Änderung</button><button class="defer" onclick="customerGateApproval('${d.gateId}','deferred')">Nicht jetzt</button>`;
+    return `<div class="decision-item${d.urgent?' urgent':''}"><h4>${escapeHtml(d.title)}</h4><p>${escapeHtml(d.desc)}</p><div class="decision-actions">${actions}</div></div>`;
+  }).join('') : `<p style="font-size:13px;color:var(--grey-text)">${emptyMsg}</p>`;
+  const meetingsHtml = MEETING_FLOW.map(m => {
+    const done = state.meetings[m.id] && state.meetings[m.id].done;
+    const occ = getMeetingNextOccurrence(m.id);
+    const when = occ ? formatMeetingWhen(occ) : '—';
+    return `<div class="summary-row"><span>${done ? '✓ ' : ''}${escapeHtml(m.label)}<br><span style="font-size:10px;color:var(--grey-faint)">${escapeHtml(when)}</span></span>
+      <span style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end">
+        <button type="button" class="btn-dark btn-small" onclick="navToMeeting('${m.id}')">Öffnen</button>
+        <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button>
+      </span></div>`;
+  }).join('');
+  const canvas = (state.gates.g0.methods || {})['poc-canvas'] || {};
+  const canvasPreview = (canvas.zielbild || canvas.problem || canvas['kpi-primaer']) ? `
+    <div style="margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:11px">
+      <div style="background:var(--beige);padding:8px;border-radius:4px;grid-column:span 2"><strong style="color:var(--lila)">Problem</strong><br>${escapeHtml((canvas.problem||'—').slice(0,100))}${(canvas.problem||'').length>100?'…':''}</div>
+      <div style="background:#faf8fc;padding:8px;border-radius:4px;border:1px solid var(--lila)"><strong style="color:var(--lila)">KPI</strong><br>${escapeHtml(canvas['kpi-primaer']||'—')}</div>
+      <div style="background:var(--beige);padding:8px;border-radius:4px"><strong style="color:var(--lila)">Zielbild</strong><br>${escapeHtml((canvas.zielbild||'—').slice(0,80))}${(canvas.zielbild||'').length>80?'…':''}</div>
+    </div>` : '';
+  pane.innerHTML = `<div class="customer-home">
+    ${!onboardingComplete() && isActivePhase() ? `
+    <div class="ch-card lila">
+      <h3>A · Onboarding — Freigabe zum Start</h3>
+      <p style="font-size:12px;color:var(--grey-text);margin-bottom:12px">NXTGN hat den PoC vorbereitet. Bitte bestätigen Sie:</p>
+      <div class="confirm-row"><input type="checkbox" ${cf.zielbild?'checked':''} onchange="toggleCustomerConfirm('zielbild')"><span>Ja, das Zielbild stimmt</span></div>
+      <div class="confirm-row"><input type="checkbox" ${cf.kontakte?'checked':''} onchange="toggleCustomerConfirm('kontakte')"><span>Ja, Ansprechpartner &amp; Rollen stimmen</span></div>
+      <div class="confirm-row"><input type="checkbox" ${cf.termine?'checked':''} onchange="toggleCustomerConfirm('termine')"><span>Ja, Termine &amp; Ressourcen sind realistisch</span></div>
+    </div>` : ''}
+    <div class="ch-grid-2">
+      <div class="ch-card ${urgent.length ? 'red' : 'green'}">
+        <h3>${urgent.length ? 'Braucht Ihre Entscheidung' : 'Läuft planmäßig'}</h3>
+        ${decisionHtml(urgent.length ? urgent : normal.slice(0, 2), urgent.length ? '' : 'Keine offenen Entscheidungen — Sie müssen aktuell nichts tun.')}
+      </div>
+      <div class="ch-card">
+        <h3>PoC Summary</h3>
+        <div class="summary-row"><span>Projekt</span><strong>${escapeHtml(state.meta.name || '—')}</strong></div>
+        <div class="summary-row"><span>Zielbild</span><span>${escapeHtml((s.zielbild || '—').slice(0, 80))}${(s.zielbild||'').length > 80 ? '…' : ''}</span></div>
+        <div class="summary-row"><span>Primäre KPI</span><strong>${escapeHtml(s.kpi || '—')}</strong></div>
+        <div class="summary-row"><span>Gesamtstatus</span><span><span class="ampel ${risk}"></span> ${overallProgress()}%</span></div>
+        <div class="summary-row"><span>Nächster Freigabepunkt</span><strong>G3 · Konvergenz</strong></div>
+        ${canvasPreview}
+        <button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="navToGate('g0')">PoC Canvas ansehen →</button>
+      </div>
+    </div>
+    <div class="ch-grid-2">
+      <div class="ch-card">
+        <h3>Ihre Rolle &amp; Verantwortung</h3>
+        <div class="summary-row"><span>Sponsor</span><span>${escapeHtml(s.sponsor || '—')}</span></div>
+        <div class="summary-row"><span>Fachowner (Sie)</span><strong>${escapeHtml(s.owner || '—')}</strong></div>
+        <div class="summary-row"><span>NXTGN PM</span><span>${escapeHtml((state.org||{}).nxtgnPm || '—')}</span></div>
+        <div class="summary-row"><span>Startup-Lead</span><span>${escapeHtml(state.meta.lead || '—')}</span></div>
+        <div class="summary-row"><span>Steuerkreis</span><span>${escapeHtml((state.org||{}).steeringCircle || '—')}</span></div>
+      </div>
+      <div class="ch-card">
+        <h3>Parallele Vorbereitung · G0 / G1 / G2</h3>
+        ${strandHtml}
+        <p style="font-size:11px;color:var(--grey-faint);margin-top:8px">G3 wird aktiv, wenn alle drei Stränge geschlossen sind.</p>
+      </div>
+    </div>
+    <div class="ch-grid-2">
+      <div class="ch-card">
+        <h3>Entscheidungsqueue</h3>
+        ${decisionHtml(q.slice(0, 6), 'Keine offenen Entscheidungen.')}
+      </div>
+      <div class="ch-card">
+        <h3>Termine &amp; Meetings</h3>
+        ${meetingsHtml}
+        <div class="summary-row" style="margin-top:12px"><span>Weekly</span><strong>${escapeHtml(getNextMeetingLabel())}</strong></div>
+        <button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="navToCalendar()">Kalender &amp; Outlook-Sync →</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderMeetingView() {
+  const pane = document.getElementById('view-meeting');
+  if (!pane) return;
+  const mf = MEETING_FLOW.find(x => x.id === activeMeetingId) || MEETING_FLOW[0];
+  const pack = generateMeetingPack(activeMeetingId);
+  const notes = isAdminView()
+    ? ((state.nxtgn && state.nxtgn.meetingNotes && state.nxtgn.meetingNotes[activeMeetingId]) || (state.customer.meetingNotes || {})[activeMeetingId] || '')
+    : ((state.customer.meetingNotes || {})[activeMeetingId] || '');
+  const done = state.meetings[activeMeetingId] && state.meetings[activeMeetingId].done;
+  const adminTools = isAdminView() ? `
+    <div style="margin-bottom:16px;padding:12px;background:#faf8fc;border-radius:var(--radius-sm);border:1px solid var(--lila)">
+      <strong style="font-size:11px;color:var(--lila)">NXTGN Auto-Generierung</strong>
+      <pre class="auto-protocol" style="margin-top:8px;max-height:140px">${escapeHtml(pack.protocolDraft)}</pre>
+      <button type="button" class="btn-dark btn-small primary" style="margin-top:8px" onclick="applyMeetingProtocol('${activeMeetingId}')">Auto-Protokoll übernehmen</button>
+    </div>` : '';
+  pane.innerHTML = `<div class="meeting-runner">
+    <div class="meeting-runner-head">
+      <h2 style="font-size:18px;font-weight:700">${escapeHtml(mf.label)} · Meeting-Modus</h2>
+      <p style="font-size:12px;opacity:.9;margin-top:4px">${isAdminView() ? 'Agenda, Delta und Protokoll automatisch aus State — NXTGN moderiert.' : 'Agenda automatisch aus Status, Blockern und Entscheidungen — Protokoll optional.'}</p>
+    </div>
+    <div class="meeting-runner-body">
+      ${renderMeetingCalendarActions(activeMeetingId)}
+      ${adminTools}
+      <div class="ch-grid-2" style="margin-bottom:20px">
+        <div><h4 style="font-size:13px;font-weight:700;margin-bottom:8px">Delta seit letztem Termin</h4>
+          <ul class="meeting-agenda">${pack.delta.map(a => `<li>${escapeHtml(a)}</li>`).join('')}</ul>
+        </div>
+        <div><h4 style="font-size:13px;font-weight:700;margin-bottom:8px">Agenda</h4>
+          <ul class="meeting-agenda">${pack.agenda.map(a => `<li>${escapeHtml(a)}</li>`).join('')}</ul>
+        </div>
+      </div>
+      ${pack.nextActions.length ? `<div style="margin-bottom:16px"><h4 style="font-size:13px;font-weight:700;margin-bottom:8px">Nächste Aktionen</h4><ul class="meeting-agenda">${pack.nextActions.map(a => `<li>${escapeHtml(a)}</li>`).join('')}</ul></div>` : ''}
+      <h4 style="font-size:13px;font-weight:700;margin-bottom:8px">Protokoll ${done ? '(abgeschlossen)' : ''}</h4>
+      <textarea class="meeting-protocol" id="meeting-protocol" placeholder="Kurznotiz oder Auto-Protokoll übernehmen …" oninput="onMeetingNotes('${activeMeetingId}', this.value)">${escapeHtml(notes)}</textarea>
+      <div style="margin-top:16px;display:flex;gap:8px;flex-wrap:wrap">
+        <button type="button" class="btn-dark btn-small primary" onclick="toggleMeetingDone('${activeMeetingId}')">${done ? 'Als offen markieren' : 'Termin abschließen ✓'}</button>
+        <button type="button" class="btn-dark btn-small" onclick="${isStartupView() ? 'navToStartupHome()' : isCustomerView() ? 'navToCustomerHome()' : 'navToRun()'}">← Zurück</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function onMeetingNotes(meetingId, val) {
+  if (!state.customer) state.customer = defaultCustomerState();
+  if (!state.customer.meetingNotes) state.customer.meetingNotes = {};
+  state.customer.meetingNotes[meetingId] = val;
+  if (isAdminView()) {
+    if (!state.nxtgn) state.nxtgn = defaultNxtgnState();
+    state.nxtgn.meetingNotes[meetingId] = val;
+  }
+  saveStateDebounced();
+}
+
+function renderG5DecisionPack() {
+  const kpiDone = state.gates.g5.kpis.filter(x => x.done).length;
+  const kpiTotal = state.gates.g5.kpis.length;
+  const notes = state.gates.g5.notes || '';
+  const approval = (state.customer && state.customer.approvals) ? state.customer.approvals.g5 : null;
+  return `<div class="g5-decision-pack">
+    <div class="ch-card lila"><h3>E · Entscheidungsmodus · G5</h3>
+      <p style="font-size:13px;line-height:1.5;margin-bottom:12px">${escapeHtml(notes || 'Executive Summary wird von NXTGN im Gate vorbereitet.')}</p>
+      <div class="g5-scorecard">
+        <div class="g5-sc"><strong>${overallProgress()}%</strong><span>Gesamtfortschritt</span></div>
+        <div class="g5-sc"><strong>${kpiDone}/${kpiTotal}</strong><span>KPIs erfüllt</span></div>
+        <div class="g5-sc"><strong>${getEscalatedCount()}</strong><span>Restrisiken eskaliert</span></div>
+      </div>
+      ${approval ? `<p style="margin-top:12px;font-size:12px"><strong>Ihre Entscheidung:</strong> ${escapeHtml(approval)}</p>` : `
+      <div class="decision-actions" style="margin-top:16px">
+        <button class="approve" onclick="customerGateApproval('g5','approved')">Go</button>
+        <button onclick="customerGateApproval('g5','change')">Go unter Bedingungen</button>
+        <button class="escalate" onclick="customerGateApproval('g5','deferred')">Stop</button>
+      </div>`}
+    </div>
+  </div>`;
+}
+
 function renderSideNav() {
   const nav = document.getElementById('side-nav');
   if (!nav) return;
+  if (isStartupView()) {
+    const items = buildStartupDeliverables();
+    const delNav = items.filter(d => !d.locked).slice(0, 8).map(d =>
+      `<button type="button" class="nav-item" onclick="openStartupDeliverable('${d.gate}','${d.slug}')">
+        <span class="nav-code">${escapeHtml(d.gateCode)}</span><span class="nav-label">${escapeHtml(d.label.slice(0, 28))}${d.label.length>28?'…':''}</span>
+        <span class="su-status ${d.status}" style="font-size:9px;padding:2px 6px">${d.status === 'submitted' ? '✓' : d.status === 'ready' ? '!' : '·'}</span>
+      </button>`
+    ).join('');
+    const meetingItems = MEETING_FLOW.map(m => {
+      const isActive = activeView === 'meeting' && activeMeetingId === m.id;
+      return `<button type="button" class="nav-item${isActive?' active':''}" onclick="navToMeeting('${m.id}')">
+        <span class="nav-code">MTG</span><span class="nav-label">${escapeHtml(m.label)}</span>
+      </button>`;
+    }).join('');
+    const gateItems = ['g1','g2','g3','g4'].map(id => {
+      const g = GATES.find(x => x.id === id);
+      const locked = isGateLocked(id);
+      const pct = gateProgress(id);
+      const isActive = activeView === 'gate' && activeGateId === id;
+      return `<button type="button" class="nav-item${isActive?' active':''}${locked?' locked':''}" ${locked ? '' : `onclick="navToGate('${id}')"`}>
+        <span class="nav-code">${g.code}</span><span class="nav-label">${escapeHtml(g.name)}</span><span class="nav-pct">${locked?'🔒':pct+'%'}</span>
+      </button>`;
+    }).join('');
+    nav.innerHTML = `
+      <div class="nav-section">
+        <div class="nav-section-label">Startup</div>
+        <button type="button" class="nav-item${activeView==='startup-home'?' active':''}" onclick="navToStartupHome()">
+          <span class="nav-code">HOME</span><span class="nav-label">Was muss ich liefern?</span>
+        </button>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Meine Deliverables</div>
+        ${delNav || '<div style="font-size:11px;padding:8px;color:var(--grey-faint)">Keine aktiven Lieferungen</div>'}
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Meetings</div>
+        <button type="button" class="nav-item${activeView==='calendar'?' active':''}" onclick="navToCalendar()">
+          <span class="nav-code">CAL</span><span class="nav-label">Kalender · iCal</span>
+        </button>
+        ${meetingItems}
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Gates · Lieferbezug</div>
+        ${gateItems}
+      </div>
+      <div class="nav-meta-box">
+        <strong>Startup · ${isActivePhase() ? 'Tunnel' : 'Vorbereitung'}</strong>
+        ${items.filter(d => d.status === 'open' || d.status === 'progress').length} offen
+      </div>`;
+    return;
+  }
+  if (isCustomerView()) {
+    const gateItems = GATES.filter(g => g.id !== 'begleit').map(g => {
+      const locked = isGateLocked(g.id);
+      const pct = gateProgress(g.id);
+      const done = isMussComplete(g.id);
+      const parallel = ['g0','g1','g2'].includes(g.id);
+      const label = g.id === 'entry' ? 'Entry Check' : g.name;
+      const isActive = activeView === 'gate' && activeGateId === g.id;
+      return `<button type="button" class="nav-item${isActive?' active':''}${locked?' locked':''}${done?' done':''}" ${locked ? '' : `onclick="navToGate('${g.id}')"`}>
+        <span class="nav-code">${g.code}${parallel ? '<span class="nav-badge">∥</span>' : ''}</span>
+        <span class="nav-label">${escapeHtml(label)}</span>
+        <span class="nav-pct">${locked ? '🔒' : pct + '%'}</span>
+      </button>`;
+    }).join('');
+    const meetingItems = MEETING_FLOW.map(m => {
+      const isActive = activeView === 'meeting' && activeMeetingId === m.id;
+      return `<button type="button" class="nav-item${isActive?' active':''}" onclick="navToMeeting('${m.id}')">
+        <span class="nav-code">MTG</span><span class="nav-label">${escapeHtml(m.label)}</span>
+      </button>`;
+    }).join('');
+    nav.innerHTML = `
+      <div class="nav-section">
+        <div class="nav-section-label">Ihr PoC</div>
+        <button type="button" class="nav-item${activeView==='customer-home'?' active':''}" onclick="navToCustomerHome()">
+          <span class="nav-code">HOME</span><span class="nav-label">Status &amp; Entscheidungen</span>
+        </button>
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Meetings</div>
+        <button type="button" class="nav-item${activeView==='calendar'?' active':''}" onclick="navToCalendar()">
+          <span class="nav-code">CAL</span><span class="nav-label">Kalender · iCal</span>
+        </button>
+        ${meetingItems}
+      </div>
+      <div class="nav-section">
+        <div class="nav-section-label">Fortschritt · read-only</div>
+        ${gateItems}
+        <button type="button" class="nav-item${activeView==='gate'&&activeGateId==='begleit'?' active':''}" onclick="navToGate('begleit')">
+          <span class="nav-code">RAID</span><span class="nav-label">Risiken &amp; Änderungen</span>
+        </button>
+      </div>
+      <div class="nav-meta-box">
+        <strong>Kunde · ${isActivePhase() ? 'Tunnel aktiv' : 'Vorbereitung'}</strong>
+        ${buildDecisionQueue().length} offene Entscheidungen
+      </div>`;
+    return;
+  }
   const gateItems = GATES.map(g => {
     const locked = isGateLocked(g.id);
     const pct = gateProgress(g.id);
@@ -2144,6 +3621,16 @@ function renderSideNav() {
       <button type="button" class="nav-item${activeView==='cockpit'?' active':''}" onclick="navToCockpit()">
         <span class="nav-code">OBEYA</span><span class="nav-label">Obeya Cockpit · 9 Zonen</span>
       </button>
+      <button type="button" class="nav-item${activeView==='run'?' active':''}" onclick="navToRun()">
+        <span class="nav-code">AUTO</span><span class="nav-label">Auto-Run · Agenda &amp; Drafts</span>
+      </button>
+    </div>
+    <div class="nav-section">
+      <div class="nav-section-label">Meetings</div>
+      <button type="button" class="nav-item${activeView==='calendar'?' active':''}" onclick="navToCalendar()">
+        <span class="nav-code">CAL</span><span class="nav-label">Kalender · iCal${getNextUpcomingMeeting() ? ' · ' + escapeHtml(getNextUpcomingMeeting().whenLabel.split(' · ')[0]) : ''}</span>
+      </button>
+      ${MEETING_FLOW.map(m => `<button type="button" class="nav-item${activeView==='meeting'&&activeMeetingId===m.id?' active':''}" onclick="navToMeeting('${m.id}')"><span class="nav-code">MTG</span><span class="nav-label">${escapeHtml(m.label)}</span></button>`).join('')}
     </div>
     <div class="nav-section">
       <div class="nav-section-label">Gates &amp; Tunnel</div>
@@ -2159,7 +3646,7 @@ function renderSideNav() {
       </button>
     </div>
     <div class="nav-meta-box">
-      <strong>${isDeliveryView() ? 'Delivery' : 'Admin'} · ${isActivePhase() ? 'Tunnel' : 'Setup'}</strong>
+      <strong>${isAdminView() ? 'Admin' : 'Steuerung'} · ${isActivePhase() ? 'Tunnel' : 'Setup'}</strong>
       Gesamt ${overallProgress()}% · ${getOpenMussCount()} Muss offen
     </div>`;
 }
@@ -2169,28 +3656,66 @@ function renderContentHeader() {
   if (!el) return;
   let title = 'Obeya Cockpit';
   let sub = 'Steuerungszentrale mit 9 Zonen — für Weekly, Gate-Review und Delivery-Steuerung.';
-  if (activeView === 'gate') {
+  let showProjectBar = true;
+  if (isParticipantView()) {
+    showProjectBar = false;
+    if (activeView === 'customer-home') {
+      title = state.meta.name ? state.meta.name : 'Ihr PoC-Überblick';
+      sub = 'Transparenz, Freigaben und Entscheidungen — NXTGN konfiguriert und steuert, Sie entscheiden wo nötig.';
+    } else if (activeView === 'startup-home') {
+      title = state.meta.name ? state.meta.name + ' · Lieferung' : 'Was muss ich liefern?';
+      sub = 'Ihre Deliverables, Nachweise und Einreichungen — NXTGN moderiert, Sie liefern fokussiert.';
+    } else if (activeView === 'meeting') {
+      const mf = MEETING_FLOW.find(x => x.id === activeMeetingId);
+      title = mf ? mf.label + ' · Meeting-Modus' : 'Meeting';
+      sub = 'Agenda, Delta und Protokoll — das System führt durch den Termin.';
+    } else if (activeView === 'calendar') {
+      title = 'Kalender · CIPP Terminserie';
+      sub = 'iCal/Outlook-Sync, Google Calendar und Einzeltermine — statt nur klickbarer Meeting-Typen.';
+    } else if (activeView === 'gate') {
+      const g = GATES.find(x => x.id === activeGateId);
+      title = g.code + ' · ' + g.name;
+      sub = isStartupView()
+        ? 'Lieferartefakt bearbeiten, speichern und über die Lieferübersicht einreichen.'
+        : 'Read-only Zusammenfassung — Freigabe über Startseite oder Entscheidungsbuttons.';
+    }
+  } else if (activeView === 'gate') {
     const g = GATES.find(x => x.id === activeGateId);
     title = g.code + ' · ' + g.name;
     sub = g.goal;
   } else if (activeView === 'setup') {
     title = 'Setup · Methoden-Baukasten';
     sub = 'PoC-Typ wählen, Werkzeuge aktivieren, Tunnel starten. Skelett (Gates, Muss, Cockpit) bleibt fix.';
+  } else if (activeView === 'run') {
+    title = 'NXTGN Auto-Run';
+    sub = 'Automatisch generierte Agendas, Gate-Readiness und G5 Decision Draft — aus live State.';
+  } else if (activeView === 'calendar') {
+    title = 'Kalender · CIPP Terminserie';
+    sub = 'Termine planen, abonnieren (webcal) oder in Google/Outlook eintragen.';
+  } else if (activeView === 'meeting') {
+    const mf = MEETING_FLOW.find(x => x.id === activeMeetingId);
+    title = mf ? mf.label + ' · Meeting' : 'Meeting';
+    sub = 'Auto-Agenda aus State — Protokoll generieren und Termin moderieren.';
   }
   const action = getTunnelNextAction();
-  const tunnelLine = (isActivePhase() || isDeliveryView()) && activeView !== 'setup'
+  const tunnelLine = isAdminView() && isActivePhase() && activeView !== 'setup' && activeView !== 'customer-home' && activeView !== 'startup-home' && activeView !== 'meeting' && activeView !== 'run' && activeView !== 'calendar'
     ? `<p class="sub" style="margin-top:8px;padding:8px 12px;background:var(--pink-80);border-radius:var(--radius-sm);font-size:12px"><strong>Nächster Schritt:</strong> ${escapeHtml(action.gate ? action.gate.code : '')} — ${escapeHtml(action.text)} <button type="button" class="btn-dark btn-small" style="margin-left:8px" onclick="navToGate('${action.gateId}')">→</button></p>` : '';
   el.innerHTML = `
     <h1>${escapeHtml(title)}</h1>
     <p class="sub">${escapeHtml(sub)}</p>
     ${tunnelLine}
-    <div class="project-bar">
+    ${showProjectBar ? `<div class="project-bar">
       <div><label>PoC-Name</label><input id="meta-name" placeholder="PoC-Name" oninput="onMeta()"></div>
       <div><label>Kunde / Partner</label><input id="meta-customer" placeholder="Kunde" oninput="onMeta()"></div>
       <div><label>Owner (Kunde)</label><input id="meta-owner" placeholder="Owner" oninput="onMeta()"></div>
       <div><label>Lead (Lösung)</label><input id="meta-lead" placeholder="Lead" oninput="onMeta()"></div>
-    </div>`;
-  fillMetaInputs();
+    </div>` : `<div class="project-bar" style="grid-template-columns:repeat(4,1fr);pointer-events:none;opacity:.9">
+      <div><label>PoC</label><div style="padding:8px 0;font-size:13px">${escapeHtml(state.meta.name||'—')}</div></div>
+      <div><label>Kunde</label><div style="padding:8px 0;font-size:13px">${escapeHtml(state.meta.customer||'—')}</div></div>
+      <div><label>Owner</label><div style="padding:8px 0;font-size:13px">${escapeHtml(state.meta.owner||'—')}</div></div>
+      <div><label>Lead</label><div style="padding:8px 0;font-size:13px">${escapeHtml(state.meta.lead||'—')}</div></div>
+    </div>`}`;
+  if (showProjectBar) fillMetaInputs();
 }
 
 function renderCockpitView() {
@@ -2214,11 +3739,24 @@ function renderCockpitView() {
   }).join('');
   const meetings = MEETING_FLOW.map(m => {
     const done = state.meetings && state.meetings[m.id] && state.meetings[m.id].done;
-    return `<div class="meeting-step${done?' done':''}" onclick="toggleMeetingDone('${m.id}');navToCockpit();">
-      <div class="ms-title">${done?'✓ ':''}${escapeHtml(m.label)}</div>
+    const occ = getMeetingNextOccurrence(m.id);
+    const when = occ ? formatMeetingWhen(occ).split(' · ')[0] : '';
+    return `<div class="meeting-step${done?' done':''}" onclick="navToMeeting('${m.id}')">
+      <div class="ms-title">${done?'✓ ':''}${escapeHtml(m.label)}${when ? `<span style="font-size:10px;font-weight:400;display:block;color:var(--grey-text)">${escapeHtml(when)}</span>` : ''}</div>
       <ul>${m.checks.map(c => `<li>${escapeHtml(c)}</li>`).join('')}</ul>
     </div>`;
   }).join('');
+  const focus = getCurrentFocusGate();
+  const readiness = generateGateReadiness(focus);
+  const autoSection = isAdminView() ? `
+      <div class="obeya-meetings" style="margin-top:20px;border-top:1px solid var(--grey-line-soft);padding-top:16px">
+        <h3 style="font-size:14px;font-weight:700;margin-bottom:8px">NXTGN Auto-Steuerung</h3>
+        <div class="auto-grid-3" style="margin-bottom:12px">
+          <div class="auto-card"><h3>Gate ${escapeHtml(readiness.gateCode)}</h3><div class="auto-score" style="font-size:20px">${readiness.score}%</div><p style="font-size:11px">${escapeHtml(readiness.recommendation.slice(0,80))}…</p><button type="button" class="btn-dark btn-small" style="margin-top:8px" onclick="navToRun()">Auto-Run →</button></div>
+          <div class="auto-card"><h3>Nächstes Weekly</h3><ul class="auto-list">${generateMeetingPack('weekly').agenda.slice(0,3).map(a=>`<li>${escapeHtml(a.slice(0,50))}</li>`).join('')}</ul><button type="button" class="btn-dark btn-small" style="margin-top:8px" onclick="navToMeeting('weekly')">Weekly →</button></div>
+          <div class="auto-card"><h3>G5 Draft</h3><span class="auto-rec">${escapeHtml(generateG5Draft().recommendation.slice(0,40))}…</span><button type="button" class="btn-dark btn-small" style="margin-top:8px" onclick="applyG5Draft()">Draft übernehmen</button></div>
+        </div>
+      </div>` : '';
   pane.innerHTML = `
     <div class="obeya-full">
       <div class="obeya-full-head">
@@ -2235,9 +3773,10 @@ function renderCockpitView() {
       </div>
       <div class="obeya-meetings">
         <h3 style="font-size:14px;font-weight:700;margin-bottom:8px">Meeting-Steuerung</h3>
-        <p style="font-size:12px;color:var(--grey-text);margin-bottom:10px">Weekly → Gate-Review → Review Point → Retro</p>
+        <p style="font-size:12px;color:var(--grey-text);margin-bottom:10px">Weekly → Gate-Review → Review Point → Retro · <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender &amp; Outlook →</button></p>
         <div class="meeting-flow-steps">${meetings}</div>
       </div>
+      ${autoSection}
     </div>`;
 }
 
@@ -2257,6 +3796,12 @@ function renderGateContext() {
     if (!canvasOk) {
       html += `<div class="tunnel-hint"><span><strong>PoC Canvas</strong> — zentrales Startartefakt (Handbuch 2.0)</span><button type="button" class="btn-dark btn-small primary" onclick="openPocCanvas()">Canvas öffnen</button></div>`;
     }
+  }
+  if (isAdminView() && activeGateId !== 'begleit') {
+    html += renderAutoGateReadiness(activeGateId);
+  }
+  if (isAdminView() && activeGateId === 'g5') {
+    html += renderG5AutoDraftAdmin();
   }
   ctx.innerHTML = html;
 }
@@ -2325,6 +3870,8 @@ function renderConvergenceBar() {}
 function renderPanel() {
   const g = GATES.find(x => x.id === activeGateId);
   const panel = document.getElementById('gate-panel');
+  panel.classList.toggle('customer-gate-readonly', isCustomerView());
+  panel.classList.toggle('startup-gate', isStartupView());
   const locked = isGateLocked(g.id);
   const doneAll = isMussComplete(g.id) && gateProgress(g.id) === 100;
   const mussDone = state.gates[g.id].muss.filter(isMussItemComplete).length;
@@ -2340,9 +3887,55 @@ function renderPanel() {
 
   const lockBanner = locked ? `<div class="lock-banner">Dieses Gate ist <strong>gesperrt</strong>. ${g.id==='g3'?'Zuerst müssen alle Muss-Kriterien aus G0, G1 und G2 vollständig erfüllt sein (Konvergenz).':g.id==='g4'?'Zuerst muss G3 (Einsatzreife) vollständig bestanden sein.':'Zuerst muss G4 (Feldtest) vollständig bestanden sein.'}</div>` : '';
   const kicker = g.strand || (g.id==='begleit'?'Querschnitt · Dauerläufer':g.id==='entry'?'Vor-Gate · Substanzprüfung':'Gate '+g.code);
-  const deliveryStrict = isDeliveryView() && isActivePhase();
-  const showAddMuss = !deliveryStrict;
-  const filteredMethods = g.methoden.filter(m => isMethodEnabled(m.slug) || (isAdminView() && isSetupPhase()));
+  const deliveryStrict = isCustomerView() && isActivePhase();
+  const showAddMuss = !deliveryStrict && !isParticipantView();
+  const filteredMethods = isStartupView()
+    ? g.methoden.filter(m => isStartupEditableMethod(g.id, m.slug))
+    : g.methoden.filter(m => isMethodEnabled(m.slug) || (isAdminView() && isSetupPhase()));
+  const approval = isCustomerView() && state.customer.approvals[g.id];
+  const needsApproval = isCustomerView() && isMussComplete(g.id) && !approval && ['entry','g0','g1','g2','g3','g4','g5'].includes(g.id);
+
+  let customerBlock = '';
+  if (isCustomerView()) {
+    const openMuss = state.gates[g.id].muss.filter(x => !isMussItemComplete(x)).length;
+    customerBlock = `<div class="customer-gate-summary">
+      <strong>Status-Zusammenfassung</strong> — ${mussDone}/${mussTotal} Muss erfüllt · ${openMuss} offen · ${gateProgress(g.id)}% Fortschritt
+      ${needsApproval ? '<br><br><strong>Freigabe ausstehend</strong> — bitte auf der Startseite oder unten entscheiden.' : ''}
+      ${approval ? `<br><br><strong>Ihre Entscheidung:</strong> ${escapeHtml(approval)}` : ''}
+    </div>`;
+    if (g.id === 'g5') customerBlock += renderG5DecisionPack();
+    if (needsApproval) {
+      customerBlock += `<div class="decision-item urgent" style="margin-bottom:20px"><h4>${escapeHtml(g.code)} zur Freigabe</h4><p>Alle Muss-Kriterien erfüllt.</p>
+        <div class="decision-actions">
+          <button class="approve" onclick="customerGateApproval('${g.id}','approved')">Freigeben</button>
+          <button class="escalate" onclick="customerGateApproval('${g.id}','escalated')">Eskalieren</button>
+          <button onclick="customerGateApproval('${g.id}','change')">Änderung</button>
+          <button class="defer" onclick="customerGateApproval('${g.id}','deferred')">Nicht jetzt</button>
+        </div></div>`;
+    }
+  }
+
+  let startupBlock = '';
+  if (isStartupView()) {
+    const myDels = buildStartupDeliverables().filter(d => d.gate === g.id);
+    if (myDels.length) {
+      startupBlock = `<div class="customer-gate-summary" style="border-left:4px solid var(--pink)">
+        <strong>Ihre Lieferungen in ${escapeHtml(g.code)}</strong><br>
+        ${myDels.map(d => `${escapeHtml(d.label)}: <span class="su-status ${d.status}">${d.status}</span>`).join(' · ')}
+      </div>`;
+    }
+  }
+
+  let adminStartupBlock = '';
+  if (isAdminView()) {
+    const pending = buildStartupDeliverables().filter(d => d.submission && d.submission.status === 'submitted');
+    if (pending.length) {
+      adminStartupBlock = `<div class="ch-card" style="margin-bottom:20px;border-left:4px solid var(--pink)"><h3 style="font-size:14px;margin-bottom:10px">Startup-Lieferungen zur Bestätigung</h3>
+        ${pending.map(d => `<div class="su-deliverable" style="margin-bottom:6px"><div><strong>${escapeHtml(d.label)}</strong><p style="font-size:11px">${escapeHtml(d.submission.note||'Keine Notiz')}</p></div>
+          <button type="button" class="btn-dark btn-small primary" onclick="confirmStartupDeliverable('${d.id}')">Bestätigen ✓</button></div>`).join('')}
+      </div>`;
+    }
+  }
 
   let orgBlock = '';
   if (g.id === 'entry') {
@@ -2379,8 +3972,12 @@ function renderPanel() {
       </div>
     </div>
     ${lockBanner}
-    ${orgBlock}
+    ${adminStartupBlock}
+    ${customerBlock}
+    ${startupBlock}
+    ${!isParticipantView() ? orgBlock : ''}
 
+    ${isStartupView() ? '' : `
     <div class="sec-head">
       ${secTag()}
       <h3 class="sec-title">Muss-Kriterien</h3>
@@ -2389,9 +3986,10 @@ function renderPanel() {
     </div>
     ${renderChecklist(g.id, 'muss')}
     ${showAddMuss ? renderAddRow(g.id, 'muss') : ''}
+  `}
   `;
 
-  if ((g.nice.length || state.gates[g.id].nice.length || niceTotal > 0 || g.id !== 'begleit') && (!deliveryStrict || niceTotal > 0)) {
+  if (!isStartupView() && (g.nice.length || state.gates[g.id].nice.length || niceTotal > 0 || g.id !== 'begleit') && (!deliveryStrict || niceTotal > 0)) {
     html += `
       <div class="sec-head">
         ${secTag('nice')}
@@ -2404,7 +4002,7 @@ function renderPanel() {
     `;
   }
 
-  html += `
+  html += isStartupView() ? '' : `
     <div class="sec-head">
       ${secTag('methoden')}
       <h3 class="sec-title">KPI-Tracker</h3>
@@ -2413,23 +4011,26 @@ function renderPanel() {
     </div>
     ${renderChecklist(g.id, 'kpis')}
     ${showAddMuss ? renderAddRow(g.id, 'kpis') : ''}
+  `;
 
+  html += `
     <div class="sec-head">
       ${secTag('methoden')}
-      <h3 class="sec-title">Methoden${deliveryStrict ? ' · Tunnel' : ''}</h3>
-      <span class="sec-hint">${filteredMethods.length} Werkzeuge aktiv · klick um auszufüllen</span>
+      <h3 class="sec-title">${isStartupView() ? 'Ihre Lieferartefakte' : 'Methoden'}${deliveryStrict || isCustomerView() ? ' · Übersicht' : ''}</h3>
+      <span class="sec-hint">${filteredMethods.length} Werkzeuge · ${isCustomerView() ? 'von NXTGN gepflegt' : isStartupView() ? 'ausfüllen und einreichen' : 'klick um auszufüllen'}</span>
     </div>
     <div class="method-list">
-      ${filteredMethods.length ? filteredMethods.map(m => renderMethodCard(g.id, m)).join('') : '<div class="ws-empty">Keine Methoden für diesen Tunnel aktiviert — NXTGN Admin konfiguriert im Setup.</div>'}
+      ${filteredMethods.length ? filteredMethods.map(m => renderMethodCard(g.id, m)).join('') : `<div class="ws-empty">${isStartupView() ? 'In diesem Gate keine Startup-Lieferung aktiv — siehe Lieferübersicht.' : 'Keine Methoden für diesen Tunnel aktiviert — NXTGN Admin konfiguriert im Setup.'}</div>`}
     </div>
 
+    ${isParticipantView() ? '' : `
     <div class="sec-head">
       ${secTag('notes')}
       <h3 class="sec-title">Notizen &amp; Evidenzhinweise</h3>
     </div>
     <div class="notes-area">
       <textarea oninput="onNotes('${g.id}', this.value)" placeholder="Freitext für Evidenzverweise, offene Punkte, Links zu Dokumenten …">${escapeHtml(state.gates[g.id].notes||'')}</textarea>
-    </div>
+    </div>`}
   `;
   panel.innerHTML = html;
 }
@@ -2437,19 +4038,19 @@ function renderPanel() {
 function renderChecklist(gateId, type) {
   const items = state.gates[gateId][type];
   const cls = type === 'nice' ? 'nice' : '';
-  const strict = isDeliveryView() && isActivePhase();
+  const strict = isCustomerView();
   const isMuss = type === 'muss';
-  if (!items.length) return `<div class="check-list ${cls}"><div class="ws-empty">Keine Einträge. Füge unten Kriterien hinzu.</div></div>`;
-  const statusOpts = MUSS_STATUS.map(s => `<option value="${s.id}">${s.label}</option>`).join('');
+  if (!items.length) return `<div class="check-list ${cls}"><div class="ws-empty">Keine Einträge.</div></div>`;
   return `<div class="check-list ${cls}">` + items.map((it, i) => {
     normalizeMussItem(it);
     const extraCls = isMuss && it.status === 'escalated' ? ' escalated' : isMuss && it.status === 'progress' ? ' in-progress' : '';
+    const statusChip = isMuss ? `<span class="status-chip ${it.status}">${MUSS_STATUS.find(s=>s.id===it.status)?.label||it.status}</span>` : '';
     return `
     <div class="check-item ${it.done?'checked':''}${extraCls}" data-id="${it.id}">
-      <div class="check-box-wrap" onclick="toggleItem('${gateId}','${type}','${it.id}')"><div class="check-box"></div></div>
-      <div class="check-label" id="lbl-${gateId}-${type}-${it.id}" onclick="toggleItem('${gateId}','${type}','${it.id}')"
+      ${strict ? `<div class="check-box-wrap"><div class="check-box"></div></div>` : `<div class="check-box-wrap" onclick="toggleItem('${gateId}','${type}','${it.id}')"><div class="check-box"></div></div>`}
+      <div class="check-label" id="lbl-${gateId}-${type}-${it.id}" ${strict ? '' : `onclick="toggleItem('${gateId}','${type}','${it.id}')"`}
            ondblclick="${strict || !isMuss?'':'startEditLabel(event,\''+gateId+'\',\''+type+'\',\''+it.id+'\')'}">${escapeHtml(it.text)}</div>
-      ${isMuss ? `<select class="muss-status-select" onclick="event.stopPropagation()" onchange="setMussStatus('${gateId}','${type}','${it.id}', this.value)">${MUSS_STATUS.map(s=>`<option value="${s.id}" ${it.status===s.id?'selected':''}>${s.label}</option>`).join('')}</select>` : ''}
+      ${isMuss ? (strict ? statusChip : `<select class="muss-status-select" onclick="event.stopPropagation()" onchange="setMussStatus('${gateId}','${type}','${it.id}', this.value)">${MUSS_STATUS.map(s=>`<option value="${s.id}" ${it.status===s.id?'selected':''}>${s.label}</option>`).join('')}</select>`) : ''}
       ${strict ? '' : `<div class="check-actions admin-only">
         <button class="check-action-btn" onclick="editLabelBtn(event,'${gateId}','${type}','${it.id}')" title="Bearbeiten">✎</button>
         <button class="check-action-btn del" onclick="deleteItem('${gateId}','${type}','${it.id}')" title="Löschen">×</button>
@@ -2477,18 +4078,21 @@ function renderMethodCard(gateId, m) {
   const tpl = METHOD_TEMPLATES[m.slug] || {};
   const data = (state.gates[gateId].methods && state.gates[gateId].methods[m.slug]) || {};
   const hasData = methodHasData(data, tpl);
-  const isOpen = openedMethods.has(`${gateId}:${m.slug}`);
+  const startupEdit = isStartupEditableMethod(gateId, m.slug);
+  const isOpen = openedMethods.has(`${gateId}:${m.slug}`) || (m.slug === 'poc-canvas' && isAdminView()) || startupEdit;
   const guide = METHOD_GUIDES[m.slug] || 'Handbuch 2.0: Zweck klar benennen, Owner setzen, Evidence verlinken, im Weekly reviewen.';
+  const visualBadge = isVisualMethod(m.slug) ? '<span class="method-visual-badge">VISUELL</span>' : '';
+  const startupBadge = startupEdit ? '<span class="method-visual-badge" style="background:#e8f5e9;color:#2d8a3e">IHRE LIEFERUNG</span>' : '';
   return `
-    <div class="method ${isOpen?'open':''}" data-method="${m.slug}">
+    <div class="method ${isOpen?'open':''}${isVisualMethod(m.slug)?' method-is-visual':''}${startupEdit?' startup-editable':''}" data-method="${m.slug}">
       <div class="method-head" onclick="toggleMethod('${gateId}','${m.slug}')">
-        <span class="method-name">${escapeHtml(m.name)}</span>
+        <span class="method-name">${escapeHtml(m.name)}${visualBadge}${startupBadge}</span>
         <span class="method-meta ${hasData?'has-data':''}">${hasData?'● ausgefüllt':''}</span>
-        <span class="method-toggle">${isOpen?'Zuklappen':'Ausfüllen'}</span>
+        <span class="method-toggle">${isOpen?'Zuklappen':'Öffnen'}</span>
       </div>
       <div class="method-body">
         <div class="method-guide"><strong>So ausfüllen (Handbuch 2.0):</strong> ${escapeHtml(guide)}</div>
-        <div class="method-desc">${escapeHtml(m.desc)}</div>
+        ${!isVisualMethod(m.slug) ? `<div class="method-desc">${escapeHtml(m.desc)}</div>` : ''}
         ${renderMethodWorksheet(gateId, m.slug)}
       </div>
     </div>`;
@@ -2501,7 +4105,378 @@ function methodHasData(data, tpl) {
   return false;
 }
 
+const VISUAL_METHOD_SLUGS = new Set([
+  'poc-canvas','scope-boxing','assumption-mapping','kpi-tree','discovery-check',
+  'decision-backwards-planning','success-threshold','readiness-review','messplan','baseline',
+  'nda','poc-vertrag','dua-dpa','go-stop','kpi-tracking'
+]);
+
+function isVisualMethod(slug) { return VISUAL_METHOD_SLUGS.has(slug); }
+
+function confirmStartupDeliverable(deliverableId) {
+  if (!isAdminView()) { toast('Nur NXTGN Admin kann Lieferungen bestätigen.'); return; }
+  if (!state.startup) state.startup = defaultStartupState();
+  if (!state.startup.submissions[deliverableId]) state.startup.submissions[deliverableId] = { status:'open', note:'' };
+  state.startup.submissions[deliverableId].status = 'confirmed';
+  state.startup.submissions[deliverableId].updated = new Date().toISOString();
+  saveStateDebounced();
+  render();
+  toast('Startup-Lieferung bestätigt.', 'pink');
+}
+
+function vmReadonly() { return isCustomerView(); }
+
+function vmTextarea(gateId, slug, key, label, val, ro, extraCls='') {
+  if (ro) return `<div class="vm-cell ${extraCls}"><label>${escapeHtml(label)}</label><div class="vm-ro-val">${escapeHtml(val) || '—'}</div></div>`;
+  return `<div class="vm-cell ${extraCls}"><label>${escapeHtml(label)}</label><textarea oninput="onMethodField('${gateId}','${slug}','${key}', this.value)" placeholder="…">${escapeHtml(val)}</textarea></div>`;
+}
+
+function vmInput(gateId, slug, key, label, val, ro, extraCls='') {
+  if (ro) return `<div class="vm-cell ${extraCls}"><label>${escapeHtml(label)}</label><div class="vm-ro-val">${escapeHtml(val) || '—'}</div></div>`;
+  return `<div class="vm-cell ${extraCls}"><label>${escapeHtml(label)}</label><input value="${escapeAttr(val)}" oninput="onMethodField('${gateId}','${slug}','${key}', this.value)" placeholder="…"></div>`;
+}
+
+function ensureMethodData(gateId, slug) {
+  if (!state.gates[gateId].methods) state.gates[gateId].methods = {};
+  if (!state.gates[gateId].methods[slug]) state.gates[gateId].methods[slug] = {};
+  return state.gates[gateId].methods[slug];
+}
+
+function renderVisualPoCCanvas(gateId, slug, data, ro) {
+  return `<div class="method-visual vm-canvas-grid">
+    ${vmTextarea(gateId, slug, 'problem', 'Problem & Business-Kontext', data.problem||'', ro, 'span-2')}
+    ${vmInput(gateId, slug, 'kpi-primaer', 'Primäre KPI', data['kpi-primaer']||'', ro, 'kpi-hero')}
+    ${vmTextarea(gateId, slug, 'zielbild', 'Zielbild — Was soll am Ende wahr sein?', data.zielbild||'', ro, 'span-3')}
+    ${vmTextarea(gateId, slug, 'scope', 'In Scope', data.scope||'', ro, '')}
+    ${vmTextarea(gateId, slug, 'outscope', 'Out of Scope', data.outscope||'', ro, '')}
+    ${vmTextarea(gateId, slug, 'nutzer', 'Nutzer & Prozesse', data.nutzer||'', ro, '')}
+    ${vmTextarea(gateId, slug, 'rollen', 'Rollen (Sponsor · Owner · Lead · PM)', data.rollen||'', ro, '')}
+    ${vmTextarea(gateId, slug, 'risiken', 'Risiken & kritische Annahmen', data.risiken||'', ro, '')}
+    ${vmTextarea(gateId, slug, 'daten', 'Daten · Zugänge · Abhängigkeiten', data.daten||'', ro, '')}
+    ${vmTextarea(gateId, slug, 'erfolg', 'G5-Frage · Erfolgsdefinition', data.erfolg||'', ro, '')}
+    ${vmTextarea(gateId, slug, 'folgestufe', 'Folgestufe bei Go', data.folgestufe||'', ro, '')}
+    ${!ro ? `<div class="vm-cell span-3" style="background:transparent;border:none;padding:0;min-height:0"><div class="hint" style="font-size:11px">PoC Canvas · 1-Seiten-Grid — zentrales Artefakt für alle Gates (Handbuch 2.0)</div></div>` : ''}
+  </div>`;
+}
+
+function renderVisualScopeBoxing(gateId, slug, data, ro) {
+  const rows = Array.isArray(data.__rows) ? data.__rows : (data.__rows = []);
+  const cols = { in: [], out: [], grey: [] };
+  rows.forEach(r => {
+    const s = r.status || 'In Scope';
+    if (s === 'Out of Scope') cols.out.push(r);
+    else if (s === 'Grauzone') cols.grey.push(r);
+    else cols.in.push(r);
+  });
+  const renderCol = (items, type, title) => {
+    const cls = type === 'in' ? 'in' : type === 'out' ? 'out' : 'grey';
+    return `<div class="vm-scope-col ${cls}"><h4>${title} (${items.length})</h4>
+      ${items.length ? items.map((r, i) => {
+        const idx = rows.indexOf(r);
+        return ro
+          ? `<div class="vm-scope-item">${escapeHtml(r.thema||'—')}</div>`
+          : `<div class="vm-scope-item"><input style="width:100%;border:none;background:transparent;font-family:inherit;font-size:12px" value="${escapeAttr(r.thema||'')}" oninput="onMethodRow('${gateId}','${slug}',${idx},'thema', this.value)" placeholder="Thema …"></div>`;
+      }).join('') : `<div style="font-size:11px;color:var(--grey-faint)">Noch leer</div>`}
+    </div>`;
+  };
+  const addBtns = ro ? '' : `<div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+    <button class="btn-dark btn-small" onclick="addScopeItem('${gateId}','${slug}','In Scope')">+ In Scope</button>
+    <button class="btn-dark btn-small" onclick="addScopeItem('${gateId}','${slug}','Out of Scope')">+ Out</button>
+    <button class="btn-dark btn-small" onclick="addScopeItem('${gateId}','${slug}','Grauzone')">+ Grauzone</button>
+  </div>`;
+  return `<div class="method-visual"><div class="vm-scope-map">
+    ${renderCol(cols.in, 'in', 'In Scope')}
+    ${renderCol(cols.out, 'out', 'Out of Scope')}
+    ${cols.grey.length ? renderCol(cols.grey, 'grey', 'Grauzone') : ''}
+  </div>${addBtns}</div>`;
+}
+
+function addScopeItem(gateId, slug, status) {
+  const data = ensureMethodData(gateId, slug);
+  if (!data.__rows) data.__rows = [];
+  data.__rows.push({ thema: '', status, begruendung: '' });
+  saveStateDebounced();
+  openedMethods.add(`${gateId}:${slug}`);
+  render();
+}
+
+function renderVisualAssumptionMapping(gateId, slug, data, ro) {
+  const rows = Array.isArray(data.__rows) ? data.__rows : (data.__rows = []);
+  const quads = { hh:[], hm:[], mh:[], mm:[], rest:[] };
+  rows.forEach(r => {
+    const w = r.wichtigkeit || 'Mittel';
+    const u = r.unsicherheit || 'Mittel';
+    if (w === 'Hoch' && u === 'Hoch') quads.hh.push(r);
+    else if (w === 'Hoch') quads.hm.push(r);
+    else if (u === 'Hoch') quads.mh.push(r);
+    else if (w === 'Mittel') quads.mm.push(r);
+    else quads.rest.push(r);
+  });
+  const quad = (items, cls, title) => `<div class="vm-matrix-quadrant ${cls}"><div style="font-size:10px;font-weight:700;margin-bottom:6px">${title}</div>
+    ${items.map(r => `<span class="vm-matrix-chip">${escapeHtml((r.annahme||'').slice(0,40))}${(r.annahme||'').length>40?'…':''}</span>`).join('') || '<span style="font-size:10px;color:var(--grey-faint)">—</span>'}
+  </div>`;
+  const tableRows = ro ? '' : `<div class="ws-table-wrap" style="margin-top:12px"><table class="ws-table"><thead><tr><th>Annahme</th><th>Wichtigkeit</th><th>Unsicherheit</th><th>Test</th><th></th></tr></thead><tbody>
+    ${rows.map((r,i)=>`<tr><td><textarea rows="1" oninput="onMethodRow('${gateId}','${slug}',${i},'annahme',this.value)">${escapeHtml(r.annahme||'')}</textarea></td>
+      <td><select onchange="onMethodRow('${gateId}','${slug}',${i},'wichtigkeit',this.value)">${['Hoch','Mittel','Niedrig'].map(o=>`<option ${r.wichtigkeit===o?'selected':''}>${o}</option>`).join('')}</select></td>
+      <td><select onchange="onMethodRow('${gateId}','${slug}',${i},'unsicherheit',this.value)">${['Hoch','Mittel','Niedrig'].map(o=>`<option ${r.unsicherheit===o?'selected':''}>${o}</option>`).join('')}</select></td>
+      <td><textarea rows="1" oninput="onMethodRow('${gateId}','${slug}',${i},'test',this.value)">${escapeHtml(r.test||'')}</textarea></td>
+      <td><button class="row-del" onclick="deleteMethodRow('${gateId}','${slug}',${i})">×</button></td></tr>`).join('')}
+    </tbody></table><div class="ws-table-foot"><button class="btn-dark btn-small" onclick="addMethodRow('${gateId}','${slug}')">+ Annahme</button></div></div>`;
+  return `<div class="method-visual">
+    <div class="vm-assumption-matrix">
+      <div></div><div class="vm-matrix-label">Hohe Unsicherheit</div><div class="vm-matrix-label">Niedrigere Unsicherheit</div>
+      <div class="vm-matrix-label">Hohe Wichtigkeit</div>${quad(quads.hh, 'critical', 'Kritisch — sofort testen')}${quad(quads.hm, 'watch', 'Beobachten')}
+      <div class="vm-matrix-label">Mittlere Wichtigkeit</div>${quad(quads.mh, 'watch', 'Validieren')}${quad(quads.mm, '', 'Geringer Fokus')}
+    </div>${tableRows}</div>`;
+}
+
+function renderVisualKpiTree(gateId, slug, data, ro) {
+  const root = data['ziel-kpi'] || '';
+  const hebel = (data.hebel || '').split('\n').filter(Boolean);
+  const operativ = (data.operativ || '').split('\n').filter(Boolean);
+  if (ro) {
+    return `<div class="method-visual vm-kpi-tree">
+      <div class="vm-kpi-root"><div class="vm-ro-val" style="color:white">${escapeHtml(root)||'Ziel-KPI'}</div></div>
+      <div class="vm-kpi-connector"></div>
+      <div class="vm-kpi-branches">
+        <div class="vm-kpi-branch"><label>Hebel-KPIs</label><div class="vm-ro-val">${hebel.length?hebel.map(h=>'• '+escapeHtml(h)).join('<br>'):'—'}</div></div>
+        <div class="vm-kpi-branch"><label>Operative KPIs</label><div class="vm-ro-val">${operativ.length?operativ.map(h=>'• '+escapeHtml(h)).join('<br>'):'—'}</div></div>
+      </div>
+    </div>`;
+  }
+  return `<div class="method-visual vm-kpi-tree">
+    <div class="vm-kpi-root"><input value="${escapeAttr(root)}" oninput="onMethodField('${gateId}','${slug}','ziel-kpi', this.value)" placeholder="Ziel-KPI (Top)"></div>
+    <div class="vm-kpi-connector"></div>
+    <div class="vm-kpi-branches">
+      <div class="vm-kpi-branch"><label>Hebel-KPIs · je Zeile ein KPI</label><textarea oninput="onMethodField('${gateId}','${slug}','hebel', this.value)" placeholder="Was beeinflusst die Ziel-KPI?">${escapeHtml(data.hebel||'')}</textarea></div>
+      <div class="vm-kpi-branch"><label>Operative KPIs · je Zeile ein KPI</label><textarea oninput="onMethodField('${gateId}','${slug}','operativ', this.value)" placeholder="Tages-Messgrößen">${escapeHtml(data.operativ||'')}</textarea></div>
+    </div>
+  </div>`;
+}
+
+function renderVisualDiscoveryCheck(gateId, slug, data, ro) {
+  const reife = parseInt(data.reifegrad, 10) || 3;
+  const ampel = reife >= 4 ? 'green' : reife >= 2 ? 'yellow' : 'red';
+  const opts = ['Ja','Mit Auflagen','Nein','Noch unklar'];
+  const fld = (key, label, val) => ro
+    ? `<div style="margin-top:8px"><div style="font-size:10px;font-weight:600;margin-bottom:4px">${escapeHtml(label)}</div><div class="vm-ro-val">${escapeHtml(val)||'—'}</div></div>`
+    : `<div style="margin-top:8px"><div style="font-size:10px;font-weight:600;margin-bottom:4px">${escapeHtml(label)}</div><textarea style="width:100%;min-height:48px;font-size:12px;font-family:inherit;padding:8px;border:1px solid var(--grey-line-soft);border-radius:4px" oninput="onMethodField('${gateId}','${slug}','${key}', this.value)">${escapeHtml(val)}</textarea></div>`;
+  return `<div class="method-visual vm-discovery-grid">
+    <div class="vm-fit-card">
+      <h4>Problem-Fit · Readiness</h4>
+      ${ro ? `<div class="vm-ampel-row"><span class="ampel ${ampel}"></span> Reifegrad: ${reife}/5</div>` :
+        `<div class="vm-ampel-row"><span class="ampel ${ampel}"></span> Reifegrad: <strong id="reife-val">${reife}</strong>/5
+          <input type="range" min="1" max="5" value="${reife}" oninput="onMethodField('${gateId}','${slug}','reifegrad', this.value);document.getElementById('reife-val').textContent=this.value">
+        </div>`}
+      ${fld('politik', 'Politische Belastbarkeit', data.politik||'')}
+      ${fld('ressourcen', 'Ressourcenbereitschaft', data.ressourcen||'')}
+      ${fld('showstopper', 'Showstopper', data.showstopper||'')}
+    </div>
+    <div class="vm-decision-card">
+      <h4 style="font-size:12px;font-weight:700;margin-bottom:12px">Aufnahmeentscheidung</h4>
+      ${ro ? `<strong style="font-size:18px;color:var(--lila)">${escapeHtml(data.empfehlung||'—')}</strong>` :
+        `<select onchange="onMethodField('${gateId}','${slug}','empfehlung', this.value)"><option value="">— wählen —</option>${opts.map(o=>`<option ${data.empfehlung===o?'selected':''}>${o}</option>`).join('')}</select>`}
+    </div>
+  </div>`;
+}
+
+function renderVisualDecisionBackwards(gateId, slug, data, ro) {
+  const fld = (key, label, val, full) => {
+    const col = full ? 'grid-column:1/-1' : '';
+    return ro
+      ? `<div style="${col}"><div style="font-size:10px;font-weight:600;margin-bottom:4px">${escapeHtml(label)}</div><div class="vm-ro-val">${escapeHtml(val)||'—'}</div></div>`
+      : `<div style="${col}"><div style="font-size:10px;font-weight:600;margin-bottom:4px">${escapeHtml(label)}</div><textarea style="width:100%;min-height:56px;font-size:12px;font-family:inherit;padding:8px;border:1px solid var(--grey-line-soft);border-radius:4px" oninput="onMethodField('${gateId}','${slug}','${key}', this.value)">${escapeHtml(val)}</textarea></div>`;
+  };
+  return `<div class="method-visual">
+    <div class="vm-fit-card" style="margin-bottom:12px"><h4>Decision Backwards · G5 vorbereiten</h4>
+      <p style="font-size:11px;color:var(--grey-text);margin-bottom:8px">Welche Frage muss der Sponsor am Ende beantworten können?</p>
+      ${fld('g5-entscheidung', 'G5-Entscheidungsfrage', data['g5-entscheidung']||'', true)}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      ${fld('evidenz', 'Benötigte Evidenz', data.evidenz||'')}
+      ${fld('schritte', 'Rückwärts geplante Schritte', data.schritte||'')}
+    </div>
+    <div style="margin-top:12px">${fld('risiken', 'Entscheidungs-Risiken', data.risiken||'', true)}</div>
+  </div>`;
+}
+
+function docStatusPct(status, fieldMap) {
+  const s = status || '';
+  const order = fieldMap || ['Nicht begonnen','In Vorbereitung','In Verhandlung','Entwurf','Zur Unterschrift','Unterschrieben','Freigegeben','Ja'];
+  const idx = order.findIndex(x => s.includes(x) || s === x);
+  if (s.includes('Unterschrieben') || s === 'Freigegeben' || s === 'Ja') return 100;
+  if (idx < 0) return s ? 40 : 10;
+  return Math.round(((idx + 1) / order.length) * 100);
+}
+
+function renderVisualG1Doc(gateId, slug, data, ro) {
+  const labels = { nda:'NDA / Vertraulichkeit', 'poc-vertrag':'PoC-Vertrag / Pilotvereinbarung', 'dua-dpa':'DUA / DPA' };
+  const tpl = METHOD_TEMPLATES[slug] || { fields: [] };
+  const statusField = tpl.fields.find(f => f.key === 'status') || tpl.fields.find(f => f.type === 'select');
+  const statusKey = statusField ? statusField.key : 'status';
+  const status = data[statusKey] || '';
+  const pct = docStatusPct(status, statusField && statusField.options ? statusField.options : undefined);
+  const fields = tpl.fields.filter(f => f.key !== statusKey && f.key !== 'erforderlich').slice(0, 4);
+  return `<div class="method-visual vm-doc-matrix">
+    <div class="vm-doc-row">
+      <strong>${escapeHtml(labels[slug]||slug)}</strong>
+      <div><div class="vm-doc-bar"><div class="vm-doc-bar-fill" style="width:${pct}%"></div></div></div>
+      ${ro ? `<span>${escapeHtml(status||'—')}</span>` : `<select onchange="onMethodField('${gateId}','${slug}','${statusKey}', this.value)"><option value="">—</option>${(statusField?.options||[]).map(o=>`<option ${status===o?'selected':''}>${o}</option>`).join('')}</select>`}
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+      ${fields.map(f => {
+        const val = data[f.key]||'';
+        if (ro) return `<div style="font-size:11px"><strong>${escapeHtml(f.label)}</strong><div class="vm-ro-val">${escapeHtml(val)||'—'}</div></div>`;
+        if (f.type==='select') return `<div><label style="font-size:10px;font-weight:600">${escapeHtml(f.label)}</label><select style="width:100%;font-size:11px" onchange="onMethodField('${gateId}','${slug}','${f.key}', this.value)"><option value="">—</option>${(f.options||[]).map(o=>`<option ${val===o?'selected':''}>${o}</option>`).join('')}</select></div>`;
+        return `<div><label style="font-size:10px;font-weight:600">${escapeHtml(f.label)}</label><textarea style="width:100%;min-height:40px;font-size:11px;font-family:inherit" oninput="onMethodField('${gateId}','${slug}','${f.key}', this.value)">${escapeHtml(val)}</textarea></div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+function renderVisualReadinessReview(gateId, slug, data, ro) {
+  const defaults = ['Technik','Organisation','Daten','Security','Betrieb','Change'];
+  let rows = Array.isArray(data.__rows) ? data.__rows : (data.__rows = []);
+  if (!rows.length && !ro) {
+    rows = defaults.map(d => ({ dimension: d, bewertung: '', befund: '' }));
+    data.__rows = rows;
+  }
+  const card = (r, i) => {
+    const b = r.bewertung || '';
+    const cls = b === 'Grün' ? 'green' : b === 'Gelb' ? 'yellow' : b === 'Rot' ? 'red' : '';
+    return `<div class="vm-ready-card ${cls}">
+      ${ro ? `<strong style="font-size:12px">${escapeHtml(r.dimension||'—')}</strong><div style="font-size:11px;margin:6px 0">${escapeHtml(b||'—')}</div><div class="vm-ro-val">${escapeHtml(r.befund||'')}</div>` :
+        `<input value="${escapeAttr(r.dimension||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'dimension',this.value)" style="width:100%;font-weight:700;font-size:12px;border:none;background:transparent;margin-bottom:6px">
+         <select onchange="onMethodRow('${gateId}','${slug}',${i},'bewertung',this.value)"><option value="">—</option>${['Grün','Gelb','Rot'].map(o=>`<option ${b===o?'selected':''}>${o}</option>`).join('')}</select>
+         <textarea oninput="onMethodRow('${gateId}','${slug}',${i},'befund',this.value)" placeholder="Befund …">${escapeHtml(r.befund||'')}</textarea>`}
+    </div>`;
+  };
+  const addBtn = ro ? '' : `<button class="btn-dark btn-small" style="margin-top:10px" onclick="addMethodRow('${gateId}','${slug}')">+ Dimension</button>`;
+  return `<div class="method-visual"><div class="vm-readiness-board">${rows.map((r,i)=>card(r,i)).join('')}</div>${addBtn}</div>`;
+}
+
+function renderVisualMessplan(gateId, slug, data, ro) {
+  const rows = Array.isArray(data.__rows) ? data.__rows : (data.__rows = []);
+  const head = `<div class="vm-mess-row vm-mess-head"><span>KPI</span><span>Methode</span><span>Frequenz</span><span>Quelle</span><span>Owner</span></div>`;
+  const freqOpts = ['Einmalig','Täglich','Wöchentlich','Monatlich','Laufend'];
+  const body = rows.map((r,i) => ro
+    ? `<div class="vm-mess-row"><span><strong>${escapeHtml(r.kpi||'—')}</strong></span><span>${escapeHtml(r.methode||'—')}</span><span>${escapeHtml(r.frequenz||'—')}</span><span>${escapeHtml(r.quelle||'—')}</span><span>${escapeHtml(r.owner||'—')}</span></div>`
+    : `<div class="vm-mess-row"><input value="${escapeAttr(r.kpi||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'kpi',this.value)" placeholder="KPI">
+      <input value="${escapeAttr(r.methode||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'methode',this.value)" placeholder="Methode">
+      <select onchange="onMethodRow('${gateId}','${slug}',${i},'frequenz',this.value)">${freqOpts.map(o=>`<option ${r.frequenz===o?'selected':''}>${o}</option>`).join('')}</select>
+      <input value="${escapeAttr(r.quelle||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'quelle',this.value)" placeholder="Quelle">
+      <input value="${escapeAttr(r.owner||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'owner',this.value)" placeholder="Owner"></div>`
+  ).join('');
+  const addBtn = ro ? '' : `<button class="btn-dark btn-small" style="margin-top:8px" onclick="addMethodRow('${gateId}','${slug}')">+ Messpunkt</button>`;
+  return `<div class="method-visual vm-messplan">${head}${body||'<div class="ws-empty">Noch keine Messpunkte.</div>'}${addBtn}</div>`;
+}
+
+function renderVisualBaseline(gateId, slug, data, ro) {
+  const rows = Array.isArray(data.__rows) ? data.__rows : (data.__rows = []);
+  const canvasKpi = ((state.gates.g0.methods||{})['poc-canvas']||{})['kpi-primaer'] || '';
+  const body = rows.map((r,i) => {
+    const val = parseFloat(String(r.wert||'').replace(',','.')) || 0;
+    const maxBar = Math.max(val, 100);
+    const h = maxBar ? Math.round((val / maxBar) * 100) : 20;
+    return `<div class="vm-base-row">
+      <div>${ro ? `<strong>${escapeHtml(r.kpi||'—')}</strong><div style="font-size:10px;color:var(--grey-faint)">${escapeHtml(r.methode||'')}</div>` :
+        `<input value="${escapeAttr(r.kpi||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'kpi',this.value)" placeholder="KPI" style="width:100%;font-weight:600;border:none;background:transparent">
+         <input value="${escapeAttr(r.methode||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'methode',this.value)" placeholder="Methode" style="width:100%;font-size:10px;border:none;background:transparent;color:var(--grey-faint)">`}
+        <div class="vm-base-bars" style="margin-top:8px"><div class="vm-base-bar ist" style="height:${h}%" title="Ist"></div></div>
+      </div>
+      <div>${ro ? escapeHtml(r.wert||'—') : `<input value="${escapeAttr(r.wert||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'wert',this.value)" placeholder="Ist-Wert">`}
+        <div style="font-size:9px;color:var(--grey-faint)">${escapeHtml(r.einheit||'')}</div></div>
+      <div>${ro ? escapeHtml(r.stichtag||'—') : `<input value="${escapeAttr(r.stichtag||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'stichtag',this.value)" placeholder="Stichtag">`}</div>
+    </div>`;
+  }).join('');
+  const hint = canvasKpi ? `<p style="font-size:11px;color:var(--grey-text);margin-bottom:10px">Ziel-KPI aus Canvas: <strong>${escapeHtml(canvasKpi)}</strong></p>` : '';
+  const addBtn = ro ? '' : `<button class="btn-dark btn-small" style="margin-top:8px" onclick="addMethodRow('${gateId}','${slug}')">+ Baseline</button>`;
+  return `<div class="method-visual vm-baseline-compare">${hint}${body||'<div class="ws-empty">Baseline erfassen.</div>'}${addBtn}</div>`;
+}
+
+function renderVisualSuccessThreshold(gateId, slug, data, ro) {
+  const rows = Array.isArray(data.__rows) ? data.__rows : (data.__rows = []);
+  const body = rows.map((r,i) => `<div class="vm-threshold-row">
+    <strong>${ro ? escapeHtml(r.kpi||'—') : `<input value="${escapeAttr(r.kpi||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'kpi',this.value)" style="width:100%;border:none;background:transparent;font-weight:600">`}</strong>
+    <div class="vm-threshold-bar"><div class="go" style="flex:2"></div><div class="stop" style="flex:1"></div></div>
+    <span style="color:#2d8a3e">${ro ? escapeHtml(r.go||'—') : `<input value="${escapeAttr(r.go||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'go',this.value)" placeholder="Go">`}</span>
+    <span style="color:#c0392b">${ro ? escapeHtml(r.stop||'—') : `<input value="${escapeAttr(r.stop||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'stop',this.value)" placeholder="Stop">`}</span>
+  </div>`).join('');
+  const addBtn = ro ? '' : `<button class="btn-dark btn-small" style="margin-top:8px" onclick="addMethodRow('${gateId}','${slug}')">+ Schwelle</button>`;
+  return `<div class="method-visual vm-threshold-grid">${body||'<div class="ws-empty">Schwellen definieren.</div>'}${addBtn}</div>`;
+}
+
+function renderVisualGoStop(gateId, slug, data, ro) {
+  const opts = [
+    { label:'Go', desc:'Weiterführung empfohlen' },
+    { label:'Go unter Bedingungen', desc:'Mit Auflagen / Pilot' },
+    { label:'Stop', desc:'Nicht weiterführen' }
+  ];
+  const val = data.entscheidung || '';
+  return `<div class="method-visual">
+    <div class="vm-gostop">${opts.map(o => {
+      const sel = val === o.label;
+      return ro
+        ? `<div class="vm-gostop-opt${sel?' selected':''}"><strong>${o.label}</strong><span style="font-size:11px;color:var(--grey-text)">${escapeHtml(o.desc)}</span></div>`
+        : `<label class="vm-gostop-opt${sel?' selected':''}"><input type="radio" name="gostop-${gateId}" ${sel?'checked':''} onchange="onMethodField('${gateId}','${slug}','entscheidung','${o.label}')"><strong>${o.label}</strong><span style="font-size:11px;color:var(--grey-text);display:block;margin-top:4px">${o.desc}</span></label>`;
+    }).join('')}</div>
+    <div style="margin-top:12px">${ro
+      ? `<div class="vm-ro-val"><strong>Begründung:</strong> ${escapeHtml(data.begruendung||data.bedingungen||'—')}</div>`
+      : `<label style="font-size:10px;font-weight:600">Begründung / Bedingungen</label><textarea style="width:100%;min-height:64px;font-family:inherit;font-size:12px;padding:8px;border:1px solid var(--grey-line-soft);border-radius:4px" oninput="onMethodField('${gateId}','${slug}','begruendung', this.value)">${escapeHtml(data.begruendung||'')}</textarea>`}
+    </div>
+  </div>`;
+}
+
+function renderVisualKpiTracking(gateId, slug, data, ro) {
+  const rows = Array.isArray(data.__rows) ? data.__rows : (data.__rows = []);
+  if (!rows.length && !data.__rows) {
+    const canvas = (state.gates.g0.methods||{})['poc-canvas']||{};
+    if (canvas['kpi-primaer']) data.__rows = [{ kpi: canvas['kpi-primaer'], ist: '', ziel: '', trend: '' }];
+    else data.__rows = [];
+  }
+  rows = data.__rows;
+  return `<div class="method-visual">${rows.map((r,i) => {
+    const ist = parseFloat(String(r.ist||'').replace(',','.')) || 0;
+    const ziel = parseFloat(String(r.ziel||'').replace(',','.')) || 100;
+    const pct = ziel ? Math.min(100, Math.round((ist/ziel)*100)) : 0;
+    const col = pct >= 80 ? '#2d8a3e' : pct >= 50 ? '#d4a017' : '#c0392b';
+    return `<div class="vm-threshold-row" style="grid-template-columns:1fr 1fr 80px 80px">
+      <div><strong>${ro ? escapeHtml(r.kpi||'KPI') : `<input value="${escapeAttr(r.kpi||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'kpi',this.value)" style="width:100%;border:none;background:transparent;font-weight:600">`}</strong>
+        <div class="vm-doc-bar" style="margin-top:6px"><div class="vm-doc-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+      </div>
+      <span>${ro ? `Ist: ${escapeHtml(r.ist||'—')} / Ziel: ${escapeHtml(r.ziel||'—')}` : `Ist <input value="${escapeAttr(r.ist||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'ist',this.value)" style="width:60px"> Ziel <input value="${escapeAttr(r.ziel||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'ziel',this.value)" style="width:60px">`}</span>
+      <span style="font-weight:700;color:${col}">${pct}%</span>
+      <span>${ro ? escapeHtml(r.trend||'—') : `<input value="${escapeAttr(r.trend||'')}" oninput="onMethodRow('${gateId}','${slug}',${i},'trend',this.value)" placeholder="Trend">`}</span>
+    </div>`;
+  }).join('')}${!ro ? `<button class="btn-dark btn-small" style="margin-top:8px" onclick="addMethodRow('${gateId}','${slug}')">+ KPI</button>` : ''}</div>`;
+}
+
+function renderVisualMethod(gateId, slug) {
+  const data = ensureMethodData(gateId, slug);
+  const ro = vmReadonly();
+  const renderers = {
+    'poc-canvas': renderVisualPoCCanvas,
+    'scope-boxing': renderVisualScopeBoxing,
+    'assumption-mapping': renderVisualAssumptionMapping,
+    'kpi-tree': renderVisualKpiTree,
+    'discovery-check': renderVisualDiscoveryCheck,
+    'decision-backwards-planning': renderVisualDecisionBackwards,
+    'nda': renderVisualG1Doc,
+    'poc-vertrag': renderVisualG1Doc,
+    'dua-dpa': renderVisualG1Doc,
+    'readiness-review': renderVisualReadinessReview,
+    'messplan': renderVisualMessplan,
+    'baseline': renderVisualBaseline,
+    'success-threshold': renderVisualSuccessThreshold,
+    'go-stop': renderVisualGoStop,
+    'kpi-tracking': renderVisualKpiTracking
+  };
+  const fn = renderers[slug];
+  return fn ? fn(gateId, slug, data, ro) : '';
+}
+
 function renderMethodWorksheet(gateId, slug) {
+  if (isVisualMethod(slug)) return renderVisualMethod(gateId, slug);
   const tpl = METHOD_TEMPLATES[slug];
   if (!tpl) return `<div class="ws-empty">Kein Worksheet-Template hinterlegt.</div>`;
   if (!state.gates[gateId].methods) state.gates[gateId].methods = {};
@@ -2562,11 +4537,26 @@ function renderMethodWorksheet(gateId, slug) {
 const openedMethods = new Set();
 function render() {
   applyViewClasses();
+  renderDeliveryContextBar();
   renderSideNav();
   renderContentHeader();
+  const ch = document.getElementById('view-customer-home');
+  const sh = document.getElementById('view-startup-home');
+  const mt = document.getElementById('view-meeting');
+  const cal = document.getElementById('view-calendar');
+  if (ch) ch.classList.toggle('hidden', activeView !== 'customer-home');
+  if (sh) sh.classList.toggle('hidden', activeView !== 'startup-home');
+  if (mt) mt.classList.toggle('hidden', activeView !== 'meeting');
+  if (cal) cal.classList.toggle('hidden', activeView !== 'calendar');
   document.getElementById('view-cockpit').classList.toggle('hidden', activeView !== 'cockpit');
+  document.getElementById('view-run').classList.toggle('hidden', activeView !== 'run');
   document.getElementById('view-gate').classList.toggle('hidden', activeView !== 'gate');
   document.getElementById('view-setup').classList.toggle('hidden', activeView !== 'setup');
+  if (activeView === 'customer-home') renderCustomerHome();
+  if (activeView === 'startup-home') renderStartupHome();
+  if (activeView === 'meeting') renderMeetingView();
+  if (activeView === 'calendar') renderCalendarView();
+  if (activeView === 'run') renderRunView();
   if (activeView === 'cockpit') renderCockpitView();
   if (activeView === 'gate') { renderGateContext(); renderPanel(); }
   if (activeView === 'setup') renderSetupView();
@@ -2952,6 +4942,11 @@ function openHelp() {
     <p><strong>OneDrive bleibt optional</strong>: Wenn Vercel-Storage aktiv ist, ist JSON-Export nur Backup. Ohne Vercel-Storage teilt ihr weiterhin über JSON in OneDrive.</p>
     <p><strong>Projekt-ID:</strong> <code>${escapeHtml(REMOTE_DOC)}</code> · Nutzt fuer Teamarbeit denselben Link inkl. <code>?doc=...</code>.</p>
 
+    <h4>Kalender · iCal / Outlook</h4>
+    <p>Mit Vercel-Speicher: Termine unter <strong>Kalender</strong> planen und als Live-Feed abonnieren (<code>webcal://…/api/calendar?doc=…</code>). In Outlook: Kalender hinzufügen → Aus dem Internet abonnieren. Apple Calendar: Ablage → Neues Kalenderabonnement.</p>
+    <p>Einzeltermine lassen sich auch direkt in Google Calendar oder Outlook Web öffnen — oder als .ics herunterladen.</p>
+    ${storageMode === 'vercel' ? `<button class="btn-dark btn-small primary" onclick="copyCalendarSubscribeLink();closeModal()">Kalender-Abo kopieren</button>` : `<button class="btn-dark btn-small primary" onclick="downloadFullIcs();closeModal()">.ics exportieren</button>`}
+
     <h4>Wie teile ich das mit meiner Kollegin (OneDrive-Workflow)?</h4>
     <ol>
       <li><strong>HTML-Datei in OneDrive ablegen:</strong> Lege diese <code>cipp-tracker.html</code> in einen OneDrive-Ordner (z.B. <em>NXTGN / CIPP / Kunde X</em>).</li>
@@ -3008,7 +5003,10 @@ function toast(msg, color) {
   await loadState(false);
   ensureMetaOrgConfig(state);
   applyUrlViewHint();
+  if (isCustomerView() && (activeView === 'cockpit' || activeView === 'setup')) activeView = 'customer-home';
+  if (isStartupView() && (activeView === 'cockpit' || activeView === 'setup' || activeView === 'customer-home')) activeView = 'startup-home';
   applyViewClasses();
+  render();
   startRemoteSync();
 })();
 </script>
