@@ -9,16 +9,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --black: #000000; --white: #ffffff; --beige: #f6f4f0;
-    --pink: #e4368c; --pink-80: #F9D7E8; --pink-60: #F4AFD1; --pink-dark: #B91A69;
+    --black: #1a1a1a; --white: #ffffff; --beige: #f4f2ee;
+    --pink: #e4368c; --pink-80: #fce8f2; --pink-60: #F4AFD1; --pink-dark: #B91A69;
     --gelb: #ffd500; --orange: #ee712f; --lila: #694a98; --blau: #1e1e80;
-    --grey-line: #d6d1c8; --grey-line-soft: #e8e3db;
-    --grey-text: #5a554e; --grey-faint: #8c867d; --grey-locked: #b4afa6;
+    --grey-line: #ddd8cf; --grey-line-soft: #ebe7e0;
+    --grey-text: #5c574f; --grey-faint: #8f8980; --grey-locked: #b4afa6;
+    --success: #1e7a34; --success-bg: #edf7f0; --warn: #b8860b; --warn-bg: #fff9e8; --danger: #c0392b; --danger-bg: #fdf4f4;
     --gradient-full: linear-gradient(100deg, #ffd500 0%, #ee712f 28%, #e4368c 52%, #694a98 78%, #1e1e80 100%);
-    --radius-sm: 6px; --radius-md: 10px; --radius-lg: 14px;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
-    --shadow-md: 0 8px 24px -12px rgba(0,0,0,0.12);
-    --shadow-lg: 0 24px 60px -24px rgba(0,0,0,0.18);
+    --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,.06);
+    --shadow-md: 0 8px 30px -12px rgba(0,0,0,.12);
+    --shadow-lg: 0 24px 64px -20px rgba(0,0,0,.2);
+    --page-max: 1080px;
+    --nav-w: 220px;
+    --topbar-h: 60px;
+    --space-xs: 8px; --space-sm: 12px; --space-md: 16px; --space-lg: 24px; --space-xl: 32px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body {
@@ -263,53 +268,152 @@
   footer.bottom .rule { max-width:620px; color:var(--grey-text); font-size:11.5px; line-height:1.5; font-weight:400; letter-spacing:0; }
   footer.bottom .rule strong { color:var(--pink); font-weight:700; }
 
-  /* ── APP LAYOUT ── */
-  .app-layout { min-height:100vh; display:flex; flex-direction:column; }
-  .topbar { background:var(--white); border-bottom:1px solid var(--grey-line-soft); padding:0 24px; height:56px; display:flex; align-items:center; justify-content:space-between; gap:16px; position:sticky; top:0; z-index:40; box-shadow:var(--shadow-sm); }
-  .topbar-left { display:flex; align-items:center; gap:12px; min-width:0; }
-  .topbar-left img { width:36px; height:36px; object-fit:contain; }
-  .topbar-brand { font-weight:800; font-size:14px; line-height:1.1; }
-  .topbar-brand span { display:block; font-weight:400; font-size:9px; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-faint); margin-top:2px; }
-  .topbar-center { display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center; }
-  .topbar-right { display:flex; align-items:center; gap:6px; flex-shrink:0; }
-  .view-switch { display:inline-flex; border:1px solid var(--grey-line); border-radius:var(--radius-sm); overflow:hidden; background:var(--beige); }
-  .view-switch button { font-family:inherit; font-size:11px; font-weight:600; letter-spacing:.06em; padding:7px 16px; border:none; background:transparent; cursor:pointer; color:var(--grey-text); transition:all .12s; }
-  .view-switch button.active { background:var(--pink); color:var(--white); }
-  .view-switch button:first-child.active { background:var(--lila); }
-  .phase-switch { display:inline-flex; gap:4px; }
-  .phase-btn { font-family:inherit; font-size:10px; font-weight:600; padding:5px 10px; border-radius:20px; border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
-  .phase-btn.active { background:var(--lila); color:var(--white); border-color:var(--lila); }
-  .topbar-actions .btn-tb { font-family:inherit; font-size:11px; padding:6px 10px; border-radius:var(--radius-sm); border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
-  .topbar-actions .btn-tb:hover { border-color:var(--pink); color:var(--pink); }
-  .topbar-actions .btn-tb.primary { background:var(--pink); color:var(--white); border-color:var(--pink); }
-  .storage-dot { width:8px; height:8px; border-radius:50%; background:var(--grey-faint); }
-  .storage-dot.ok { background:#2d8a3e; }
+  /* ── APP LAYOUT · Presentation UI ── */
+  .app-layout { min-height:100vh; display:flex; flex-direction:column; background:var(--beige); }
+  .topbar {
+    background:var(--white); border-bottom:1px solid var(--grey-line-soft);
+    padding:0 var(--space-lg); height:var(--topbar-h);
+    display:flex; align-items:center; justify-content:space-between; gap:var(--space-md);
+    position:sticky; top:0; z-index:40; box-shadow:var(--shadow-sm);
+  }
+  .topbar-left { display:flex; align-items:center; gap:14px; min-width:0; }
+  .topbar-left img { width:40px; height:40px; object-fit:contain; }
+  .topbar-brand { font-weight:700; font-size:15px; line-height:1.2; letter-spacing:-.02em; }
+  .topbar-brand span { display:block; font-weight:500; font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--grey-faint); margin-top:3px; }
+  .topbar-center { display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:center; }
+  .topbar-right { display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .view-switch {
+    display:inline-flex; padding:3px; border-radius:var(--radius-md);
+    background:var(--beige); border:1px solid var(--grey-line-soft);
+  }
+  .view-switch button {
+    font-family:inherit; font-size:11px; font-weight:600; letter-spacing:.04em;
+    padding:8px 14px; border:none; border-radius:6px; background:transparent;
+    cursor:pointer; color:var(--grey-text); transition:all .15s;
+  }
+  .view-switch button:hover { color:var(--black); }
+  .view-switch button.active { background:var(--white); color:var(--black); box-shadow:var(--shadow-sm); }
+  .view-switch button#btn-view-admin.active { color:var(--lila); }
+  .view-switch button#btn-view-delivery.active { color:var(--pink); }
+  .phase-switch { display:inline-flex; gap:4px; padding:3px; background:var(--beige); border-radius:var(--radius-md); border:1px solid var(--grey-line-soft); }
+  .phase-btn { font-family:inherit; font-size:10px; font-weight:600; padding:7px 12px; border-radius:6px; border:none; background:transparent; cursor:pointer; color:var(--grey-text); }
+  .phase-btn.active { background:var(--white); color:var(--lila); box-shadow:var(--shadow-sm); }
+  .topbar-divider { width:1px; height:24px; background:var(--grey-line-soft); }
+  .topbar-actions { display:flex; align-items:center; gap:6px; }
+  .topbar-actions .btn-tb {
+    font-family:inherit; font-size:11px; font-weight:500; padding:8px 12px;
+    border-radius:var(--radius-sm); border:1px solid transparent; background:transparent;
+    color:var(--grey-text); cursor:pointer; transition:all .15s;
+  }
+  .topbar-actions .btn-tb:hover { background:var(--beige); color:var(--black); }
+  .topbar-actions .btn-tb.primary { background:var(--pink); color:var(--white); border-color:var(--pink); font-weight:600; }
+  .topbar-actions .btn-tb.primary:hover { background:var(--pink-dark); border-color:var(--pink-dark); color:var(--white); }
+  .storage-dot { width:8px; height:8px; border-radius:50%; background:var(--grey-faint); flex-shrink:0; }
+  .storage-dot.ok { background:var(--success); }
 
-  .workspace { display:flex; flex:1; min-height:0; }
-  .side-nav { width:240px; flex-shrink:0; background:var(--white); border-right:1px solid var(--grey-line-soft); padding:16px 0; overflow-y:auto; position:sticky; top:56px; height:calc(100vh - 56px); }
-  .nav-section { padding:0 12px; margin-bottom:20px; }
-  .nav-section-label { font-size:9px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--grey-faint); padding:0 10px 8px; }
-  .nav-item { display:flex; align-items:center; gap:10px; width:100%; padding:9px 12px; border:none; background:transparent; border-radius:var(--radius-sm); cursor:pointer; font-family:inherit; text-align:left; color:var(--black); transition:all .12s; margin-bottom:2px; }
+  .workspace { display:flex; flex:1; min-height:0; align-items:stretch; }
+  .side-nav {
+    width:var(--nav-w); flex-shrink:0; background:var(--white);
+    border-right:1px solid var(--grey-line-soft);
+    padding:var(--space-md) 0; overflow-y:auto;
+    position:sticky; top:var(--topbar-h); height:calc(100vh - var(--topbar-h));
+  }
+  .nav-section { padding:0 10px; margin-bottom:var(--space-lg); }
+  .nav-section-label { font-size:9px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-faint); padding:0 12px 10px; }
+  .nav-item {
+    display:flex; align-items:center; gap:10px; width:100%; padding:10px 12px;
+    border:none; background:transparent; border-radius:var(--radius-sm);
+    cursor:pointer; font-family:inherit; text-align:left; color:var(--black);
+    transition:background .15s; margin-bottom:2px;
+  }
   .nav-item:hover { background:var(--beige); }
-  .nav-item.active { background:var(--pink-80); box-shadow:inset 3px 0 0 var(--pink); }
-  .nav-item.locked { opacity:.45; cursor:not-allowed; }
-  .nav-item.done .nav-code { color:var(--pink); }
-  .nav-code { font-size:10px; font-weight:700; letter-spacing:.08em; min-width:42px; color:var(--grey-faint); }
-  .nav-label { font-size:12px; font-weight:500; flex:1; line-height:1.25; }
+  .nav-item.active { background:var(--pink-80); font-weight:600; }
+  .nav-item.locked { opacity:.4; cursor:not-allowed; }
+  .nav-item.done .nav-code { color:var(--success); }
+  .nav-code { font-size:10px; font-weight:700; letter-spacing:.06em; min-width:40px; color:var(--grey-faint); }
+  .nav-label { font-size:12px; font-weight:500; flex:1; line-height:1.3; }
   .nav-pct { font-size:10px; font-weight:600; color:var(--grey-faint); }
-  .nav-badge { font-size:8px; font-weight:700; padding:2px 5px; border-radius:8px; background:var(--lila); color:var(--white); letter-spacing:.04em; }
-  .nav-meta-box { margin:12px; padding:12px; background:var(--beige); border-radius:var(--radius-sm); font-size:10px; color:var(--grey-text); line-height:1.45; }
-  .nav-meta-box strong { color:var(--black); display:block; font-size:11px; margin-bottom:4px; }
+  .nav-badge { font-size:8px; font-weight:700; padding:2px 5px; border-radius:6px; background:var(--lila); color:var(--white); }
+  .nav-meta-box {
+    margin:0 10px; padding:14px; background:var(--beige); border-radius:var(--radius-md);
+    font-size:11px; color:var(--grey-text); line-height:1.5; border:1px solid var(--grey-line-soft);
+  }
+  .nav-meta-box strong { color:var(--black); display:block; font-size:11px; font-weight:700; margin-bottom:6px; }
 
-  .content-area { flex:1; min-width:0; padding:24px 32px 48px; overflow-y:auto; }
-  .content-header { margin-bottom:20px; }
-  .content-header h1 { font-size:22px; font-weight:700; letter-spacing:-.01em; margin-bottom:4px; }
-  .content-header .sub { font-size:13px; color:var(--grey-text); line-height:1.45; max-width:720px; }
-  .content-header .project-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-top:16px; padding:16px 20px; background:var(--white); border-radius:var(--radius-md); border:1px solid var(--grey-line-soft); }
-  .content-header .project-bar label { display:block; font-size:9px; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:4px; }
-  .content-header .project-bar input { width:100%; border:none; border-bottom:1px solid var(--grey-line); background:transparent; font-family:inherit; font-size:13px; padding:2px 0 6px; }
-  .view-pane { display:block; }
+  .content-area { flex:1; min-width:0; padding:var(--space-lg) var(--space-xl) 56px; overflow-y:auto; }
+  .content-header { margin-bottom:var(--space-lg); max-width:var(--page-max); }
+  .page-head-row { display:flex; align-items:flex-start; justify-content:space-between; gap:var(--space-md); flex-wrap:wrap; margin-bottom:6px; }
+  .page-eyebrow { font-size:10px; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--lila); }
+  .page-badge {
+    font-size:10px; font-weight:600; padding:5px 10px; border-radius:20px;
+    background:var(--beige); border:1px solid var(--grey-line-soft); color:var(--grey-text);
+  }
+  .page-badge.active-phase { background:var(--success-bg); border-color:#b8dfc4; color:var(--success); }
+  .content-header h1 { font-size:26px; font-weight:700; letter-spacing:-.03em; line-height:1.15; margin:4px 0 8px; }
+  .content-header .sub, .page-lead { font-size:14px; color:var(--grey-text); line-height:1.55; max-width:640px; font-weight:400; }
+  .page-callout {
+    margin-top:var(--space-md); padding:12px 16px; background:var(--white);
+    border:1px solid var(--grey-line-soft); border-left:3px solid var(--pink);
+    border-radius:var(--radius-sm); font-size:13px; display:flex; align-items:center;
+    justify-content:space-between; gap:12px; flex-wrap:wrap;
+  }
+  .project-bar {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-md);
+    margin-top:var(--space-lg); padding:var(--space-md) var(--space-lg);
+    background:var(--white); border-radius:var(--radius-md);
+    border:1px solid var(--grey-line-soft); box-shadow:var(--shadow-sm);
+  }
+  .project-bar label { display:block; font-size:9px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:6px; }
+  .project-bar input {
+    width:100%; border:none; border-bottom:1px solid var(--grey-line-soft);
+    background:transparent; font-family:inherit; font-size:14px; font-weight:500;
+    padding:4px 0 8px; transition:border-color .15s;
+  }
+  .project-bar input:focus { outline:none; border-bottom-color:var(--pink); }
+  .project-bar-readonly div { padding:6px 0; font-size:14px; font-weight:500; }
+  .view-pane { display:block; max-width:var(--page-max); }
   .view-pane.hidden { display:none; }
+
+  /* Unified page components */
+  .ui-page { display:flex; flex-direction:column; gap:var(--space-lg); }
+  .ui-kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:var(--space-md); }
+  .ui-kpi {
+    background:var(--white); border:1px solid var(--grey-line-soft); border-radius:var(--radius-md);
+    padding:var(--space-md) var(--space-lg); box-shadow:var(--shadow-sm);
+  }
+  .ui-kpi__label { display:block; font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:8px; }
+  .ui-kpi__value { font-size:24px; font-weight:700; letter-spacing:-.02em; line-height:1.1; color:var(--black); }
+  .ui-kpi__hint { display:block; font-size:11px; color:var(--grey-text); margin-top:6px; line-height:1.4; }
+  .ui-kpi--success .ui-kpi__value { color:var(--success); }
+  .ui-kpi--danger .ui-kpi__value { color:var(--danger); }
+  .ui-kpi--accent .ui-kpi__value { color:var(--pink); }
+  .ui-section { background:var(--white); border:1px solid var(--grey-line-soft); border-radius:var(--radius-lg); padding:var(--space-lg); box-shadow:var(--shadow-sm); }
+  .ui-section__head { display:flex; align-items:baseline; justify-content:space-between; gap:12px; margin-bottom:var(--space-md); padding-bottom:var(--space-sm); border-bottom:1px solid var(--grey-line-soft); }
+  .ui-section__title { font-size:14px; font-weight:700; letter-spacing:-.01em; }
+  .ui-section__sub { font-size:12px; color:var(--grey-faint); font-weight:500; }
+  .ui-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-md); }
+  .ui-list { list-style:none; font-size:13px; line-height:1.5; }
+  .ui-list li { padding:10px 0; border-bottom:1px solid var(--grey-line-soft); display:flex; gap:8px; }
+  .ui-list li:last-child { border-bottom:none; }
+  .ui-list li strong { color:var(--black); font-weight:600; min-width:72px; }
+  .ui-empty { font-size:13px; color:var(--grey-faint); font-style:italic; padding:8px 0; }
+  .ui-actions { display:flex; gap:8px; flex-wrap:wrap; margin-top:var(--space-md); }
+  .ui-hero {
+    background:var(--white); border:1px solid var(--grey-line-soft); border-radius:var(--radius-lg);
+    padding:var(--space-lg) var(--space-xl); box-shadow:var(--shadow-sm);
+    border-left:4px solid var(--lila);
+  }
+  .ui-hero h2 { font-size:20px; font-weight:700; letter-spacing:-.02em; margin-bottom:6px; }
+  .ui-hero p { font-size:14px; color:var(--grey-text); line-height:1.5; max-width:560px; }
+  .ui-tunnel-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-md); }
+  .ui-tunnel-card {
+    background:var(--white); border:1px solid var(--grey-line-soft); border-radius:var(--radius-md);
+    padding:var(--space-md) var(--space-lg); box-shadow:var(--shadow-sm);
+    display:flex; flex-direction:column; min-height:120px;
+  }
+  .ui-tunnel-card h4 { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--lila); margin-bottom:10px; }
+  .ui-tunnel-card .val { font-size:15px; font-weight:600; line-height:1.35; flex:1; }
+  .ui-tunnel-card .foot { font-size:11px; color:var(--grey-text); margin-top:10px; padding-top:10px; border-top:1px solid var(--grey-line-soft); }
 
   /* Obeya full view */
   .obeya-full { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); overflow:hidden; }
@@ -338,7 +442,7 @@
   .parallel-tab.active { border-color:var(--lila); background:rgba(105,74,152,.08); color:var(--lila); }
   .parallel-tab.done { border-color:#2d8a3e; }
   .tunnel-hint { background:var(--pink-80); border-left:4px solid var(--pink); padding:12px 16px; border-radius:var(--radius-sm); font-size:13px; margin-bottom:16px; display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
-  .gate-panel { background:var(--white); border-radius:var(--radius-lg); padding:32px 36px; box-shadow:var(--shadow-sm); border:1px solid var(--grey-line-soft); }
+  .gate-panel { background:var(--white); border-radius:var(--radius-lg); padding:var(--space-xl); box-shadow:var(--shadow-sm); border:1px solid var(--grey-line-soft); }
   .gate-tabs { display:flex; gap:4px; margin-bottom:24px; border-bottom:1px solid var(--grey-line-soft); padding-bottom:0; }
   .gate-tab { font-family:inherit; font-size:12px; font-weight:600; padding:10px 16px; border:none; background:transparent; cursor:pointer; color:var(--grey-faint); border-bottom:2px solid transparent; margin-bottom:-1px; }
   .gate-tab.active { color:var(--pink); border-bottom-color:var(--pink); }
@@ -346,9 +450,9 @@
   .gate-tab-pane.active { display:block; }
 
   /* Setup view */
-  .setup-view-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .setup-card { background:var(--white); border-radius:var(--radius-lg); padding:24px; border:1px solid var(--grey-line-soft); }
-  .setup-card h3 { font-size:16px; font-weight:700; margin-bottom:12px; }
+  .setup-view-grid { display:grid; grid-template-columns:1.2fr 1fr; gap:var(--space-lg); align-items:start; }
+  .setup-card, .setup-view-grid .ui-section { background:var(--white); border-radius:var(--radius-lg); padding:var(--space-lg); border:1px solid var(--grey-line-soft); box-shadow:var(--shadow-sm); }
+  .setup-card h3, .setup-view-grid .ui-section__title { font-size:15px; font-weight:700; margin-bottom:var(--space-sm); }
 
   /* Shared components (keep) */
   .cockpit-zone { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); background:var(--white); overflow:hidden; transition:border-color .12s; }
@@ -395,20 +499,21 @@
   body.view-delivery .content-header .project-bar,
   body.view-startup .content-header .project-bar { grid-template-columns:repeat(4,1fr); }
 
-  /* Delivery — Kunden-Journey (read-mostly) */
-  .delivery-context-bar { background:var(--white); border-bottom:1px solid var(--grey-line-soft); padding:10px 24px; display:none; gap:16px; flex-wrap:wrap; align-items:center; font-size:12px; }
-  body.view-delivery .delivery-context-bar,
-  body.view-startup .delivery-context-bar { display:flex; }
+  /* Delivery context bar — hidden (info in page header) */
+  .delivery-context-bar { display:none !important; }
   .dcb-item { display:flex; align-items:center; gap:6px; }
   .dcb-item strong { font-weight:600; }
   .dcb-weekly { margin-left:auto; }
 
-  .customer-home { display:grid; gap:20px; }
-  .ch-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
-  .ch-card { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); padding:20px 24px; }
-  .ch-card h3 { font-size:15px; font-weight:700; margin-bottom:12px; }
-  .ch-card.red { border-left:4px solid #c0392b; }
-  .ch-card.green { border-left:4px solid #2d8a3e; }
+  .customer-home, .startup-home { display:flex; flex-direction:column; gap:var(--space-lg); }
+  .ch-grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-md); }
+  .ch-card {
+    background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft);
+    padding:var(--space-lg); box-shadow:var(--shadow-sm);
+  }
+  .ch-card h3 { font-size:14px; font-weight:700; margin-bottom:var(--space-md); padding-bottom:var(--space-sm); border-bottom:1px solid var(--grey-line-soft); }
+  .ch-card.red, .ui-section--danger { border-left:4px solid var(--danger); background:var(--danger-bg); }
+  .ch-card.green { border-left:4px solid var(--success); }
   .ch-card.lila { border-left:4px solid var(--lila); }
   .summary-row { display:flex; justify-content:space-between; font-size:12px; padding:6px 0; border-bottom:1px solid var(--grey-line-soft); }
   .summary-row:last-child { border-bottom:none; }
@@ -416,24 +521,35 @@
   .strand-bar-head { display:flex; justify-content:space-between; font-size:11px; margin-bottom:4px; }
   .strand-bar-track { height:8px; background:var(--grey-line-soft); border-radius:4px; overflow:hidden; }
   .strand-bar-fill { height:100%; background:var(--lila); transition:width .3s; }
-  .decision-item { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:8px; background:var(--beige); }
-  .decision-item.urgent { border-color:#c0392b; background:#fef5f5; }
-  .decision-item h4 { font-size:13px; font-weight:700; margin-bottom:4px; }
-  .decision-item p { font-size:12px; color:var(--grey-text); margin-bottom:10px; line-height:1.45; }
-  .decision-actions { display:flex; gap:6px; flex-wrap:wrap; }
-  .decision-actions button { font-family:inherit; font-size:10px; font-weight:600; padding:6px 12px; border-radius:var(--radius-sm); border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
-  .decision-actions button.approve { background:#2d8a3e; color:var(--white); border-color:#2d8a3e; }
-  .decision-actions button.escalate { background:#c0392b; color:var(--white); border-color:#c0392b; }
-  .decision-actions button.defer { opacity:.8; }
+  .decision-item {
+    border:1px solid var(--grey-line-soft); border-radius:var(--radius-md);
+    padding:var(--space-md) var(--space-lg); margin-bottom:var(--space-sm);
+    background:var(--beige);
+  }
+  .decision-item.urgent { border-color:#e8b4b4; background:var(--danger-bg); border-left:3px solid var(--danger); }
+  .decision-item h4 { font-size:14px; font-weight:700; margin-bottom:6px; }
+  .decision-item p { font-size:13px; color:var(--grey-text); margin-bottom:12px; line-height:1.5; }
+  .decision-actions { display:flex; gap:8px; flex-wrap:wrap; }
+  .decision-actions button {
+    font-family:inherit; font-size:11px; font-weight:600; padding:8px 14px;
+    border-radius:var(--radius-sm); border:1px solid var(--grey-line); background:var(--white); cursor:pointer;
+  }
+  .decision-actions button.approve { background:var(--success); color:var(--white); border-color:var(--success); }
+  .decision-actions button.escalate { background:var(--danger); color:var(--white); border-color:var(--danger); }
+  .decision-actions button.defer { color:var(--grey-text); }
   .confirm-row { display:flex; align-items:center; gap:10px; padding:10px 0; border-bottom:1px solid var(--grey-line-soft); font-size:13px; }
   .confirm-row:last-child { border-bottom:none; }
   .confirm-row input { width:18px; height:18px; }
 
   /* Startup — Liefer-Sicht */
   .startup-home { display:grid; gap:20px; }
-  .su-deliverable { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:14px 16px; margin-bottom:8px; background:var(--white); display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; }
-  .su-deliverable.urgent { border-left:4px solid #c0392b; background:#fef5f5; }
-  .su-deliverable.done { border-left:4px solid #2d8a3e; opacity:.92; }
+  .su-deliverable {
+    border:1px solid var(--grey-line-soft); border-radius:var(--radius-md);
+    padding:var(--space-md) var(--space-lg); margin-bottom:var(--space-sm);
+    background:var(--white); display:grid; grid-template-columns:1fr auto; gap:var(--space-md); align-items:start;
+  }
+  .su-deliverable.urgent { border-left:3px solid var(--danger); background:var(--danger-bg); }
+  .su-deliverable.done { border-left:3px solid var(--success); background:var(--success-bg); }
   .su-deliverable h4 { font-size:13px; font-weight:700; margin-bottom:4px; }
   .su-deliverable p { font-size:12px; color:var(--grey-text); line-height:1.45; }
   .su-deliverable-meta { font-size:10px; color:var(--grey-faint); margin-top:6px; }
@@ -477,7 +593,7 @@
 
   /* Kalender · iCal / Outlook */
   .cal-view { display:grid; gap:20px; }
-  .cal-subscribe { background:linear-gradient(135deg,#faf8fc,#fff);border:1px solid var(--lila);border-radius:var(--radius-lg);padding:20px 24px; }
+  .cal-subscribe { background:var(--white);border:1px solid var(--grey-line-soft);border-left:4px solid var(--lila);border-radius:var(--radius-lg);padding:var(--space-lg);box-shadow:var(--shadow-sm); }
   .cal-subscribe h3 { font-size:15px;font-weight:700;margin-bottom:8px; }
   .cal-url { display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap; }
   .cal-url code { flex:1;min-width:200px;font-size:11px;background:var(--white);padding:8px 10px;border-radius:var(--radius-sm);border:1px solid var(--grey-line-soft);word-break:break-all; }
@@ -491,56 +607,46 @@
   .cal-schedule-grid input, .cal-schedule-grid select { width:100%;font-size:12px;padding:6px 8px;border:1px solid var(--grey-line-soft);border-radius:4px;font-family:inherit; }
   .cal-next-badge { font-size:10px;font-weight:700;color:var(--pink);background:var(--pink-80);padding:2px 8px;border-radius:8px;margin-left:6px; }
 
-  /* Demo · Rollenwahl beim Laden */
-  .demo-picker-backdrop { position:fixed;inset:0;z-index:2000;background:rgba(26,26,26,.55);display:none;align-items:center;justify-content:center;padding:24px; }
+  /* Demo · Rollenwahl */
+  .demo-picker-backdrop {
+    position:fixed; inset:0; z-index:2000;
+    background:rgba(26,26,26,.72); backdrop-filter:blur(8px);
+    display:none; align-items:center; justify-content:center; padding:var(--space-lg);
+  }
   .demo-picker-backdrop.show { display:flex; }
-  body.demo-pending .app-layout { filter:blur(4px);pointer-events:none;user-select:none; }
-  .demo-picker { background:var(--white);border-radius:var(--radius-lg);padding:36px 40px;max-width:480px;width:100%;text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.18); }
-  .demo-picker h1 { font-size:22px;font-weight:700;margin:16px 0 8px; }
-  .demo-picker p { font-size:13px;color:var(--grey-text);line-height:1.5;margin-bottom:24px; }
-  .demo-picker-btns { display:grid;gap:10px; }
-  .demo-picker-btns button { font-family:inherit;font-size:14px;font-weight:600;padding:14px 18px;border-radius:var(--radius-md);border:2px solid var(--grey-line-soft);background:var(--white);cursor:pointer;text-align:left;transition:border-color .2s,background .2s; }
-  .demo-picker-btns button:hover { border-color:var(--lila);background:#faf8fc; }
-  .demo-picker-btns button.primary { background:var(--gradient-full);color:var(--white);border-color:transparent; }
-  .demo-picker-btns button.primary:hover { opacity:.95; }
-  .demo-picker-btns small { display:block;font-size:11px;font-weight:400;opacity:.85;margin-top:4px; }
+  body.demo-pending .app-layout { filter:blur(6px); pointer-events:none; user-select:none; opacity:.92; }
+  .demo-picker {
+    background:var(--white); border-radius:var(--radius-lg); max-width:440px; width:100%;
+    overflow:hidden; box-shadow:var(--shadow-lg); text-align:left;
+  }
+  .demo-picker__brand {
+    padding:28px 32px 24px; background:var(--gradient-full); color:var(--white); position:relative;
+  }
+  .demo-picker__brand::before {
+    content:""; position:absolute; inset:0; opacity:.15;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  .demo-picker__brand img { height:32px; position:relative; z-index:1; }
+  .demo-picker__brand h1 { font-size:22px; font-weight:700; margin:16px 0 6px; position:relative; z-index:1; }
+  .demo-picker__brand p { font-size:13px; opacity:.92; line-height:1.5; position:relative; z-index:1; font-weight:400; }
+  .demo-picker__body { padding:24px 28px 28px; }
+  .demo-picker__body > p { font-size:12px; color:var(--grey-faint); margin-bottom:16px; text-transform:uppercase; letter-spacing:.1em; font-weight:600; }
+  .demo-picker-btns { display:flex; flex-direction:column; gap:8px; }
+  .demo-picker-btns button {
+    font-family:inherit; font-size:14px; font-weight:600; padding:16px 18px;
+    border-radius:var(--radius-md); border:1px solid var(--grey-line-soft);
+    background:var(--white); cursor:pointer; text-align:left; transition:all .15s;
+  }
+  .demo-picker-btns button:hover { border-color:var(--lila); background:#faf8fc; transform:translateY(-1px); box-shadow:var(--shadow-sm); }
+  .demo-picker-btns button.primary { background:var(--lila); color:var(--white); border-color:var(--lila); }
+  .demo-picker-btns button.primary:hover { background:#5a3d82; border-color:#5a3d82; }
+  .demo-picker-btns small { display:block; font-size:12px; font-weight:400; color:inherit; opacity:.75; margin-top:4px; line-height:1.4; }
+  .demo-picker-btns button:not(.primary) small { color:var(--grey-text); opacity:1; }
 
-  /* Cockpit · reduziert */
-  .cockpit-slim { display:grid;gap:20px; }
-  .cockpit-kpi-row { display:grid;grid-template-columns:repeat(4,1fr);gap:12px; }
-  .cockpit-kpi { background:var(--white);border:1px solid var(--grey-line-soft);border-radius:var(--radius-md);padding:16px 18px;border-top:3px solid var(--lila); }
-  .cockpit-kpi strong { display:block;font-size:22px;color:var(--pink);margin-bottom:4px; }
-  .cockpit-kpi span { font-size:11px;color:var(--grey-text); }
-  .cockpit-kpi.red { border-top-color:#c0392b; }
-  .cockpit-kpi.green { border-top-color:#2d8a3e; }
-  .cockpit-skeleton { display:grid;grid-template-columns:repeat(8,1fr);gap:8px; }
-  .sk-gate { background:var(--white);border:1px solid var(--grey-line-soft);border-radius:var(--radius-sm);padding:12px 8px;text-align:center;cursor:pointer;transition:border-color .2s; }
-  .sk-gate:hover { border-color:var(--lila); }
-  .sk-gate.parallel { border-top:3px solid var(--lila); }
-  .sk-gate.convergence { border-top:3px solid var(--pink); }
-  .sk-gate.locked { opacity:.55;cursor:not-allowed; }
-  .sk-gate.done { background:#f0faf2;border-color:#b8dfc4; }
-  .sk-gate-code { font-size:11px;font-weight:700; }
-  .sk-gate-pct { font-size:18px;font-weight:700;color:var(--pink);margin:4px 0; }
-  .sk-gate-label { font-size:9px;color:var(--grey-faint);line-height:1.2; }
-  .cockpit-grid-2 { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
-  .cockpit-block { background:var(--white);border:1px solid var(--grey-line-soft);border-radius:var(--radius-md);padding:16px 18px; }
-  .cockpit-block h3 { font-size:13px;font-weight:700;margin-bottom:10px; }
-  .cockpit-block ul { font-size:12px;line-height:1.5;list-style:none; }
-  .cockpit-block li { padding:6px 0;border-bottom:1px solid var(--grey-line-soft); }
-  .cockpit-block li:last-child { border-bottom:none; }
-  .tunnel-hero { background:linear-gradient(135deg,#faf8fc,#fff);border:1px solid var(--lila);border-radius:var(--radius-lg);padding:20px 24px;margin-bottom:4px; }
-  .tunnel-hero h2 { font-size:18px;font-weight:700;margin-bottom:6px; }
-  .tunnel-hero p { font-size:13px;color:var(--grey-text);line-height:1.45; }
-  .tunnel-q-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:14px; }
-  .tunnel-q { background:var(--white);border:1px solid var(--grey-line-soft);border-radius:var(--radius-md);padding:16px 18px; }
-  .tunnel-q h4 { font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--lila);margin-bottom:8px; }
-  .tunnel-q .val { font-size:15px;font-weight:600;line-height:1.4; }
-  .tunnel-q .sub { font-size:11px;color:var(--grey-text);margin-top:6px; }
-
-  .meeting-runner { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); overflow:hidden; }
-  .meeting-runner-head { padding:16px 20px; background:var(--gradient-full); color:var(--white); }
-  .meeting-runner-body { padding:20px 24px; }
+  .meeting-runner { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); overflow:hidden; box-shadow:var(--shadow-sm); }
+  .meeting-runner-head { padding:var(--space-lg) var(--space-xl); background:var(--gradient-full); color:var(--white); }
+  .meeting-runner-head h2 { font-size:18px; font-weight:700; }
+  .meeting-runner-body { padding:var(--space-lg) var(--space-xl); }
   .meeting-agenda li { font-size:13px; padding:8px 0; border-bottom:1px solid var(--grey-line-soft); list-style:none; }
   .meeting-agenda li::before { content:"→ "; color:var(--pink); font-weight:700; }
   .meeting-protocol { width:100%; min-height:120px; margin-top:16px; font-family:inherit; font-size:13px; padding:12px; border:1px solid var(--grey-line); border-radius:var(--radius-sm); }
@@ -639,8 +745,8 @@
     .auto-grid-3 { grid-template-columns:1fr; }
     .cal-schedule-grid { grid-template-columns:1fr 1fr; }
     .cal-event-row { grid-template-columns:1fr; }
-    .cockpit-kpi-row, .tunnel-q-grid, .cockpit-grid-2 { grid-template-columns:1fr; }
-    .cockpit-skeleton { grid-template-columns:repeat(4,1fr); }
+    .ui-kpi-grid, .ui-tunnel-grid, .ui-grid-2 { grid-template-columns:1fr 1fr; }
+    .gate-strip { grid-template-columns:repeat(4,1fr); }
     .workspace { flex-direction:column; }
     .side-nav { width:100%; height:auto; position:relative; top:0; display:flex; flex-wrap:wrap; padding:8px; gap:4px; border-right:none; border-bottom:1px solid var(--grey-line-soft); }
     .nav-section { display:flex; flex-wrap:wrap; gap:4px; margin:0; padding:0; }
@@ -673,13 +779,18 @@
 
 <div class="demo-picker-backdrop" id="demo-picker-backdrop">
   <div class="demo-picker">
-    <img src="./assets/logo-nxtgn-farbig.png" alt="NXTGN" style="height:36px" onerror="this.style.display='none'">
-    <h1>CIPP 2.0 · Demo</h1>
-    <p>Wählen Sie zuerst Ihre Rolle — danach sehen Sie nur das, was für Sie relevant ist: Skelett, Cockpit oder Delivery-Tunnel.</p>
-    <div class="demo-picker-btns">
-      <button type="button" class="primary" onclick="pickDemoRole('admin')">NXTGN · Admin<small>Setup, Baukasten, Cockpit, Gates steuern</small></button>
-      <button type="button" onclick="pickDemoRole('delivery')">Kunde · Delivery<small>Status, Freigaben, nächster Schritt — ohne Methoden-Overload</small></button>
-      <button type="button" onclick="pickDemoRole('startup')">Startup · Lieferung<small>Was muss ich liefern? — fokussierte Aufgaben</small></button>
+    <div class="demo-picker__brand">
+      <img src="./assets/logo-nxtgn-weiss.png" alt="NXTGN" onerror="this.src='./assets/logo-nxtgn-farbig.png'">
+      <h1>CIPP 2.0</h1>
+      <p>Proof of Concept Operating System — NXTGN Handbuch 2.0</p>
+    </div>
+    <div class="demo-picker__body">
+      <p>Demo · Rolle wählen</p>
+      <div class="demo-picker-btns">
+        <button type="button" class="primary" onclick="pickDemoRole('admin')">NXTGN · Admin<small>Setup, Cockpit &amp; Gate-Steuerung</small></button>
+        <button type="button" onclick="pickDemoRole('delivery')">Kunde · Delivery<small>Status, Freigaben &amp; nächster Schritt</small></button>
+        <button type="button" onclick="pickDemoRole('startup')">Startup · Lieferung<small>Fokussierte Deliverables &amp; Einreichung</small></button>
+      </div>
     </div>
   </div>
 </div>
@@ -701,14 +812,17 @@
         <button type="button" class="phase-btn" id="pill-phase-active" onclick="setProjectPhase('active')">Tunnel</button>
       </div>
     </div>
-    <div class="topbar-right topbar-actions">
+    <div class="topbar-right">
       <span class="storage-dot" id="storage-dot" title="Speicherstatus"></span>
-      <button type="button" class="btn-tb admin-only" onclick="openPortfolio()">Portfolio</button>
-      <button type="button" class="btn-tb" onclick="openManual()">Handbuch</button>
-      <button type="button" class="btn-tb" onclick="importJson()">Import</button>
-      <button type="button" class="btn-tb primary" onclick="saveState(true)">Speichern</button>
-      <button type="button" class="btn-tb" onclick="openExport()">Export</button>
-      <button type="button" class="btn-tb" onclick="confirmReset()" title="Reset">Reset</button>
+      <div class="topbar-divider"></div>
+      <div class="topbar-actions">
+        <button type="button" class="btn-tb admin-only" onclick="openPortfolio()">Portfolio</button>
+        <button type="button" class="btn-tb" onclick="openManual()">Handbuch</button>
+        <button type="button" class="btn-tb" onclick="importJson()">Import</button>
+        <button type="button" class="btn-tb" onclick="openExport()">Export</button>
+        <button type="button" class="btn-tb" onclick="confirmReset()" title="Reset">Reset</button>
+        <button type="button" class="btn-tb primary" onclick="saveState(true)">Speichern</button>
+      </div>
     </div>
   </header>
 
@@ -3208,7 +3322,7 @@ function renderCalendarView() {
       </div>
     </div>`;
   }).join('');
-  pane.innerHTML = `<div class="cal-view">
+  pane.innerHTML = `<div class="cal-view ui-page">
     ${subscribeBlock}
     ${adminTools}
     <div class="ch-card">
@@ -3405,20 +3519,30 @@ function renderStartupHome() {
       </div>
     </div>`;
   };
-  pane.innerHTML = `<div class="startup-home">
-    <div class="tunnel-hero">
-      <h2>Was muss ich liefern?</h2>
-      <p>Fokussierter Delivery-Tunnel — nur Ihre Aufgaben, Blocker und Termine. Methoden und Gates steuert NXTGN im Hintergrund.</p>
+  const nextDel = urgent[0] || items.find(d => !d.locked && d.status !== 'confirmed');
+  pane.innerHTML = `<div class="startup-home ui-page">
+    <div class="ui-hero">
+      <h2>${escapeHtml(state.meta.name || 'Ihre Lieferungen')}</h2>
+      <p>Nur das, was Sie liefern müssen — ohne Methoden-Overload. NXTGN steuert Gates und Cockpit im Hintergrund.</p>
     </div>
-    <div class="tunnel-q-grid">
-      <div class="tunnel-q"><h4>Mein nächster Schritt</h4><div class="val">${urgent.length ? escapeHtml(urgent[0].label) : items.find(d => !d.locked && d.status !== 'confirmed') ? escapeHtml((items.find(d => !d.locked && d.status !== 'confirmed')||{}).label || 'Lieferung bearbeiten') : '—'}</div>${urgent.length ? `<div class="sub">${escapeHtml(urgent[0].gateCode)} · ${escapeHtml(urgent[0].phase)}</div>` : ''}${urgent.length ? `<button type="button" class="btn-dark btn-small primary" style="margin-top:8px" onclick="openStartupDeliverable('${urgent[0].gate}','${urgent[0].slug}')">Bearbeiten →</button>` : ''}</div>
-      <div class="tunnel-q"><h4>Was blockiert?</h4><div class="val">${urgent.length ? urgent.length + ' dringend' : 'Nichts Kritisches'}</div><div class="sub">${open} offen · ${ready} bereit zur Einreichung</div></div>
-      <div class="tunnel-q"><h4>Nächster Termin</h4><div class="val">${escapeHtml(getNextMeetingLabel())}</div><div class="sub"><button type="button" class="btn-dark btn-small" onclick="navToMeeting('weekly')">Weekly</button> <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button></div></div>
-      <div class="tunnel-q"><h4>Gesamtstatus</h4><div class="val">${overallProgress()}%</div><div class="sub">Fokus: ${escapeHtml(fg ? fg.code + ' · ' + fg.name : '—')}</div></div>
-      <div class="tunnel-q"><h4>Einreichungen</h4><div class="val">${submitted} eingereicht · ${confirmed} bestätigt</div></div>
-      <div class="tunnel-q"><h4>Ihre Rolle</h4><div class="val">${escapeHtml(state.meta.lead || 'Startup-Lead')}</div><div class="sub">NXTGN PM: ${escapeHtml((state.org||{}).nxtgnPm || '—')}</div></div>
+    <div class="ui-tunnel-grid">
+      <div class="ui-tunnel-card">
+        <h4>Nächster Schritt</h4>
+        <div class="val">${nextDel ? escapeHtml(nextDel.label) : '—'}</div>
+        <div class="foot">${nextDel ? escapeHtml(nextDel.gateCode) + ' · ' + escapeHtml(nextDel.phase) : 'Keine offene Lieferung'}
+          ${nextDel ? `<div class="ui-actions" style="margin-top:8px"><button type="button" class="btn-dark btn-small primary" onclick="openStartupDeliverable('${nextDel.gate}','${nextDel.slug}')">Bearbeiten</button></div>` : ''}
+        </div>
+      </div>
+      <div class="ui-tunnel-card"><h4>Blocker</h4><div class="val">${urgent.length ? urgent.length + ' dringend' : 'Keine'}</div><div class="foot">${open} offen · ${ready} bereit</div></div>
+      <div class="ui-tunnel-card"><h4>Termin</h4><div class="val">${escapeHtml(getNextMeetingLabel())}</div><div class="foot"><button type="button" class="btn-dark btn-small" onclick="navToMeeting('weekly')">Weekly</button></div></div>
+      <div class="ui-tunnel-card"><h4>Fortschritt</h4><div class="val">${overallProgress()}%</div><div class="foot">${escapeHtml(fg ? fg.code + ' · ' + fg.name : '—')}</div></div>
+      <div class="ui-tunnel-card"><h4>Einreichungen</h4><div class="val">${submitted} / ${confirmed}</div><div class="foot">eingereicht · bestätigt</div></div>
+      <div class="ui-tunnel-card"><h4>Rolle</h4><div class="val">${escapeHtml(state.meta.lead || '—')}</div><div class="foot">PM: ${escapeHtml((state.org||{}).nxtgnPm || '—')}</div></div>
     </div>
-    <div class="ch-card lila"><h3>Liefer-Queue · nur Ihre Artefakte</h3>${items.length ? items.filter(d => !d.locked).slice(0, 8).map(renderDel).join('') : '<p style="font-size:13px">Keine Deliverables aktiv — NXTGN konfiguriert im Admin-Baukasten.</p>'}${items.filter(d => !d.locked).length > 8 ? `<button type="button" class="btn-dark btn-small" style="margin-top:10px" onclick="document.querySelector('.ch-card.lila').scrollIntoView()">Alle ${items.length} anzeigen</button>` : ''}</div>
+    <div class="ui-section">
+      <div class="ui-section__head"><span class="ui-section__title">Liefer-Queue</span><span class="ui-section__sub">${items.filter(d => !d.locked).length} Artefakte</span></div>
+      ${items.length ? items.filter(d => !d.locked).map(renderDel).join('') : '<p class="ui-empty">Keine Deliverables im Baukasten aktiviert.</p>'}
+    </div>
   </div>`;
 }
 
@@ -3439,33 +3563,35 @@ function renderCustomerHome() {
       : `<button class="approve" onclick="customerGateApproval('${d.gateId}','approved')">Freigeben</button><button class="escalate" onclick="customerGateApproval('${d.gateId}','escalated')">Eskalieren</button><button class="defer" onclick="customerGateApproval('${d.gateId}','deferred')">Nicht jetzt</button>`;
     return `<div class="decision-item${d.urgent?' urgent':''}"><h4>${escapeHtml(d.title)}</h4><p>${escapeHtml(d.desc)}</p><div class="decision-actions">${actions}</div></div>`;
   }).join('') : `<p style="font-size:13px;color:var(--grey-text)">${emptyMsg}</p>`;
-  pane.innerHTML = `<div class="customer-home">
+  pane.innerHTML = `<div class="customer-home ui-page">
     ${!onboardingComplete() && isActivePhase() ? `
-    <div class="ch-card lila">
-      <h3>Onboarding · Freigabe zum Start</h3>
+    <div class="ui-section" style="border-left:4px solid var(--lila)">
+      <div class="ui-section__head"><span class="ui-section__title">Onboarding</span><span class="ui-section__sub">Freigabe zum Start</span></div>
       <div class="confirm-row"><input type="checkbox" ${cf.zielbild?'checked':''} onchange="toggleCustomerConfirm('zielbild')"><span>Zielbild stimmt</span></div>
       <div class="confirm-row"><input type="checkbox" ${cf.kontakte?'checked':''} onchange="toggleCustomerConfirm('kontakte')"><span>Ansprechpartner &amp; Rollen stimmen</span></div>
       <div class="confirm-row"><input type="checkbox" ${cf.termine?'checked':''} onchange="toggleCustomerConfirm('termine')"><span>Termine &amp; Ressourcen realistisch</span></div>
     </div>` : ''}
-    <div class="tunnel-hero">
+    <div class="ui-hero">
       <h2>${escapeHtml(state.meta.name || 'Ihr PoC')}</h2>
-      <p>Delivery-Tunnel — nur Status, Freigaben und nächste Schritte. Keine Methodenbibliothek, kein PM-Overload.</p>
+      <p>Transparenz ohne PM-Overload — Status, Freigaben und nächste Schritte auf einen Blick.</p>
     </div>
-    <div class="tunnel-q-grid">
-      <div class="tunnel-q"><h4>Wo stehen wir?</h4><div class="val"><span class="ampel ${risk}"></span> ${overallProgress()}%</div><div class="sub">${escapeHtml((s.zielbild || 'Zielbild in Vorbereitung').slice(0, 60))}${(s.zielbild||'').length>60?'…':''}</div></div>
-      <div class="tunnel-q"><h4>Nächster Schritt</h4><div class="val">${escapeHtml(action.gate ? action.gate.code + ' · ' : '')}${escapeHtml(action.text.slice(0, 55))}${action.text.length>55?'…':''}</div></div>
-      <div class="tunnel-q"><h4>Was blockiert?</h4><div class="val">${blocker ? escapeHtml(blocker.text.slice(0, 50)) + (blocker.text.length>50?'…':'') : 'Kein kritischer Blocker'}</div>${blocker ? `<div class="sub">${escapeHtml(blocker.code)}</div>` : ''}</div>
-      <div class="tunnel-q"><h4>Freigaben</h4><div class="val">${urgent.length ? urgent.length + ' dringend' : q.length + ' offen'}</div></div>
-      <div class="tunnel-q"><h4>Nächster Termin</h4><div class="val">${escapeHtml(getNextMeetingLabel())}</div><div class="sub"><button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button> <button type="button" class="btn-dark btn-small" onclick="navToMeeting('weekly')">Weekly</button></div></div>
-      <div class="tunnel-q"><h4>Gesamtstatus</h4><div class="val">KPI: ${escapeHtml(s.kpi || '—')}</div><div class="sub">Owner: ${escapeHtml(s.owner || '—')} · NXTGN: ${escapeHtml((state.org||{}).nxtgnPm || '—')}</div></div>
+    <div class="ui-kpi-grid">
+      ${uiKpi('Status', `<span class="ampel ${risk}"></span> ${overallProgress()}%`, (s.zielbild || 'Zielbild').slice(0, 50), risk === 'green' ? 'success' : risk === 'red' ? 'danger' : '')}
+      ${uiKpi('Nächster Schritt', escapeHtml(action.gate ? action.gate.code : '—'), escapeHtml(action.text.slice(0, 40)) + (action.text.length > 40 ? '…' : ''), 'accent')}
+      ${uiKpi('Blocker', blocker ? 'Ja' : 'Nein', blocker ? escapeHtml(blocker.code) : 'Kein kritischer Punkt', blocker ? 'danger' : 'success')}
+      ${uiKpi('Freigaben', String(urgent.length || q.length), urgent.length ? 'dringend' : 'offen', urgent.length ? 'danger' : '')}
     </div>
-    <div class="cockpit-block" style="margin-bottom:4px">
-      <h3>Skelett · Fortschritt (read-only)</h3>
+    <div class="ui-section">
+      <div class="ui-section__head"><span class="ui-section__title">Gate-Fortschritt</span><span class="ui-section__sub">Read-only</span></div>
       ${renderSkeletonStrip('navToGate')}
     </div>
-    <div class="ch-card ${urgent.length ? 'red' : ''}">
-      <h3>${urgent.length ? 'Braucht Ihre Entscheidung' : 'Entscheidungen &amp; Freigaben'}</h3>
-      ${decisionHtml(urgent.length ? urgent : q.slice(0, 4), 'Keine offenen Entscheidungen — Sie müssen aktuell nichts tun.')}
+    <div class="ui-section${urgent.length ? ' ui-section--danger' : ''}">
+      <div class="ui-section__head"><span class="ui-section__title">${urgent.length ? 'Ihre Entscheidung' : 'Freigaben'}</span></div>
+      ${decisionHtml(urgent.length ? urgent : q.slice(0, 4), 'Aktuell keine offenen Entscheidungen.')}
+      <div class="ui-actions">
+        <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button>
+        <button type="button" class="btn-dark btn-small" onclick="navToMeeting('weekly')">Weekly</button>
+      </div>
     </div>
   </div>`;
 }
@@ -3628,20 +3754,35 @@ function renderSideNav() {
     </div>`;
 }
 
+function uiKpi(label, value, hint, variant) {
+  const cls = variant ? ` ui-kpi--${variant}` : '';
+  return `<div class="ui-kpi${cls}"><span class="ui-kpi__label">${escapeHtml(label)}</span><div class="ui-kpi__value">${value}</div>${hint ? `<span class="ui-kpi__hint">${escapeHtml(hint)}</span>` : ''}</div>`;
+}
+
+function getPageEyebrow() {
+  if (isCustomerView()) return 'Delivery-Tunnel';
+  if (isStartupView()) return 'Startup · Lieferung';
+  if (activeView === 'setup') return 'Admin · Setup';
+  if (activeView === 'calendar') return 'Termine';
+  if (activeView === 'meeting') return 'Meeting';
+  if (activeView === 'gate') return 'Gate';
+  return isSetupPhase() ? 'Admin · Setup' : 'Cockpit';
+}
+
 function renderContentHeader() {
   const el = document.getElementById('content-header');
   if (!el) return;
-  let title = 'Cockpit · Steuerzentrale';
-  let sub = 'Status, Skelett, Blocker und Termine — das Nötigste für Weekly und Gate-Steuerung.';
+  let title = 'Steuerzentrale';
+  let sub = 'Überblick über Status, Gates, Blocker und Termine.';
   let showProjectBar = true;
   if (isParticipantView()) {
     showProjectBar = false;
     if (activeView === 'customer-home') {
-      title = state.meta.name ? state.meta.name : 'Delivery-Tunnel';
-      sub = 'Wo stehen wir? Was blockiert? Was muss ich freigeben? — ohne Methoden-Overload.';
+      title = state.meta.name ? state.meta.name : 'Ihr PoC';
+      sub = 'Status, Freigaben und nächste Schritte — klar und ohne Methoden-Overload.';
     } else if (activeView === 'startup-home') {
-      title = state.meta.name ? state.meta.name + ' · Lieferung' : 'Delivery-Tunnel · Startup';
-      sub = 'Nächster Schritt, fällige Lieferungen und Termine — NXTGN steuert den Rest.';
+      title = state.meta.name ? state.meta.name : 'Lieferübersicht';
+      sub = 'Ihre Deliverables, Termine und Einreichungen im Fokus.';
     } else if (activeView === 'meeting') {
       const mf = MEETING_FLOW.find(x => x.id === activeMeetingId);
       title = mf ? mf.label + ' · Meeting-Modus' : 'Meeting';
@@ -3661,8 +3802,8 @@ function renderContentHeader() {
     title = g.code + ' · ' + g.name;
     sub = g.goal;
   } else if (activeView === 'setup') {
-    title = 'Setup · Methoden-Baukasten';
-    sub = 'PoC-Typ wählen, Werkzeuge aktivieren, Tunnel starten. Skelett (Gates, Muss, Cockpit) bleibt fix.';
+    title = 'Projekt-Setup';
+    sub = 'PoC-Typ, Werkzeuge und Meetings konfigurieren — danach Tunnel starten.';
   } else if (activeView === 'run') {
     title = 'NXTGN Auto-Run';
     sub = 'Automatisch generierte Agendas, Gate-Readiness und G5 Decision Draft — aus live State.';
@@ -3675,22 +3816,29 @@ function renderContentHeader() {
     sub = 'Auto-Agenda aus State — Protokoll generieren und Termin moderieren.';
   }
   const action = getTunnelNextAction();
+  const phaseBadge = isSetupPhase()
+    ? '<span class="page-badge">Setup · Baukasten</span>'
+    : '<span class="page-badge active-phase">Tunnel aktiv</span>';
   const tunnelLine = isAdminView() && isActivePhase() && activeView !== 'setup' && activeView !== 'customer-home' && activeView !== 'startup-home' && activeView !== 'meeting' && activeView !== 'run' && activeView !== 'calendar'
-    ? `<p class="sub" style="margin-top:8px;padding:8px 12px;background:var(--pink-80);border-radius:var(--radius-sm);font-size:12px"><strong>Nächster Schritt:</strong> ${escapeHtml(action.gate ? action.gate.code : '')} — ${escapeHtml(action.text)} <button type="button" class="btn-dark btn-small" style="margin-left:8px" onclick="navToGate('${action.gateId}')">→</button></p>` : '';
+    ? `<div class="page-callout"><span><strong>Nächster Schritt:</strong> ${escapeHtml(action.gate ? action.gate.code + ' — ' : '')}${escapeHtml(action.text)}</span><button type="button" class="btn-dark btn-small primary" onclick="navToGate('${action.gateId}')">Öffnen →</button></div>` : '';
   el.innerHTML = `
+    <div class="page-head-row">
+      <span class="page-eyebrow">${escapeHtml(getPageEyebrow())}</span>
+      ${phaseBadge}
+    </div>
     <h1>${escapeHtml(title)}</h1>
-    <p class="sub">${escapeHtml(sub)}</p>
+    <p class="page-lead">${escapeHtml(sub)}</p>
     ${tunnelLine}
     ${showProjectBar ? `<div class="project-bar">
       <div><label>PoC-Name</label><input id="meta-name" placeholder="PoC-Name" oninput="onMeta()"></div>
       <div><label>Kunde / Partner</label><input id="meta-customer" placeholder="Kunde" oninput="onMeta()"></div>
       <div><label>Owner (Kunde)</label><input id="meta-owner" placeholder="Owner" oninput="onMeta()"></div>
       <div><label>Lead (Lösung)</label><input id="meta-lead" placeholder="Lead" oninput="onMeta()"></div>
-    </div>` : `<div class="project-bar" style="grid-template-columns:repeat(4,1fr);pointer-events:none;opacity:.9">
-      <div><label>PoC</label><div style="padding:8px 0;font-size:13px">${escapeHtml(state.meta.name||'—')}</div></div>
-      <div><label>Kunde</label><div style="padding:8px 0;font-size:13px">${escapeHtml(state.meta.customer||'—')}</div></div>
-      <div><label>Owner</label><div style="padding:8px 0;font-size:13px">${escapeHtml(state.meta.owner||'—')}</div></div>
-      <div><label>Lead</label><div style="padding:8px 0;font-size:13px">${escapeHtml(state.meta.lead||'—')}</div></div>
+    </div>` : `<div class="project-bar project-bar-readonly">
+      <div><label>PoC</label><div>${escapeHtml(state.meta.name||'—')}</div></div>
+      <div><label>Kunde</label><div>${escapeHtml(state.meta.customer||'—')}</div></div>
+      <div><label>Owner</label><div>${escapeHtml(state.meta.owner||'—')}</div></div>
+      <div><label>Lead</label><div>${escapeHtml(state.meta.lead||'—')}</div></div>
     </div>`}`;
   if (showProjectBar) fillMetaInputs();
 }
@@ -3698,20 +3846,23 @@ function renderContentHeader() {
 function renderSkeletonStrip(onclickFn) {
   const fn = onclickFn || 'navToGate';
   const skeletonIds = ['entry','g0','g1','g2','g3','g4','g5'];
-  return `<div class="cockpit-skeleton">${skeletonIds.map(id => {
+  const tiles = skeletonIds.map(id => {
     const g = GATES.find(x => x.id === id);
     const locked = isGateLocked(id);
     const pct = gateProgress(id);
     const done = isMussComplete(id);
     const parallel = ['g0','g1','g2'].includes(id);
-    const convergence = id === 'g3';
-    const label = id === 'entry' ? 'Entry' : g.name.split(' ')[0];
-    return `<div class="sk-gate${parallel?' parallel':''}${convergence?' convergence':''}${locked?' locked':''}${done?' done':''}" ${locked ? '' : `onclick="${fn}('${id}')"`}>
-      <div class="sk-gate-code">${g.code}${parallel ? ' ∥' : ''}</div>
-      <div class="sk-gate-pct">${locked ? '🔒' : pct + '%'}</div>
-      <div class="sk-gate-label">${escapeHtml(label)}</div>
-    </div>`;
-  }).join('')}</div>`;
+    const shortName = id === 'entry' ? 'Entry Check' : (g.name.length > 14 ? g.name.slice(0, 12) + '…' : g.name);
+    const stat = locked ? 'gesperrt' : done ? 'bestanden' : pct + '%';
+    return `<button type="button" class="gate-tile${locked ? ' locked' : ''}${done ? ' done' : ''}${activeGateId === id && activeView === 'gate' ? ' active' : ''}" ${locked ? 'disabled' : `onclick="${fn}('${id}')"`}>
+      <div class="gid">${g.code}${parallel ? ' ∥' : ''}</div>
+      <div class="gname">${escapeHtml(shortName)}</div>
+      <div class="gbar"><div class="gbar-fill" style="width:${pct}%"></div></div>
+      <div class="gstat">${stat}</div>
+    </button>`;
+  }).join('');
+  return `<div class="gate-strip">${tiles}</div>
+    <p class="always-on" style="margin-top:14px;border-radius:var(--radius-sm)"><strong>Logik:</strong> G0, G1 und G2 parallel · G3 Konvergenz · G4 und G5 sequenziell danach.</p>`;
 }
 
 function renderCockpitView() {
@@ -3726,53 +3877,53 @@ function renderCockpitView() {
   const fg = GATES.find(x => x.id === focus);
   const evidencePct = Math.round((GATES.filter(g => g.id !== 'begleit').reduce((a, g) => a + gateProgress(g.id), 0)) / 8);
   const openMuss = getOpenMussCount();
-  pane.innerHTML = `<div class="cockpit-slim">
-    <div class="obeya-full-head" style="margin-bottom:0">
-      <h2>Cockpit · Steuerzentrale</h2>
-      <p>Status, Skelett, Blocker und Termine — ohne Methoden-Overload. Baukasten nur im Admin-Setup.</p>
+  const riskVariant = risk === 'green' ? 'success' : risk === 'red' ? 'danger' : '';
+  const riskHint = risk === 'green' ? 'Auf Kurs' : risk === 'yellow' ? 'Achtung' : 'Kritisch';
+  pane.innerHTML = `<div class="ui-page">
+    <div class="ui-kpi-grid">
+      ${uiKpi('Gesamtfortschritt', `<span class="ampel ${risk}"></span> ${overallProgress()}%`, riskHint, riskVariant)}
+      ${uiKpi('Meilenstein', escapeHtml(fg ? fg.code : '—'), escapeHtml(fg ? fg.name : ''), 'accent')}
+      ${uiKpi('Muss offen', String(openMuss), 'Kriterien im Tunnel', openMuss > 3 ? 'danger' : '')}
+      ${uiKpi('Nächster Termin', nextMeet ? escapeHtml(nextMeet.whenLabel.split(' · ')[0]) : '—', nextMeet ? escapeHtml(nextMeet.label) : 'Noch nicht geplant')}
     </div>
-    <div class="cockpit-kpi-row">
-      <div class="cockpit-kpi ${risk === 'red' ? 'red' : risk === 'green' ? 'green' : ''}"><strong><span class="ampel ${risk}"></span> ${overallProgress()}%</strong><span>Gesamtfortschritt · ${risk === 'green' ? 'auf Kurs' : risk === 'yellow' ? 'Achtung' : 'kritisch'}</span></div>
-      <div class="cockpit-kpi"><strong>${escapeHtml(fg ? fg.code : '—')}</strong><span>Nächster Meilenstein · ${escapeHtml(fg ? fg.name : '')}</span></div>
-      <div class="cockpit-kpi"><strong>${openMuss}</strong><span>Offene Muss-Kriterien</span></div>
-      <div class="cockpit-kpi"><strong>${nextMeet ? escapeHtml(nextMeet.whenLabel.split(' · ')[0]) : '—'}</strong><span>Nächster Termin${nextMeet ? ' · ' + escapeHtml(nextMeet.label) : ''}</span></div>
-    </div>
-    <div class="cockpit-block">
-      <h3>Skelett · Gates (G0 ∥ G1 ∥ G2 → G3 → G4 → G5)</h3>
+    <div class="ui-section">
+      <div class="ui-section__head"><span class="ui-section__title">Gate-Skelett</span><span class="ui-section__sub">Entry → G0∥G1∥G2 → G3 → G4 → G5</span></div>
       ${renderSkeletonStrip('navToGate')}
     </div>
-    <div class="cockpit-grid-2">
-      <div class="cockpit-block">
-        <h3>Nächster Schritt · NXTGN</h3>
-        <p style="font-size:13px;line-height:1.5;margin-bottom:10px">${escapeHtml(action.text)}</p>
-        <button type="button" class="btn-dark btn-small primary" onclick="navToGate('${action.gateId}')">${escapeHtml(action.gate ? action.gate.code : 'Gate')} öffnen →</button>
-        <button type="button" class="btn-dark btn-small" style="margin-left:6px" onclick="navToMeeting('weekly')">Weekly →</button>
+    <div class="ui-grid-2">
+      <div class="ui-section">
+        <div class="ui-section__head"><span class="ui-section__title">Nächster Schritt</span></div>
+        <p style="font-size:14px;line-height:1.55;margin-bottom:4px">${escapeHtml(action.text)}</p>
+        <div class="ui-actions">
+          <button type="button" class="btn-dark btn-small primary" onclick="navToGate('${action.gateId}')">${escapeHtml(action.gate ? action.gate.code : 'Gate')} öffnen</button>
+          <button type="button" class="btn-dark btn-small" onclick="navToMeeting('weekly')">Weekly</button>
+        </div>
       </div>
-      <div class="cockpit-block">
-        <h3>Verantwortliche</h3>
-        <ul>
-          <li><strong>Sponsor</strong> · ${escapeHtml(o.sponsor || '—')}</li>
-          <li><strong>NXTGN PM</strong> · ${escapeHtml(o.nxtgnPm || '—')}</li>
-          <li><strong>Owner Kunde</strong> · ${escapeHtml(state.meta.owner || '—')}</li>
-          <li><strong>Startup-Lead</strong> · ${escapeHtml(state.meta.lead || '—')}</li>
+      <div class="ui-section">
+        <div class="ui-section__head"><span class="ui-section__title">Verantwortliche</span></div>
+        <ul class="ui-list">
+          <li><strong>Sponsor</strong><span>${escapeHtml(o.sponsor || '—')}</span></li>
+          <li><strong>NXTGN PM</strong><span>${escapeHtml(o.nxtgnPm || '—')}</span></li>
+          <li><strong>Owner</strong><span>${escapeHtml(state.meta.owner || '—')}</span></li>
+          <li><strong>Startup</strong><span>${escapeHtml(state.meta.lead || '—')}</span></li>
         </ul>
       </div>
     </div>
-    <div class="cockpit-grid-2">
-      <div class="cockpit-block ${critical.length ? 'red' : ''}" style="${critical.length ? 'border-left:4px solid #c0392b' : ''}">
-        <h3>Rote Blocker · offene Muss-Punkte</h3>
-        ${critical.length ? `<ul>${critical.map(x => `<li><strong>${escapeHtml(x.code)}</strong> · ${escapeHtml(x.text.slice(0, 70))}${x.text.length > 70 ? '…' : ''}</li>`).join('')}</ul>` : '<p style="font-size:12px;color:var(--grey-text)">Keine kritischen Blocker — Weekly kann Fokus auf Fortschritt legen.</p>'}
+    <div class="ui-grid-2">
+      <div class="ui-section${critical.length ? ' ui-section--danger' : ''}">
+        <div class="ui-section__head"><span class="ui-section__title">Blocker</span><span class="ui-section__sub">${critical.length ? critical.length + ' kritisch' : 'Keine'}</span></div>
+        ${critical.length ? `<ul class="ui-list">${critical.map(x => `<li><strong>${escapeHtml(x.code)}</strong><span>${escapeHtml(x.text.slice(0, 72))}${x.text.length > 72 ? '…' : ''}</span></li>`).join('')}</ul>` : '<p class="ui-empty">Keine kritischen Blocker.</p>'}
       </div>
-      <div class="cockpit-block">
-        <h3>Evidence &amp; Termine</h3>
-        <ul>
-          <li><strong>Artefakt-Fortschritt</strong> · ca. ${evidencePct}% über alle Gates</li>
-          <li><strong>Weekly</strong> · ${escapeHtml((o.weeklyDay || '—') + (o.weeklyTime ? ' · ' + o.weeklyTime : ''))}</li>
-          <li><strong>Entscheidungen offen</strong> · ${buildDecisionQueue().filter(d => d.urgent).length}</li>
+      <div class="ui-section">
+        <div class="ui-section__head"><span class="ui-section__title">Termine &amp; Evidence</span></div>
+        <ul class="ui-list">
+          <li><strong>Evidence</strong><span>ca. ${evidencePct}% über alle Gates</span></li>
+          <li><strong>Weekly</strong><span>${escapeHtml((o.weeklyDay || '—') + (o.weeklyTime ? ' · ' + o.weeklyTime : ''))}</span></li>
+          <li><strong>Freigaben</strong><span>${buildDecisionQueue().filter(d => d.urgent).length} dringend</span></li>
         </ul>
-        <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap">
+        <div class="ui-actions">
           <button type="button" class="btn-dark btn-small" onclick="navToCalendar()">Kalender</button>
-          ${isSetupPhase() ? '<button type="button" class="btn-dark btn-small primary" onclick="navToSetup()">Baukasten (Setup)</button>' : ''}
+          ${isSetupPhase() ? '<button type="button" class="btn-dark btn-small primary" onclick="navToSetup()">Baukasten</button>' : ''}
         </div>
       </div>
     </div>
