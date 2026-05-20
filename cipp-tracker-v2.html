@@ -46,6 +46,7 @@
   /* Buttons */
   .btn { font-family:inherit; font-weight:500; font-size:11.5px; letter-spacing:0.04em; padding:9px 14px; border-radius:var(--radius-sm); border:1px solid rgba(255,255,255,.35); background:transparent; color:var(--white); cursor:pointer; transition:all .15s; white-space:nowrap; }
   .btn:hover { background:var(--white); color:var(--black); border-color:var(--white); }
+  .btn.active { background:var(--white); color:var(--black); border-color:var(--white); font-weight:600; }
   .btn.primary { background:var(--white); color:var(--black); border-color:var(--white); font-weight:600; }
   .btn.primary:hover { background:var(--pink); color:var(--white); border-color:var(--pink); }
   .btn-dark { font-family:inherit; font-weight:500; font-size:12px; letter-spacing:0.04em; padding:9px 16px; border-radius:var(--radius-sm); border:1px solid var(--grey-line); background:var(--white); color:var(--black); cursor:pointer; transition:all .15s; }
@@ -262,6 +263,49 @@
   footer.bottom .rule { max-width:620px; color:var(--grey-text); font-size:11.5px; line-height:1.5; font-weight:400; letter-spacing:0; }
   footer.bottom .rule strong { color:var(--pink); font-weight:700; }
 
+  /* App shell — persistent Obeya + Tunnel */
+  .app-shell { display:grid; grid-template-columns:300px 1fr; gap:20px; align-items:start; }
+  .cockpit-sidebar { position:sticky; top:16px; background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--grey-line-soft); box-shadow:var(--shadow-sm); overflow:hidden; }
+  .cockpit-sidebar-head { padding:14px 16px; background:var(--gradient-full); color:var(--white); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+  .cockpit-sidebar-body { padding:10px; max-height:calc(100vh - 120px); overflow-y:auto; }
+  .cockpit-mini { border:1px solid var(--grey-line-soft); border-radius:var(--radius-sm); padding:8px 10px; margin-bottom:6px; cursor:pointer; transition:all .12s; background:var(--beige); }
+  .cockpit-mini:hover { border-color:var(--pink); background:var(--pink-80); }
+  .cockpit-mini.active { border-color:var(--pink); background:var(--white); box-shadow:0 0 0 2px var(--pink-80); }
+  .cockpit-mini .z-title { font-size:9px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--pink); }
+  .cockpit-mini .z-val { font-size:11px; color:var(--grey-text); margin-top:3px; line-height:1.35; }
+  .cockpit-mini.dim { opacity:.45; pointer-events:none; }
+  .main-col { min-width:0; }
+
+  .view-bar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-bottom:16px; }
+  .view-pill { font-size:10px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; padding:6px 12px; border-radius:20px; border:1px solid var(--grey-line); background:var(--white); cursor:pointer; }
+  .view-pill.active { background:var(--pink); color:var(--white); border-color:var(--pink); }
+  .view-pill.setup { border-color:var(--lila); }
+  .view-pill.setup.active { background:var(--lila); color:var(--white); }
+
+  .setup-panel, .playbook-panel, .tunnel-banner { background:var(--white); border-radius:var(--radius-lg); padding:20px 24px; margin-bottom:20px; box-shadow:var(--shadow-sm); border:1px solid var(--grey-line-soft); }
+  .setup-panel h3, .playbook-panel h3, .tunnel-banner h3 { font-size:16px; font-weight:700; margin-bottom:10px; }
+  .tool-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:6px; margin-top:10px; max-height:220px; overflow-y:auto; }
+  .tool-item { display:flex; align-items:flex-start; gap:8px; font-size:12px; padding:6px 8px; background:var(--beige); border-radius:var(--radius-sm); }
+  .tool-item input { margin-top:2px; }
+  .tool-item.recommended { border:1px solid var(--lila); background:#faf8fc; }
+  .playbook-step { display:flex; gap:12px; padding:10px 0; border-bottom:1px solid var(--grey-line-soft); font-size:13px; }
+  .playbook-step:last-child { border-bottom:none; }
+  .playbook-step .num { font-weight:700; color:var(--pink); min-width:24px; }
+  .playbook-step.done { color:var(--grey-faint); text-decoration:line-through; }
+  .tunnel-banner { border-left:4px solid var(--pink); }
+  .tunnel-next { font-size:13px; color:var(--grey-text); line-height:1.5; }
+  .method-guide { background:var(--beige); border-left:3px solid var(--lila); padding:10px 12px; margin-bottom:14px; font-size:12px; color:var(--grey-text); line-height:1.5; }
+  .method-guide strong { color:var(--black); }
+  .org-meta { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:20px; }
+  .org-meta label { display:block; font-size:10px; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:var(--grey-faint); margin-bottom:6px; }
+  .org-meta input { width:100%; border:none; border-bottom:1px solid var(--grey-line); background:transparent; font-family:inherit; font-size:14px; padding:4px 0 6px; }
+  .portfolio-table { width:100%; border-collapse:collapse; font-size:12px; }
+  .portfolio-table th, .portfolio-table td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--grey-line-soft); }
+  .portfolio-table th { font-size:10px; text-transform:uppercase; letter-spacing:.08em; color:var(--grey-faint); }
+  body.view-delivery .admin-only { display:none !important; }
+  body.view-delivery .gate-tile.late-phase { opacity:.35; pointer-events:none; }
+  @media (max-width:1100px) { .app-shell { grid-template-columns:1fr; } .cockpit-sidebar { position:relative; top:0; } .tool-grid,.org-meta { grid-template-columns:1fr; } }
+
   @media (max-width: 1100px) { .method-list { grid-template-columns:1fr; } .ws-grid { grid-template-columns:1fr; } }
   @media (max-width: 900px) {
     .hero { padding:24px 24px 36px; } .hero-h1 { font-size:24px; } .wrap { padding:20px 24px 60px; }
@@ -299,7 +343,9 @@
       <p class="hero-claim">Parallele Vorbereitung G0–G2, Konvergenz in G3, Feldtest G4, Entscheidung G5. Obeya-Cockpit, konfigurierbarer Methodenbaukasten und straffer Delivery-Tunnel.</p>
     </div>
     <div class="hero-actions">
-      <button class="btn" onclick="openCockpit()">Obeya</button>
+      <button class="btn admin-only" id="btn-view-admin" onclick="setAppView('admin')">NXTGN Admin</button>
+      <button class="btn" id="btn-view-delivery" onclick="setAppView('delivery')">Delivery</button>
+      <button class="btn admin-only" onclick="openPortfolio()">Portfolio</button>
       <button class="btn" onclick="openManual()">Handbuch 2.0</button>
       <button class="btn" onclick="openHelp()">Info</button>
       <button class="btn" onclick="importJson()">Import</button>
@@ -316,6 +362,22 @@
     <span class="dot"></span><span id="storage-pill-text">Initialisiere Speicher…</span>
   </div>
   <div class="storage-explain" id="storage-explain"></div>
+
+  <div class="view-bar admin-only" id="view-bar">
+    <span class="view-pill setup" id="pill-phase-setup" onclick="setProjectPhase('setup')">Phase: Setup · Baukasten</span>
+    <span class="view-pill" id="pill-phase-active" onclick="setProjectPhase('active')">Phase: Aktiv · Tunnel</span>
+  </div>
+
+  <div class="app-shell">
+    <aside class="cockpit-sidebar" id="cockpit-sidebar">
+      <div class="cockpit-sidebar-head">Obeya Cockpit · Steuerung</div>
+      <div class="cockpit-sidebar-body" id="cockpit-sidebar-body"></div>
+    </aside>
+    <div class="main-col">
+
+  <div id="setup-panel-wrap" class="admin-only"></div>
+  <div id="playbook-panel-wrap" class="admin-only"></div>
+  <div id="tunnel-banner-wrap"></div>
 
   <section class="poc-meta">
     <div><label>PoC-Name</label><input id="meta-name" placeholder="z.B. Vibration Monitoring Halle 4" oninput="onMeta()"></div>
@@ -346,6 +408,9 @@
     <div class="rule"><strong>CIPP 2.0:</strong> G0, G1 und G2 laufen parallel. G3 bündelt erst bei vollständigen Muss-Kriterien aus G0–G2. G4 (Feldtest) und G5 (Entscheidung) sind sequenziell.</div>
     <div>NXTGN · CIPP Tracker 2.0</div>
   </footer>
+
+    </div><!-- main-col -->
+  </div><!-- app-shell -->
 </div>
 
 <div class="toast" id="toast"></div>
@@ -1227,21 +1292,73 @@ const HANDBOOK = {
 };
 
 const OBEYA_ZONES = [
-  { title:'Zone 1 · Projektstatus', text:'Ampelstatus, aktuelles Gate, nächster Meilenstein, Blocker, Eskalationsstatus.' },
-  { title:'Zone 2 · Organisation', text:'RACI, Ansprechpartner, Sponsor, Fachowner, Startup-Owner, Governance.' },
-  { title:'Zone 3 · Gate-Fortschritt', text:'G0, G1, G2 parallel sichtbar; G3 Konvergenz; G4 und G5 sequenziell.' },
-  { title:'Zone 4 · Muss-Kriterien', text:'Gate-scharfe Checklisten: offen, in Arbeit, erfüllt, eskaliert.' },
-  { title:'Zone 5 · Artefakte', text:'Pflichtdokumente mit Owner, Version, Fälligkeit, Qualitätsstatus.' },
-  { title:'Zone 6 · Delivery-Fluss', text:'Kanban-Board für operative Arbeitspakete entlang des Tunnels.' },
-  { title:'Zone 7 · Risiko & Änderungen', text:'RAID, Change-Register, Entscheidungen, Annahmen, Abhängigkeiten.' },
-  { title:'Zone 8 · Performance', text:'Aufwandsschätzung, Burn-up light, EVM-light, SPI/CPI-Ampel.' },
-  { title:'Zone 9 · Reporting', text:'KPI-Status, PoC Canvas Snapshot, Evidence-Aufbau, Portfolio-Vergleich.' }
+  { id:'z1', title:'Zone 1 · Projektstatus', gate:'begleit', text:'Ampelstatus, aktuelles Gate, nächster Meilenstein, Blocker, Eskalationsstatus.' },
+  { id:'z2', title:'Zone 2 · Organisation', gate:'entry', text:'RACI, Ansprechpartner, Sponsor, Fachowner, Startup-Owner, Governance.' },
+  { id:'z3', title:'Zone 3 · Gate-Fortschritt', gate:'g0', text:'G0, G1, G2 parallel sichtbar; G3 Konvergenz; G4 und G5 sequenziell.' },
+  { id:'z4', title:'Zone 4 · Muss-Kriterien', gate:'entry', text:'Gate-scharfe Checklisten: offen, in Arbeit, erfüllt, eskaliert.' },
+  { id:'z5', title:'Zone 5 · Artefakte', gate:'begleit', text:'Pflichtdokumente mit Owner, Version, Fälligkeit, Qualitätsstatus.' },
+  { id:'z6', title:'Zone 6 · Delivery-Fluss', gate:'begleit', text:'Kanban-Board für operative Arbeitspakete entlang des Tunnels.' },
+  { id:'z7', title:'Zone 7 · Risiko & Änderungen', gate:'begleit', text:'RAID, Change-Register, Entscheidungen, Annahmen, Abhängigkeiten.' },
+  { id:'z8', title:'Zone 8 · Performance', gate:'begleit', text:'Aufwandsschätzung, Burn-up light, EVM-light, SPI/CPI-Ampel.' },
+  { id:'z9', title:'Zone 9 · Reporting', gate:'g5', text:'KPI-Status, PoC Canvas Snapshot, Evidence-Aufbau, Portfolio-Vergleich.' }
 ];
+
+const POC_TYPES = {
+  '': { label:'— PoC-Typ wählen —', recommend:[] },
+  'daten-analytics': { label:'Daten / Analytics', recommend:['poc-canvas','kpi-tree','messplan','baseline','measurement-system-check','benefit-hypothesis','evm-light','kanban','weekly-steuerung'] },
+  'hardware-industrie': { label:'Hardware / Industrie', recommend:['poc-canvas','rams','fat','sat','rollback-design','incident-playbook','readiness-review','dry-run','shadow-mode'] },
+  'compliance': { label:'Compliance / Governance', recommend:['poc-canvas','decision-rights-matrix','raci-light','escalation-matrix','audit-trail','change-register','gate-review'] },
+  'software-schnell': { label:'Software · schneller PoC', recommend:['poc-canvas','kanban','t-shirt-sizing','rom-estimate','user-feedback','benefit-tracking','weekly-steuerung','retros'] },
+  'integration': { label:'Integration / IT', recommend:['poc-canvas','definition-of-ready','logging-zeitsync','incident-playbook','readiness-review','stakeholder-register'] }
+};
+
+const PM_PLAYBOOK = [
+  { id:'p1', text:'Entry Check durchführen — Substanz, Scope, Go/No-Go klären.', gate:'entry', check: s => isMussComplete('entry') },
+  { id:'p2', text:'PoC-Typ wählen und Methoden-Baukasten konfigurieren (Empfehlungen prüfen).', gate:'entry', check: s => !!(s.meta && s.meta.pocType) },
+  { id:'p3', text:'Organisation & RACI im Entry Check und Cockpit Zone 2 definieren.', gate:'entry', check: s => !!(s.org && s.org.sponsor && s.org.nxtgnPm) },
+  { id:'p4', text:'PoC Canvas und Pilot-Charter als zentrale Artefakte anlegen.', gate:'g0', check: s => methodHasData((s.gates.g0.methods||{}).poc-canvas, METHOD_TEMPLATES['poc-canvas']) },
+  { id:'p5', text:'Parallele Stränge G0, G1, G2 gleichzeitig steuern — Weekly über Cockpit.', gate:'g0', check: s => ['g0','g1','g2'].every(g => gateProgress(g) > 0) },
+  { id:'p6', text:'Begleitlogik aktivieren: Obeya, RAID, Kanban, EVM-light, Weekly.', gate:'begleit', check: s => gateProgress('begleit') >= 30 },
+  { id:'p7', text:'Phase „Aktiv · Tunnel“ starten — Delivery-Sicht für Kunde/Startup freigeben.', gate:'entry', check: s => s.meta && s.meta.phase === 'active' },
+  { id:'p8', text:'Konvergenz G3 — alle Muss-Kriterien aus G0–G2 schließen.', gate:'g3', check: s => isMussComplete('g3') },
+  { id:'p9', text:'Feldtest G4 nur nach G3-Freigabe — Control Room Daily nutzen.', gate:'g4', check: s => isMussComplete('g4') },
+  { id:'p10', text:'G5 vorbereiten, Evidence Pack und Case Card ins Portfolio.', gate:'g5', check: s => isMussComplete('g5') }
+];
+
+const METHOD_GUIDES = {
+  'poc-canvas': 'Ein Blatt: Problem, Zielnutzen, primäre KPI, Scope In/Out, Rollen, größte Annahmen, Risiken. Jede Box in 2–4 Sätzen — keine Romane. Canvas ist Referenz für alle Gates.',
+  'raci-light': 'Pro Aktivität/Artefakt genau eine R (Responsible), eine A (Accountable). C/I nur wo wirklich nötig. Weekly und Gate-Review müssen RACI-Einträge haben.',
+  'weekly-steuerung': 'Fester Termin, feste Agenda: Status (Zone 1), Blocker, Muss-Offen (Zone 4), Delivery (Zone 6), RAID (Zone 7). Protokoll als Evidence.',
+  'evm-light': 'Geplant vs. Ist-Aufwand in Stunden/PT. SPI/CPI-Ampel: grün >0,9 · gelb 0,7–0,9 · rot <0,7. Abweichung → Change oder Eskalation.',
+  'rom-estimate': 'Grobschätzung in PT oder € mit Unsicherheitsband (z.B. 40–80 PT). Annahmen explizit. Kein Scheingenauigkeit — Bandbreite ist Pflicht.',
+  't-shirt-sizing': 'XS/S/M/L/XL für Arbeitspakete. Keine Stunden — erst Relative Größe, dann optional ROM dazu.',
+  'gate-review': 'Nur wenn Muss vollständig. Teilnehmer laut RACI. Ergebnis: Freigabe / Bedingt / Stop — schriftlich im Gate.',
+  'kanban': 'Spalten: Backlog · In Arbeit · Review · Erledigt. WIP-Limit max. 3 in „In Arbeit“. Jede Karte = konkretes Artefakt oder Muss-Punkt.',
+  'raid-log': 'Risiko/Annahme/Issue/Dependency mit Owner, Status, Fälligkeit. Offene Issues >7 Tage → Eskalation Zone 1.',
+  'assumption-log': 'Jede kritische Annahme mit Testmethode und Falsifikationskriterium. Status: offen · bestätigt · widerlegt.',
+  'decision-rights-matrix': 'Wer darf Scope, Budget, Daten, Go-Live entscheiden? Keine Lücken — sonst Stop vor G4.',
+  'baseline': 'Ist-Wert vor PoC-Start, Messmethode, Stichprobe, Verantwortlicher. Ohne Baseline kein belastbares G2/G4.',
+  'messplan': 'Was · wann · wie · wer · wo gespeichert. Messfenster und Mindestdatenmenge vor G4 festlegen.',
+  'control-room-daily': '15 Min während G4: KPI-Ist, Incidents, Abweichungen, Entscheidungsbedarf. Tagesprotokoll pflegen.',
+  'evidence-pack': 'Index aller Nachweise für G5: KPI-Ergebnisse, Protokolle, Verträge, technische Logs — verlinkt und versioniert.'
+};
+
+function allMethodEntries() {
+  const out = [];
+  GATES.forEach(g => g.methoden.forEach(m => out.push({ ...m, gateId: g.id, gateCode: g.code })));
+  return out;
+}
+
+function defaultEnabledMethods() {
+  const m = {};
+  allMethodEntries().forEach(x => { m[x.slug] = true; });
+  return m;
+}
 
 // ============================================================
 // STATE
 // ============================================================
-const STATE_VERSION = 3;
+const STATE_VERSION = 4;
 let state = null;
 let activeGateId = 'entry';
 let storageMode = 'memory'; // 'vercel' | 'claude' | 'local' | 'memory'
@@ -1249,7 +1366,13 @@ let storageMode = 'memory'; // 'vercel' | 'claude' | 'local' | 'memory'
 function newId() { return 'i_' + Math.random().toString(36).slice(2,9); }
 
 function blankState() {
-  const s = { version: STATE_VERSION, meta: { name:'', customer:'', owner:'', lead:'', updated: null }, gates: {} };
+  const s = {
+    version: STATE_VERSION,
+    meta: { name:'', customer:'', owner:'', lead:'', updated: null, view:'admin', phase:'setup', pocType:'' },
+    org: { sponsor:'', nxtgnPm:'', weeklyDay:'', weeklyTime:'', steeringCircle:'', governance:'' },
+    config: { enabledMethods: defaultEnabledMethods() },
+    gates: {}
+  };
   GATES.forEach(g => {
     s.gates[g.id] = {
       muss: g.muss.map(t => ({ id:newId(), text:t, done:false })),
@@ -1262,16 +1385,33 @@ function blankState() {
   return s;
 }
 
+function ensureMetaOrgConfig(s) {
+  if (!s.meta) s.meta = {};
+  if (!s.meta.view) s.meta.view = 'admin';
+  if (!s.meta.phase) s.meta.phase = 'setup';
+  if (s.meta.pocType == null) s.meta.pocType = '';
+  if (!s.org) s.org = { sponsor:'', nxtgnPm:'', weeklyDay:'', weeklyTime:'', steeringCircle:'', governance:'' };
+  if (!s.config) s.config = { enabledMethods: defaultEnabledMethods() };
+  if (!s.config.enabledMethods) s.config.enabledMethods = defaultEnabledMethods();
+  allMethodEntries().forEach(m => {
+    if (s.config.enabledMethods[m.slug] == null) s.config.enabledMethods[m.slug] = true;
+  });
+}
+
 function migrate(loaded) {
   if (!loaded) return blankState();
   const fresh = blankState();
   fresh.meta = { ...fresh.meta, ...(loaded.meta || {}) };
-  // v1: muss/nice waren boolean-arrays
-  const oldFormat = loaded.version !== STATE_VERSION;
+  if (loaded.org) fresh.org = { ...fresh.org, ...loaded.org };
+  if (loaded.config && loaded.config.enabledMethods) {
+    fresh.config.enabledMethods = { ...fresh.config.enabledMethods, ...loaded.config.enabledMethods };
+  }
+  // v1: muss/nice waren boolean-arrays · ab v3 volle Objektstruktur
+  const legacyBool = !loaded.version || loaded.version < 3;
   GATES.forEach(g => {
     const l = loaded.gates && loaded.gates[g.id];
     if (!l) return;
-    if (oldFormat) {
+    if (legacyBool) {
       if (Array.isArray(l.muss)) fresh.gates[g.id].muss.forEach((it, i) => { it.done = !!l.muss[i]; });
       if (Array.isArray(l.nice)) fresh.gates[g.id].nice.forEach((it, i) => { it.done = !!l.nice[i]; });
     } else {
@@ -1283,6 +1423,7 @@ function migrate(loaded) {
     if (typeof l.notes === 'string') fresh.gates[g.id].notes = l.notes;
   });
   mergeMissingGateDefaults(fresh);
+  ensureMetaOrgConfig(fresh);
   return fresh;
 }
 
@@ -1444,7 +1585,7 @@ function updateStorageExplain() {
         ? 'Browser localStorage'
         : 'Nur In-Memory (nicht persistent)';
   const sharingHint = storageMode === 'vercel'
-    ? `Alle Änderungen landen zentral im Vercel-Speicher und sind auf derselben Deploy-URL direkt sichtbar. Projekt-ID: <code>${escapeHtml(REMOTE_DOC)}</code>. <button class="btn-dark btn-small" onclick="copyShareLink()">Link kopieren</button>`
+    ? `Alle Änderungen landen zentral im Vercel-Speicher. Projekt-ID: <code>${escapeHtml(REMOTE_DOC)}</code>. Delivery-Link (ohne Admin): <code>?doc=${escapeHtml(REMOTE_DOC)}&amp;view=delivery</code>. <button class="btn-dark btn-small" onclick="copyShareLink()">Link kopieren</button> <button class="btn-dark btn-small" onclick="copyDeliveryLink()">Delivery-Link</button>`
     : 'Zentral für Team/Kunde: JSON über <em>Export</em> in OneDrive speichern, von Kollegin per <em>Import</em> laden und weiterbearbeiten.';
   box.innerHTML = `<strong>Aktueller Speicher:</strong> ${current}. ${sharingHint}`;
 }
@@ -1460,13 +1601,27 @@ async function copyShareLink() {
   }
 }
 
+async function copyDeliveryLink() {
+  const url = new URL(location.href);
+  url.searchParams.set(REMOTE_DOC_PARAM, REMOTE_DOC);
+  url.searchParams.set('view', 'delivery');
+  try {
+    await navigator.clipboard.writeText(url.toString());
+    toast('Delivery-Link kopiert (ohne Admin-Sicht).', 'pink');
+  } catch (e) {
+    toast('Kopieren fehlgeschlagen.');
+  }
+}
+
 let saveTimer = null;
 async function saveState(announce) {
   state.meta.updated = new Date().toISOString();
+  ensureMetaOrgConfig(state);
   try {
     await storageSet(STORAGE_KEY, JSON.stringify(state));
     lastSeenRemoteUpdated = state.meta.updated || '';
     remoteSyncPauseUntil = Date.now() + 3000;
+    registerPortfolioSnapshot();
     if (announce) toast('Stand gespeichert.', 'pink');
   } catch (e) {
     if (announce) toast('Speichern fehlgeschlagen. Nutze JSON-Export als Backup.');
@@ -1561,6 +1716,227 @@ function overallProgress() {
   return Math.round(rel.reduce((a,g)=>a+gateProgress(g.id),0) / rel.length);
 }
 
+function applyUrlViewHint() {
+  const params = new URLSearchParams(location.search);
+  if (params.get('view') === 'delivery') state.meta.view = 'delivery';
+}
+function isAdminView() { return !state || !state.meta || state.meta.view !== 'delivery'; }
+function isDeliveryView() { return state && state.meta && state.meta.view === 'delivery'; }
+function isSetupPhase() { return state && state.meta && state.meta.phase === 'setup'; }
+function isActivePhase() { return state && state.meta && state.meta.phase === 'active'; }
+function isMethodEnabled(slug) { return state && state.config && state.config.enabledMethods && state.config.enabledMethods[slug] !== false; }
+function isRecommendedMethod(slug) {
+  const t = state.meta && state.meta.pocType ? POC_TYPES[state.meta.pocType] : null;
+  return t && Array.isArray(t.recommend) && t.recommend.includes(slug);
+}
+function isLatePhaseGate(id) {
+  if (isDeliveryView() && isActivePhase()) {
+    if (id === 'g4') return !isMussComplete('g3');
+    if (id === 'g5') return !isMussComplete('g4');
+  }
+  return false;
+}
+
+function getOpenMussCount() {
+  return GATES.reduce((n, g) => n + state.gates[g.id].muss.filter(x => !x.done).length, 0);
+}
+
+function getCurrentFocusGate() {
+  for (const id of ['entry','g0','g1','g2','g3','g4','g5','begleit']) {
+    if (isGateLocked(id)) continue;
+    if (!isMussComplete(id)) return id;
+  }
+  return 'g5';
+}
+
+function getNextOpenMuss(gateId) {
+  const items = state.gates[gateId].muss.filter(x => !x.done);
+  return items.length ? items[0] : null;
+}
+
+function getTunnelNextAction() {
+  const gateId = getCurrentFocusGate();
+  const g = GATES.find(x => x.id === gateId);
+  const next = getNextOpenMuss(gateId);
+  if (next) return { gateId, gate: g, text: next.text };
+  if (gateId === 'g0' || gateId === 'g1' || gateId === 'g2') {
+    return { gateId, gate: g, text: 'Parallelen Strang weiterbearbeiten — Weekly im Cockpit nutzen.' };
+  }
+  return { gateId, gate: g, text: 'Gate abschließen und Gate-Review durchführen.' };
+}
+
+function cockpitZoneValue(z) {
+  const o = state.org || {};
+  const m = state.meta || {};
+  if (z.id === 'z1') {
+    const focus = getCurrentFocusGate();
+    const fg = GATES.find(x => x.id === focus);
+    return `Gesamt ${overallProgress()}% · Fokus ${fg ? fg.code : '—'} · ${getOpenMussCount()} Muss offen · Phase ${isActivePhase() ? 'Tunnel' : 'Setup'}`;
+  }
+  if (z.id === 'z2') {
+    const parts = [o.sponsor && `Sponsor: ${o.sponsor}`, o.nxtgnPm && `NXTGN: ${o.nxtgnPm}`, m.owner && `Owner: ${m.owner}`, o.weeklyDay && `Weekly: ${o.weeklyDay}${o.weeklyTime ? ' '+o.weeklyTime : ''}`].filter(Boolean);
+    return parts.length ? parts.join(' · ') : 'Organisation im Entry Check definieren';
+  }
+  if (z.id === 'z3') {
+    return `G0 ${gateProgress('g0')}% · G1 ${gateProgress('g1')}% · G2 ${gateProgress('g2')}% · G3 ${gateProgress('g3')}% · G4 ${isLatePhaseGate('g4') ? '—' : gateProgress('g4')+'%'} · G5 ${isLatePhaseGate('g5') ? '—' : gateProgress('g5')+'%'}`;
+  }
+  if (z.id === 'z4') return `${getOpenMussCount()} offene Muss-Punkte projektweit`;
+  if (z.id === 'z5') {
+    const canvas = methodHasData((state.gates.g0.methods||{}).poc-canvas, METHOD_TEMPLATES['poc-canvas']);
+    return canvas ? 'PoC Canvas angelegt · weitere Artefakte in Gates pflegen' : 'PoC Canvas noch offen (G0)';
+  }
+  if (z.id === 'z6') return isActivePhase() ? 'Tunnel aktiv — nächste Aufgabe im Banner rechts' : 'Tunnel startet nach Setup-Phase';
+  if (z.id === 'z7') return 'RAID & Change in Begleitlogik pflegen';
+  if (z.id === 'z8') return 'ROM / T-Shirt / EVM-light in Begleitlogik';
+  if (z.id === 'z9') return `Reporting · ${m.name || 'Projekt'} · ${overallProgress()}%`;
+  return z.text;
+}
+
+function applyViewClasses() {
+  document.body.classList.toggle('view-delivery', isDeliveryView());
+  const ba = document.getElementById('btn-view-admin');
+  const bd = document.getElementById('btn-view-delivery');
+  if (ba) ba.classList.toggle('active', isAdminView());
+  if (bd) bd.classList.toggle('active', isDeliveryView());
+  const ps = document.getElementById('pill-phase-setup');
+  const pa = document.getElementById('pill-phase-active');
+  if (ps) ps.classList.toggle('active', isSetupPhase());
+  if (pa) pa.classList.toggle('active', isActivePhase());
+}
+
+function setAppView(view) {
+  state.meta.view = view === 'delivery' ? 'delivery' : 'admin';
+  saveStateDebounced();
+  render();
+  toast(view === 'delivery' ? 'Delivery-Sicht — straffer Tunnel.' : 'NXTGN Admin-Sicht.', 'pink');
+}
+
+function setProjectPhase(phase) {
+  if (!isAdminView()) { toast('Phase nur in Admin-Sicht änderbar.'); return; }
+  if (phase === 'active' && isSetupPhase()) {
+    if (!state.meta.pocType) { toast('Bitte zuerst PoC-Typ wählen.'); return; }
+    if (!confirm('Tunnel starten? Delivery-Sicht wird straff — Konfiguration bleibt, Bearbeitung für Kunde fokussiert.')) return;
+  }
+  state.meta.phase = phase === 'active' ? 'active' : 'setup';
+  saveStateDebounced();
+  render();
+  if (phase === 'active') toast('Tunnel aktiv — Kunde kann einfahren.', 'pink');
+}
+
+function setPocType(val) {
+  state.meta.pocType = val;
+  saveStateDebounced();
+  render();
+}
+
+function toggleMethodConfig(slug, on) {
+  if (!state.config.enabledMethods) state.config.enabledMethods = defaultEnabledMethods();
+  state.config.enabledMethods[slug] = !!on;
+  saveStateDebounced();
+  render();
+}
+
+function applyPocTypeRecommendations() {
+  const t = POC_TYPES[state.meta.pocType];
+  if (!t || !t.recommend.length) { toast('Zuerst PoC-Typ wählen.'); return; }
+  t.recommend.forEach(slug => { state.config.enabledMethods[slug] = true; });
+  saveStateDebounced();
+  render();
+  toast('Empfohlene Werkzeuge aktiviert.', 'pink');
+}
+
+function onOrgField(key, val) {
+  if (!state.org) state.org = {};
+  state.org[key] = val;
+  saveStateDebounced();
+  renderCockpitSidebar();
+}
+
+async function registerPortfolioSnapshot() {
+  if (storageMode !== 'vercel') return;
+  try {
+    await fetch('/api/portfolio', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        doc: REMOTE_DOC,
+        name: state.meta.name || '',
+        customer: state.meta.customer || '',
+        lead: state.meta.lead || '',
+        phase: state.meta.phase || 'setup',
+        pocType: state.meta.pocType || '',
+        overallPct: overallProgress(),
+        g0Pct: gateProgress('g0'),
+        g1Pct: gateProgress('g1'),
+        g2Pct: gateProgress('g2'),
+        currentGate: getCurrentFocusGate(),
+        updated: state.meta.updated
+      })
+    });
+  } catch (e) {}
+}
+
+function renderCockpitSidebar() {
+  const body = document.getElementById('cockpit-sidebar-body');
+  if (!body) return;
+  body.innerHTML = OBEYA_ZONES.map(z => {
+    const dim = (z.id === 'z3' && isDeliveryView()) ? '' : '';
+    const late = false;
+    return `<div class="cockpit-mini${activeGateId === z.gate ? ' active' : ''}${late ? ' dim' : ''}" onclick="activeGateId='${z.gate}';render();">
+      <div class="z-title">${escapeHtml(z.title)}</div>
+      <div class="z-val">${escapeHtml(cockpitZoneValue(z))}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderSetupPanel() {
+  const wrap = document.getElementById('setup-panel-wrap');
+  if (!wrap) return;
+  if (!isAdminView() || !isSetupPhase()) { wrap.innerHTML = ''; return; }
+  const pocOpts = Object.keys(POC_TYPES).map(k => `<option value="${escapeAttr(k)}" ${state.meta.pocType===k?'selected':''}>${escapeHtml(POC_TYPES[k].label)}</option>`).join('');
+  const tools = allMethodEntries().map(m => {
+    const on = isMethodEnabled(m.slug);
+    const rec = isRecommendedMethod(m.slug);
+    return `<label class="tool-item${rec?' recommended':''}"><input type="checkbox" ${on?'checked':''} onchange="toggleMethodConfig('${m.slug}', this.checked)"><span><strong>${escapeHtml(m.gateCode)} · ${escapeHtml(m.name)}</strong><br><span style="color:var(--grey-faint);font-size:11px">${escapeHtml(m.desc)}</span></span></label>`;
+  }).join('');
+  wrap.innerHTML = `<div class="setup-panel">
+    <h3>Setup · Methoden-Baukasten (Skelett bleibt fix)</h3>
+    <p style="font-size:13px;color:var(--grey-text);margin-bottom:14px;">Als NXTGN-Projektmanager wählst du PoC-Typ und Werkzeuge. Nach „Tunnel starten“ sehen Kunde/Startup nur die aktivierten Methoden — straff und vorwärtsgerichtet.</p>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:12px;">
+      <label style="font-size:12px;font-weight:600;">PoC-Typ
+        <select style="margin-left:8px;padding:6px 10px;font-family:inherit;border:1px solid var(--grey-line);border-radius:var(--radius-sm);" onchange="setPocType(this.value)">${pocOpts}</select>
+      </label>
+      <button class="btn-dark btn-small" onclick="applyPocTypeRecommendations()">Empfehlungen übernehmen</button>
+      <button class="btn-dark btn-small primary" onclick="setProjectPhase('active')">Tunnel starten →</button>
+    </div>
+    <div class="tool-grid">${tools}</div>
+  </div>`;
+}
+
+function renderPlaybookPanel() {
+  const wrap = document.getElementById('playbook-panel-wrap');
+  if (!wrap) return;
+  if (!isAdminView()) { wrap.innerHTML = ''; return; }
+  const steps = PM_PLAYBOOK.map((s, i) => {
+    const done = s.check(state);
+    return `<div class="playbook-step${done?' done':''}"><span class="num">${i+1}</span><span>${escapeHtml(s.text)}${!done ? ` <button class="btn-dark btn-small" style="margin-left:8px" onclick="activeGateId='${s.gate}';render();">→ Gate</button>` : ''}</span></div>`;
+  }).join('');
+  wrap.innerHTML = `<div class="playbook-panel"><h3>Leitfaden NXTGN-Projektmanager · Was wann?</h3>${steps}</div>`;
+}
+
+function renderTunnelBanner() {
+  const wrap = document.getElementById('tunnel-banner-wrap');
+  if (!wrap) return;
+  if (isAdminView() && isSetupPhase()) { wrap.innerHTML = ''; return; }
+  const action = getTunnelNextAction();
+  const g = action.gate;
+  wrap.innerHTML = `<div class="tunnel-banner">
+    <h3>${isDeliveryView() ? 'Tunnel · Nächster Schritt' : 'Steuerung · Fokus'}</h3>
+    <p class="tunnel-next"><strong>${escapeHtml(g ? g.code+' · '+g.name : '')}</strong> — ${escapeHtml(action.text)}</p>
+    <button class="btn-dark btn-small primary" style="margin-top:10px" onclick="activeGateId='${action.gateId}';render();">Dorthin →</button>
+  </div>`;
+}
+
 // ============================================================
 // RENDER — Dashboard
 // ============================================================
@@ -1573,7 +1949,7 @@ function renderStrip() {
     const done = isMussComplete(g.id) && pct === 100;
     const isActive = g.id === activeGateId;
     const tile = document.createElement('button');
-    tile.className = 'gate-tile' + (isActive?' active':'') + (locked?' locked':'') + (done?' done':'');
+    tile.className = 'gate-tile' + (isActive?' active':'') + (locked?' locked':'') + (done?' done':'') + (isLatePhaseGate(g.id)?' late-phase':'');
     const dispName = g.id==='entry'?'Entry Check':g.id==='begleit'?'Begleitung':g.name;
     tile.innerHTML = `${locked?'<span class="lock-badge">!</span>':''}
       <div class="gid">${g.code}</div>
@@ -1633,6 +2009,25 @@ function renderPanel() {
 
   const lockBanner = locked ? `<div class="lock-banner">Dieses Gate ist <strong>gesperrt</strong>. ${g.id==='g3'?'Zuerst müssen alle Muss-Kriterien aus G0, G1 und G2 vollständig erfüllt sein (Konvergenz).':g.id==='g4'?'Zuerst muss G3 (Einsatzreife) vollständig bestanden sein.':'Zuerst muss G4 (Feldtest) vollständig bestanden sein.'}</div>` : '';
   const kicker = g.strand || (g.id==='begleit'?'Querschnitt · Dauerläufer':g.id==='entry'?'Vor-Gate · Substanzprüfung':'Gate '+g.code);
+  const deliveryStrict = isDeliveryView() && isActivePhase();
+  const showAddMuss = !deliveryStrict;
+  const filteredMethods = g.methoden.filter(m => isMethodEnabled(m.slug) || (isAdminView() && isSetupPhase()));
+
+  let orgBlock = '';
+  if (g.id === 'entry') {
+    const o = state.org || {};
+    const ro = deliveryStrict ? 'readonly' : '';
+    orgBlock = `
+      <div class="sec-head"><span class="sec-tag">ORG</span><h3 class="sec-title">Organisation · RACI · Weekly</h3><span class="sec-hint">Cockpit Zone 2</span></div>
+      <div class="org-meta">
+        <div><label>Sponsor (Kunde)</label><input ${ro} value="${escapeAttr(o.sponsor||'')}" oninput="onOrgField('sponsor', this.value)" placeholder="Name"></div>
+        <div><label>NXTGN Projektmanager</label><input ${ro} value="${escapeAttr(o.nxtgnPm||'')}" oninput="onOrgField('nxtgnPm', this.value)" placeholder="Name"></div>
+        <div><label>Steuerkreis</label><input ${ro} value="${escapeAttr(o.steeringCircle||'')}" oninput="onOrgField('steeringCircle', this.value)" placeholder="Teilnehmer / Rhythmus"></div>
+        <div><label>Weekly · Tag</label><input ${ro} value="${escapeAttr(o.weeklyDay||'')}" oninput="onOrgField('weeklyDay', this.value)" placeholder="z.B. Dienstag"></div>
+        <div><label>Weekly · Uhrzeit</label><input ${ro} value="${escapeAttr(o.weeklyTime||'')}" oninput="onOrgField('weeklyTime', this.value)" placeholder="z.B. 10:00"></div>
+        <div><label>Governance (IT, Legal, …)</label><input ${ro} value="${escapeAttr(o.governance||'')}" oninput="onOrgField('governance', this.value)" placeholder="Ansprechpartner"></div>
+      </div>`;
+  }
 
   let secNum = 1;
   const secTag = (extra='') => `<span class="sec-tag${extra?' '+extra:''}">0${secNum++}</span>`;
@@ -1653,27 +2048,28 @@ function renderPanel() {
       </div>
     </div>
     ${lockBanner}
+    ${orgBlock}
 
     <div class="sec-head">
       ${secTag()}
       <h3 class="sec-title">Muss-Kriterien</h3>
       <span class="sec-hint">${mussDone} / ${mussTotal}</span>
-      <button class="sec-add-btn" onclick="focusAddInput('${g.id}','muss')">+ Hinzufügen</button>
+      ${showAddMuss ? `<button class="sec-add-btn admin-only" onclick="focusAddInput('${g.id}','muss')">+ Hinzufügen</button>` : ''}
     </div>
     ${renderChecklist(g.id, 'muss')}
-    ${renderAddRow(g.id, 'muss')}
+    ${showAddMuss ? renderAddRow(g.id, 'muss') : ''}
   `;
 
-  if (g.nice.length || state.gates[g.id].nice.length || niceTotal > 0 || g.id !== 'begleit') {
+  if ((g.nice.length || state.gates[g.id].nice.length || niceTotal > 0 || g.id !== 'begleit') && (!deliveryStrict || niceTotal > 0)) {
     html += `
       <div class="sec-head">
         ${secTag('nice')}
         <h3 class="sec-title">Nice-to-have</h3>
         <span class="sec-hint">${niceDone} / ${niceTotal}</span>
-        <button class="sec-add-btn" onclick="focusAddInput('${g.id}','nice')">+ Hinzufügen</button>
+        ${showAddMuss ? `<button class="sec-add-btn admin-only" onclick="focusAddInput('${g.id}','nice')">+ Hinzufügen</button>` : ''}
       </div>
       ${renderChecklist(g.id, 'nice')}
-      ${renderAddRow(g.id, 'nice')}
+      ${showAddMuss ? renderAddRow(g.id, 'nice') : ''}
     `;
   }
 
@@ -1682,18 +2078,18 @@ function renderPanel() {
       ${secTag('methoden')}
       <h3 class="sec-title">KPI-Tracker</h3>
       <span class="sec-hint">${kpiDone} / ${kpiTotal}</span>
-      <button class="sec-add-btn" onclick="focusAddInput('${g.id}','kpis')">+ KPI hinzufügen</button>
+      ${showAddMuss ? `<button class="sec-add-btn admin-only" onclick="focusAddInput('${g.id}','kpis')">+ KPI hinzufügen</button>` : ''}
     </div>
     ${renderChecklist(g.id, 'kpis')}
-    ${renderAddRow(g.id, 'kpis')}
+    ${showAddMuss ? renderAddRow(g.id, 'kpis') : ''}
 
     <div class="sec-head">
       ${secTag('methoden')}
-      <h3 class="sec-title">Methoden</h3>
-      <span class="sec-hint">${g.methoden.length} Werkzeuge · klick um auszufüllen</span>
+      <h3 class="sec-title">Methoden${deliveryStrict ? ' · Tunnel' : ''}</h3>
+      <span class="sec-hint">${filteredMethods.length} Werkzeuge aktiv · klick um auszufüllen</span>
     </div>
     <div class="method-list">
-      ${g.methoden.map(m => renderMethodCard(g.id, m)).join('')}
+      ${filteredMethods.length ? filteredMethods.map(m => renderMethodCard(g.id, m)).join('') : '<div class="ws-empty">Keine Methoden für diesen Tunnel aktiviert — NXTGN Admin konfiguriert im Setup.</div>'}
     </div>
 
     <div class="sec-head">
@@ -1710,16 +2106,17 @@ function renderPanel() {
 function renderChecklist(gateId, type) {
   const items = state.gates[gateId][type];
   const cls = type === 'nice' ? 'nice' : '';
+  const strict = isDeliveryView() && isActivePhase();
   if (!items.length) return `<div class="check-list ${cls}"><div class="ws-empty">Keine Einträge. Füge unten Kriterien hinzu.</div></div>`;
   return `<div class="check-list ${cls}">` + items.map((it, i) => `
     <div class="check-item ${it.done?'checked':''}" data-id="${it.id}">
       <div class="check-box-wrap" onclick="toggleItem('${gateId}','${type}','${it.id}')"><div class="check-box"></div></div>
       <div class="check-label" id="lbl-${gateId}-${type}-${it.id}" onclick="toggleItem('${gateId}','${type}','${it.id}')"
-           ondblclick="startEditLabel(event,'${gateId}','${type}','${it.id}')">${escapeHtml(it.text)}</div>
-      <div class="check-actions">
+           ondblclick="${strict?'':'startEditLabel(event,\''+gateId+'\',\''+type+'\',\''+it.id+'\')'}">${escapeHtml(it.text)}</div>
+      ${strict ? '' : `<div class="check-actions admin-only">
         <button class="check-action-btn" onclick="editLabelBtn(event,'${gateId}','${type}','${it.id}')" title="Bearbeiten">✎</button>
         <button class="check-action-btn del" onclick="deleteItem('${gateId}','${type}','${it.id}')" title="Löschen">×</button>
-      </div>
+      </div>`}
     </div>`).join('') + `</div>`;
 }
 
@@ -1743,6 +2140,7 @@ function renderMethodCard(gateId, m) {
   const data = (state.gates[gateId].methods && state.gates[gateId].methods[m.slug]) || {};
   const hasData = methodHasData(data, tpl);
   const isOpen = openedMethods.has(`${gateId}:${m.slug}`);
+  const guide = METHOD_GUIDES[m.slug] || 'Handbuch 2.0: Zweck klar benennen, Owner setzen, Evidence verlinken, im Weekly reviewen.';
   return `
     <div class="method ${isOpen?'open':''}" data-method="${m.slug}">
       <div class="method-head" onclick="toggleMethod('${gateId}','${m.slug}')">
@@ -1751,6 +2149,7 @@ function renderMethodCard(gateId, m) {
         <span class="method-toggle">${isOpen?'Zuklappen':'Ausfüllen'}</span>
       </div>
       <div class="method-body">
+        <div class="method-guide"><strong>So ausfüllen (Handbuch 2.0):</strong> ${escapeHtml(guide)}</div>
         <div class="method-desc">${escapeHtml(m.desc)}</div>
         ${renderMethodWorksheet(gateId, m.slug)}
       </div>
@@ -1823,7 +2222,15 @@ function renderMethodWorksheet(gateId, slug) {
 // RENDER FACADE
 // ============================================================
 const openedMethods = new Set();
-function render() { renderStrip(); renderPanel(); }
+function render() {
+  applyViewClasses();
+  renderCockpitSidebar();
+  renderSetupPanel();
+  renderPlaybookPanel();
+  renderTunnelBanner();
+  renderStrip();
+  renderPanel();
+}
 
 // ============================================================
 // INTERACTIONS — Checklist
@@ -2087,19 +2494,36 @@ function listHtml(items) {
 }
 
 function openCockpit() {
-  document.getElementById('modal-title').textContent = 'Obeya Cockpit · 9 Zonen';
-  document.getElementById('modal-body-container').innerHTML = `
-    <p>Das Obeya Cockpit ist die zentrale Steuerungszentrale von CIPP 2.0. Nutze es in Weeklys und Gate-Reviews als Leitoberfläche.</p>
-    <div class="cockpit-grid">${OBEYA_ZONES.map(z => `
-      <div class="cockpit-zone"><h5>${escapeHtml(z.title)}</h5><p>${escapeHtml(z.text)}</p></div>
-    `).join('')}</div>
-    <p style="margin-top:16px;"><strong>Tipp:</strong> Pflege die zugehörigen Methoden im Gate <em>Begleitlogik & Obeya</em> und in den parallelen Strängen G0–G2.</p>
-  `;
-  document.getElementById('modal-foot').innerHTML = `
-    <button class="btn-dark ghost" onclick="activeGateId='begleit'; closeModal(); render();">Zu Begleitlogik</button>
-    <button class="btn-dark primary" onclick="closeModal()">Schließen</button>
-  `;
+  const el = document.getElementById('cockpit-sidebar');
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  toast('Obeya Cockpit ist dauerhaft links sichtbar.', 'pink');
+}
+
+async function openPortfolio() {
+  document.getElementById('modal-title').textContent = 'NXTGN Portfolio · projektübergreifend';
+  document.getElementById('modal-body-container').innerHTML = '<p>Lade Portfolio …</p>';
+  document.getElementById('modal-foot').innerHTML = `<button class="btn-dark primary" onclick="closeModal()">Schließen</button>`;
   document.getElementById('modal-backdrop').classList.add('show');
+  try {
+    const r = await fetch('/api/portfolio');
+    if (!r.ok) throw new Error('not_available');
+    const data = await r.json();
+    const rows = (data.projects || []).map(p => `<tr>
+      <td>${escapeHtml(p.name || p.doc)}</td>
+      <td>${escapeHtml(p.customer || '—')}</td>
+      <td>${escapeHtml(p.phase || '—')}</td>
+      <td>${escapeHtml(String(p.overallPct || 0))}%</td>
+      <td>G0 ${p.g0Pct}% · G1 ${p.g1Pct}% · G2 ${p.g2Pct}%</td>
+      <td>${escapeHtml(p.currentGate || '—')}</td>
+      <td>${escapeHtml(p.updated ? new Date(p.updated).toLocaleString('de-DE') : '—')}</td>
+    </tr>`).join('');
+    document.getElementById('modal-body-container').innerHTML = rows.length
+      ? `<p style="margin-bottom:12px;font-size:13px;color:var(--grey-text)">Alle Projekte mit zentralem Vercel-Speicher. Aktuelles Projekt: <code>${escapeHtml(REMOTE_DOC)}</code></p>
+        <table class="portfolio-table"><thead><tr><th>Projekt</th><th>Kunde</th><th>Phase</th><th>Gesamt</th><th>Parallel G0–G2</th><th>Fokus-Gate</th><th>Stand</th></tr></thead><tbody>${rows}</tbody></table>`
+      : `<p>Noch keine Portfolio-Einträge. Projekte erscheinen automatisch nach dem ersten Speichern mit Vercel-Speicher.</p>`;
+  } catch (e) {
+    document.getElementById('modal-body-container').innerHTML = `<p>Portfolio nur mit Vercel-Speicher (Upstash Redis) verfügbar. Bitte Redis verbinden und speichern.</p>`;
+  }
 }
 
 function openManual() {
@@ -2227,8 +2651,12 @@ function toast(msg, color) {
   state = blankState();
   await probeStorage();
   updateStoragePill();
+  applyViewClasses();
   render();
   await loadState(false);
+  ensureMetaOrgConfig(state);
+  applyUrlViewHint();
+  applyViewClasses();
   startRemoteSync();
 })();
 </script>
