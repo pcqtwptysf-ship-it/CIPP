@@ -36,6 +36,8 @@ module.exports = async function handler(req, res) {
         name: entry.name || '',
         customer: entry.customer || '',
         lead: entry.lead || '',
+        startup: entry.startup || entry.lead || '',
+        nxtgnPm: entry.nxtgnPm || '',
         phase: entry.phase || 'setup',
         pocType: entry.pocType || '',
         overallPct: entry.overallPct || 0,
@@ -43,6 +45,11 @@ module.exports = async function handler(req, res) {
         g1Pct: entry.g1Pct || 0,
         g2Pct: entry.g2Pct || 0,
         currentGate: entry.currentGate || 'entry',
+        criticalMuss: entry.criticalMuss || '',
+        riskAmpel: entry.riskAmpel || 'green',
+        resourceAmpel: entry.resourceAmpel || 'green',
+        decisionOutlook: entry.decisionOutlook || 'offen',
+        escalations: entry.escalations || 0,
         updated: entry.updated || new Date().toISOString()
       };
       if (idx >= 0) list[idx] = snapshot;
