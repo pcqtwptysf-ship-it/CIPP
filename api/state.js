@@ -1,7 +1,13 @@
 const { Redis } = require('@upstash/redis');
 
 const buildKey = (doc, key) => `cipp:${doc || 'default'}:${key || 'state'}`;
-const redis = Redis.fromEnv();
+
+function getRedis() {
+  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    return null;
+  }
+  return Redis.fromEnv();
+}
 
 module.exports = async function handler(req, res) {
   const doc = (req.query && req.query.doc) || 'default';
@@ -10,10 +16,16 @@ module.exports = async function handler(req, res) {
 
   // Health check for client-side probeStorage.
   if (req.method === 'GET' && req.query && req.query.ping === '1') {
-    return res.status(200).json({ ok: true, provider: 'upstash-redis' });
+    const configured = !!(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+    return res.status(200).json({ ok: configured, provider: 'upstash-redis', configured });
   }
 
   try {
+    const redis = getRedis();
+    if (!redis) {
+      return res.status(503).json({ error: 'redis_not_configured' });
+    }
+
     if (req.method === 'GET') {
       const value = await redis.get(storageKey);
       return res.status(200).json({ value: typeof value === 'string' ? value : null });

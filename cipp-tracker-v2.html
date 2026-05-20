@@ -1093,12 +1093,29 @@ function migrate(loaded) {
 // STORAGE LAYER — Vercel API > window.storage > localStorage > memory
 // ============================================================
 const STORAGE_KEY = 'cipp:poc:v2';
-const REMOTE_DOC = 'default';
+const REMOTE_DOC_PARAM = 'doc';
+
+function sanitizeDocId(raw) {
+  const cleaned = String(raw || '').trim().toLowerCase().replace(/[^a-z0-9-_]/g, '-').replace(/-+/g, '-');
+  return cleaned || 'default';
+}
+
+function getRemoteDoc() {
+  const params = new URLSearchParams(location.search);
+  return sanitizeDocId(params.get(REMOTE_DOC_PARAM) || 'default');
+}
+
+const REMOTE_DOC = getRemoteDoc();
+let remoteSyncTimer = null;
+let remoteSyncPauseUntil = 0;
+let lastSeenRemoteUpdated = '';
 
 async function pingVercelStorage() {
   try {
     const r = await fetch(`/api/state?doc=${encodeURIComponent(REMOTE_DOC)}&ping=1`, { method: 'GET' });
-    return r.ok;
+    if (!r.ok) return false;
+    const data = await r.json().catch(() => ({}));
+    return !!data.ok;
   } catch (e) {
     return false;
   }
@@ -1217,9 +1234,20 @@ function updateStorageExplain() {
         ? 'Browser localStorage'
         : 'Nur In-Memory (nicht persistent)';
   const sharingHint = storageMode === 'vercel'
-    ? 'Alle Änderungen landen zentral im Vercel-Speicher und sind auf derselben Deploy-URL direkt sichtbar.'
+    ? `Alle Änderungen landen zentral im Vercel-Speicher und sind auf derselben Deploy-URL direkt sichtbar. Projekt-ID: <code>${escapeHtml(REMOTE_DOC)}</code>. <button class="btn-dark btn-small" onclick="copyShareLink()">Link kopieren</button>`
     : 'Zentral für Team/Kunde: JSON über <em>Export</em> in OneDrive speichern, von Kollegin per <em>Import</em> laden und weiterbearbeiten.';
   box.innerHTML = `<strong>Aktueller Speicher:</strong> ${current}. ${sharingHint}`;
+}
+
+async function copyShareLink() {
+  const url = new URL(location.href);
+  url.searchParams.set(REMOTE_DOC_PARAM, REMOTE_DOC);
+  try {
+    await navigator.clipboard.writeText(url.toString());
+    toast('Projekt-Link kopiert.', 'pink');
+  } catch (e) {
+    toast('Kopieren fehlgeschlagen.');
+  }
 }
 
 let saveTimer = null;
@@ -1227,6 +1255,8 @@ async function saveState(announce) {
   state.meta.updated = new Date().toISOString();
   try {
     await storageSet(STORAGE_KEY, JSON.stringify(state));
+    lastSeenRemoteUpdated = state.meta.updated || '';
+    remoteSyncPauseUntil = Date.now() + 3000;
     if (announce) toast('Stand gespeichert.', 'pink');
   } catch (e) {
     if (announce) toast('Speichern fehlgeschlagen. Nutze JSON-Export als Backup.');
@@ -1240,6 +1270,7 @@ async function loadState(announce) {
     try {
       const parsed = JSON.parse(raw);
       state = migrate(parsed);
+      lastSeenRemoteUpdated = (state.meta && state.meta.updated) || '';
       fillMetaInputs();
       render();
       if (announce) toast('Stand geladen.', 'pink');
@@ -1250,6 +1281,38 @@ async function loadState(announce) {
   fillMetaInputs();
   render();
   if (announce) toast('Kein gespeicherter Stand vorhanden.');
+}
+
+function getUpdatedTimestamp(s) {
+  if (!s || !s.meta || !s.meta.updated) return '';
+  return String(s.meta.updated);
+}
+
+async function syncFromRemoteIfNewer() {
+  if (storageMode !== 'vercel') return;
+  if (Date.now() < remoteSyncPauseUntil) return;
+  const raw = await remoteGet(STORAGE_KEY);
+  if (!raw) return;
+  try {
+    const parsed = JSON.parse(raw);
+    const incoming = migrate(parsed);
+    const incomingUpdated = getUpdatedTimestamp(incoming);
+    const currentUpdated = getUpdatedTimestamp(state);
+    if (!incomingUpdated) return;
+    if (incomingUpdated === lastSeenRemoteUpdated || incomingUpdated === currentUpdated) return;
+    if (currentUpdated && incomingUpdated <= currentUpdated) return;
+    state = incoming;
+    lastSeenRemoteUpdated = incomingUpdated;
+    fillMetaInputs();
+    render();
+    toast('Neuer Stand aus Team-Speicher geladen.', 'pink');
+  } catch (e) {}
+}
+
+function startRemoteSync() {
+  if (remoteSyncTimer) clearInterval(remoteSyncTimer);
+  if (storageMode !== 'vercel') return;
+  remoteSyncTimer = setInterval(syncFromRemoteIfNewer, 4000);
 }
 
 async function confirmReset() {
@@ -1851,7 +1914,7 @@ function openHelp() {
       : storageMode === 'local' ? 'Browser localStorage'
         : 'Nur In-Memory (kein persistenter Speicher!)';
   const vercelHint = storageMode === 'vercel'
-    ? `<p><strong>Aktiv:</strong> Zentrale Speicherung auf Vercel. Alle Nutzer derselben Deploy-URL arbeiten am gleichen Stand.</p>`
+    ? `<p><strong>Aktiv:</strong> Zentrale Speicherung auf Vercel. Alle Nutzer mit derselben Projekt-ID arbeiten am gleichen Stand.</p>`
     : '';
   document.getElementById('modal-body-container').innerHTML = `
     <h4>Wo wird aktuell gespeichert?</h4>
@@ -1863,7 +1926,8 @@ function openHelp() {
       <li><strong>Browser localStorage</strong> — nur auf diesem Gerät, in diesem Browser-Profil. Nicht geteilt.</li>
       <li><strong>In-Memory</strong> — geht verloren, sobald der Tab geschlossen wird. Bitte regelmäßig JSON exportieren!</li>
     </ul>
-    <p><strong>OneDrive bleibt optional</strong>: Wenn Vercel KV aktiv ist, ist JSON-Export nur Backup. Ohne Vercel KV teilt ihr weiterhin über JSON in OneDrive.</p>
+    <p><strong>OneDrive bleibt optional</strong>: Wenn Vercel-Storage aktiv ist, ist JSON-Export nur Backup. Ohne Vercel-Storage teilt ihr weiterhin über JSON in OneDrive.</p>
+    <p><strong>Projekt-ID:</strong> <code>${escapeHtml(REMOTE_DOC)}</code> · Nutzt fuer Teamarbeit denselben Link inkl. <code>?doc=...</code>.</p>
 
     <h4>Wie teile ich das mit meiner Kollegin (OneDrive-Workflow)?</h4>
     <ol>
@@ -1918,6 +1982,7 @@ function toast(msg, color) {
   updateStoragePill();
   render();
   await loadState(false);
+  startRemoteSync();
 })();
 </script>
 </body>
